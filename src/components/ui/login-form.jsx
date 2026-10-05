@@ -4,7 +4,7 @@ export default function LoginForm({ onSubmit }) {
   return (
     <form
       onSubmit={onSubmit}
-      className="mx-auto flex w-full flex-col rounded-xl bg-white py-6 px-24 text-left text-sm text-gray-500"
+      className="mx-auto flex w-full flex-col rounded-xl bg-white p-6 text-left text-sm text-gray-500 sm:p-8"
     >
       <h2 className="text-xl font-bold mb-9 text-center text-gray-800">
         Welcome Back to Btq.
@@ -62,12 +62,14 @@ export default function LoginForm({ onSubmit }) {
           required
         />
       </div>
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-1">
+      <div className="mb-6 flex items-center justify-between gap-4">
+        <div className="flex shrink-0 items-center gap-1">
           <input id="checkbox" type="checkbox" />
-          <label htmlFor="checkbox">Remember me</label>
+          <label className="whitespace-nowrap" htmlFor="checkbox">
+            Remember me
+          </label>
         </div>
-        <Link className="text-blue-600 underline" href="#">
+        <Link className="whitespace-nowrap text-blue-600 underline" href="#">
           Forgot Password
         </Link>
       </div>

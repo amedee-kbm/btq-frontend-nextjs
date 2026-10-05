@@ -6,10 +6,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import LoginForm from "@/components/ui/login-form";
-import { useAuth } from "@/components/auth-provider";
+import { useUser } from "@/hooks/use-user";
 
 export default function RegisterDialog() {
-  const auth = useAuth();
+  const { login } = useUser();
 
   async function handleRegisterSubmit(event) {
     event.preventDefault();
@@ -23,13 +23,9 @@ export default function RegisterDialog() {
       },
       body: jsonData,
     };
-    const response = await fetch("/api/login", requestOptions);
-    let data = {};
-    try {
-      data = await response.json();
-    } catch (error) {}
+    const response = await fetch("/api/register", requestOptions);
     if (response.ok) {
-      auth.login();
+      // Automatic login after registration if desired
     }
   }
 

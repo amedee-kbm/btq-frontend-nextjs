@@ -12,7 +12,7 @@ import LoginDialog from "@/components/layout/login-dialog";
 import LoginSheet from "@/components/layout/login-sheet";
 import RegisterDialog from "@/components/layout/register-dialog";
 import RegisterSheet from "@/components/layout/register-sheet";
-import { useAuth } from "@/components/auth-provider";
+import { useUser } from "@/hooks/use-user";
 import AccountDropdown from "@/components/layout/account-dropdown";
 import LoginOrRegister from "@/components/layout/login-or-register";
 
@@ -41,9 +41,13 @@ const childVariants = {
 const MotionLink = motion.create(Link);
 
 function AuthActions({ mobile = false }: { mobile?: boolean }) {
-  const auth = useAuth();
+  const { isAuthenticated, isLoading } = useUser();
 
-  if (auth?.isAuthenticated) {
+  if (isLoading) {
+    return <div className="size-5 animate-pulse bg-muted rounded-full" />;
+  }
+
+  if (isAuthenticated) {
     return <AccountDropdown />;
   }
 
@@ -95,7 +99,7 @@ export default function NavBar() {
             </Button>
             <Link href="/" className="shrink-0">
               <span className="font-logo text-3xl font-extrabold md:text-4xl">
-                <em>Btq.</em>
+                <em>Bukiaa</em>
               </span>
             </Link>
           </div>

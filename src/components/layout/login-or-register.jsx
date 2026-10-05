@@ -22,7 +22,9 @@ export default function LoginOrRegister() {
             </Link>
           </Button>
           <Button className="w-full" variant="outline" size="lg">
-            REGISTER
+            <Link className="w-full" href="/register">
+              REGISTER
+            </Link>
           </Button>
         </div>
       </DialogContent>

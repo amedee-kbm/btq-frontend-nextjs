@@ -12,16 +12,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { useAuth } from "@/components/auth-provider";
+import { useUser } from "@/hooks/use-user";
 
 import { UserCircleIcon } from "@phosphor-icons/react";
 
 export default function AccountDropdown() {
-  const auth = useAuth();
+  const { user, logout } = useUser();
+
   const handleLogout = async () => {
-    await fetch("/api/logout", { method: "POST", credentials: "include" });
-    auth.logout();
+    await logout();
   };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -29,7 +30,7 @@ export default function AccountDropdown() {
           <button className="flex justify-center items-center gap-1">
             <UserCircleIcon size={22} weight="fill" />
             <span className="text-xs">
-              {auth.user?.username ?? auth.user?.email ?? "Account"}
+              {user?.username || user?.email || "Account"}
             </span>
           </button>
         }
@@ -47,3 +48,4 @@ export default function AccountDropdown() {
     </DropdownMenu>
   );
 }
+

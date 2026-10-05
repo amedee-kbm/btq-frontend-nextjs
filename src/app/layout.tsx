@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import "./globals.css";
-import { AuthProvider } from "../components/auth-provider";
-
-import NavBar from "./nav-bar";
-import Footer from "./footer";
 import { Inter, Noto_Sans, Playfair_Display } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
+import Footer from "./(main)/footer";
+import NavBar from "./nav-bar";
 
 const playfairDisplayHeading = Playfair_Display({
   subsets: ["latin"],
@@ -32,12 +31,14 @@ export default function RootLayout({
     >
       <body className="flex min-h-screen flex-col bg-surface font-sans">
         <Suspense>
-          <AuthProvider>
-            <NavBar />
-            <main className="flex-1">{children}</main>
-          </AuthProvider>
+          <NavBar />
+          <main className="flex flex-col flex-1 justify-center items-center">
+            {children}
+          </main>
+          <Toaster />
         </Suspense>
       </body>
     </html>
   );
 }
+

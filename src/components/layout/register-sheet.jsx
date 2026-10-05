@@ -11,12 +11,12 @@ import {
 
 import { Button } from "@/components/ui/button";
 import LoginForm from "@/components/ui/login-form";
-import { useAuth } from "@/components/auth-provider";
+import { useUser } from "@/hooks/use-user";
 
 export default function RegisterSheet() {
-  const auth = useAuth();
+  const { login } = useUser();
 
-  async function handleLoginSubmit(event) {
+  async function handleRegisterSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const objectFromForm = Object.fromEntries(formData);
@@ -28,15 +28,9 @@ export default function RegisterSheet() {
       },
       body: jsonData,
     };
-    const response = await fetch("/api/login", requestOptions);
-    console.log("response", response);
-    let data = {};
-    try {
-      data = await response.json();
-    } catch (error) {}
+    const response = await fetch("/api/register", requestOptions);
     if (response.ok) {
-      console.log("logged in");
-      auth.login();
+      // Automatic login after registration if desired
     }
   }
   return (
@@ -47,7 +41,7 @@ export default function RegisterSheet() {
           <SheetTitle className="font-logo text-lg">Btq.</SheetTitle>
           <SheetDescription>This action cannot be undone.</SheetDescription>
         </SheetHeader>
-        <LoginForm onSubmit={handleLoginSubmit} />
+        <LoginForm onSubmit={handleRegisterSubmit} />
       </SheetContent>
     </Sheet>
   );

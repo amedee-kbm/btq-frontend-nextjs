@@ -10,32 +10,29 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import LoginForm from "@/components/ui/login-form";
-import { useAuth } from "@/components/auth-provider";
+import { useUser } from "@/hooks/use-user";
 
 export default function LoginDialog() {
-  const auth = useAuth();
+  const { login } = useUser();
 
   async function handleLoginSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const objectFromForm = Object.fromEntries(formData);
-    const jsonData = JSON.stringify(objectFromForm);
+    const payload = {
+      username: objectFromForm.email || objectFromForm.username,
+      password: objectFromForm.password,
+    };
     const requestOptions = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: jsonData,
+      body: JSON.stringify(payload),
     };
     const response = await fetch("/api/login", requestOptions);
-    console.log("response", response);
-    let data = {};
-    try {
-      data = await response.json();
-    } catch (error) {}
     if (response.ok) {
-      console.log("logged in");
-      auth.login();
+      await login();
     }
   }
   return (

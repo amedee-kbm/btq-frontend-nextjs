@@ -79,7 +79,7 @@ const new_arrivals = [
 ];
 
 const images = [
-  { src: "/hero/2.jpg", alt: "Photo 1", title: "everyday" },
+  { src: "/hero/2.jpg", alt: "Photo 1", title: "casual" },
   { src: "/hero/3.jpg", alt: "Photo 2", title: "party" },
   { src: "/hero/6.jpg", alt: "Photo 3", title: "maxis" },
   { src: "/hero/9.jpg", alt: "Photo 4", title: "minis" },
