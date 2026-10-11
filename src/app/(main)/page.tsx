@@ -23,18 +23,6 @@ const new_arrivals = [
     price: "RWF 19,000",
   },
   {
-    src: "/dresses/2.jpg",
-    alt: "Dress 2",
-    name: "Dress 2",
-    price: "RWF 12,000",
-  },
-  {
-    src: "/dresses/3.jpg",
-    alt: "Dress 3",
-    name: "Dress 3",
-    price: "RWF 15,000",
-  },
-  {
     src: "/dresses/4.jpg",
     alt: "Dress 4",
     name: "Dress 4",
@@ -45,12 +33,6 @@ const new_arrivals = [
     alt: "Dress 5",
     name: "Dress 5",
     price: "RWF 22,000",
-  },
-  {
-    src: "/completes/1.jpg",
-    alt: "Complete 1",
-    name: "Complete 1",
-    price: "RWF 25,000",
   },
   {
     src: "/completes/2.jpg",
@@ -65,16 +47,10 @@ const new_arrivals = [
     price: "RWF 28,000",
   },
   {
-    src: "/completes/4.jpg",
-    alt: "Complete 4",
-    name: "Complete 4",
-    price: "RWF 35,000",
-  },
-  {
-    src: "/completes/5.jpg",
-    alt: "Complete 5",
-    name: "Complete 5",
-    price: "RWF 40,000",
+    src: "/dresses/4.jpg",
+    alt: "Dress 4",
+    name: "Dress 4",
+    price: "RWF 20,000",
   },
 ];
 
@@ -187,28 +163,30 @@ export default function Home() {
         </div>
       </section> */}
 
-      <section className="w-full max-w-7xl px-4">
-        <div className="flex items-center">
-          <div className="text-2xl font-bold">New arrivals</div>
-          <div className="ml-auto text-md">See all</div>
+      <section className="w-full">
+        <div className="px-4 pb-4 text-center text-2xl font-bold">
+          Welcome back... Let's get shopping!
         </div>
-        <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-5">
+
+        <ul className="mt-4 px-4 grid grid-cols-2 gap-0.5 md:grid-cols-4 lg:grid-cols-6">
           {new_arrivals.map((item, index) => (
-            <div key={index} className="flex flex-col gap-2">
-              <Image
-                src={item.src}
-                alt={item.alt}
-                width={220}
-                height={200}
-                className=""
-              />
-              <div className="flex flex-col gap-1">
-                <div className="text-base">{item.name}</div>
-                <div className="text-base font-bold">{item.price}</div>
+            <li key={index} className="flex flex-col">
+              <div className="relative aspect-2/3 w-full overflow-hidden bg-bone">
+                <Image
+                  src={item.src}
+                  alt={item.alt}
+                  fill
+                  sizes="(min-width: 1024px) 17vw, (min-width: 768px) 25vw, 50vw"
+                  className="object-cover"
+                />
               </div>
-            </div>
+              <div className="flex flex-col px-2 pt-4 pb-6">
+                <div className="text-base tracking-wide">{item.name}</div>
+                <div className="mt-1text-base font-bold">{item.price}</div>
+              </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
     </div>
   );

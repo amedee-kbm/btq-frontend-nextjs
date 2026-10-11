@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import "./globals.css";
-import { Inter, Noto_Sans, Playfair_Display } from "next/font/google";
+import { Bodoni_Moda, Inter, Noto_Sans, Playfair_Display } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
-import Footer from "./(main)/footer";
 import NavBar from "./nav-bar";
 
 const playfairDisplayHeading = Playfair_Display({
@@ -13,6 +12,12 @@ const playfairDisplayHeading = Playfair_Display({
 });
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+
+const bodoniModa = Bodoni_Moda({
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  variable: "--font-bodoni-moda",
+});
 
 export default function RootLayout({
   children,
@@ -27,6 +32,7 @@ export default function RootLayout({
         "font-sans",
         inter.variable,
         playfairDisplayHeading.variable,
+        bodoniModa.variable,
       )}
     >
       <body className="flex min-h-screen flex-col bg-surface font-sans">

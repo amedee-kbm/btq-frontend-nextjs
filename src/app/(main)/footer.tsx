@@ -172,7 +172,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-12 border-t border-divider bg-card pb-24 md:pb-0 px-4">
+    <footer className="mt-12 w-full border-t border-divider bg-card pb-24 md:pb-0 px-4">
       <div className="mx-auto max-w-6xl py-10 md:py-14">
         <div className="grid grid-cols-2 gap-10 lg:grid-cols-12">
           {/* Brand + contact */}

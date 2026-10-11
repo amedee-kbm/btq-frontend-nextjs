@@ -98,8 +98,8 @@ export default function NavBar() {
               <Menu />
             </Button>
             <Link href="/" className="shrink-0">
-              <span className="font-logo text-3xl font-extrabold md:text-4xl">
-                <em>Bukiaa</em>
+              <span className="font-logo text-3xl font-extrabold italic md:text-4xl">
+                Btq.
               </span>
             </Link>
           </div>
