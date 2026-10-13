@@ -51,51 +51,51 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-200 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-6 bg-white p-8 rounded-xl shadow-lg">
-        <h2 className="text-3xl font-bold text-center text-gray-800">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-accent px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-6 bg-card p-8 rounded-xl shadow-lg">
+        <h2 className="text-3xl font-bold text-center text-foreground">
           Create an Account
         </h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div className="relative">
-            <FaUser className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400" />
+            <FaUser className="absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground" />
             <input
               type="text"
               {...register("name")}
               placeholder="Name"
-              className="w-full pl-10 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
             />
             {errors.name && (
-              <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+              <p className="text-destructive text-sm mt-1">{errors.name.message}</p>
             )}
           </div>
 
           <div className="relative">
-            <FaEnvelope className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400" />
+            <FaEnvelope className="absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground" />
             <input
               type="email"
               {...register("email")}
               placeholder="Email"
-              className="w-full pl-10 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
             />
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
+              <p className="text-destructive text-sm mt-1">
                 {errors.email.message}
               </p>
             )}
           </div>
 
           <div className="relative">
-            <FaLock className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400" />
+            <FaLock className="absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground" />
             <input
               type="password"
               {...register("password")}
               placeholder="Password"
-              className="w-full pl-10 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
             />
             {errors.password && (
-              <p className="text-red-500 text-sm mt-1">
+              <p className="text-destructive text-sm mt-1">
                 {errors.password.message}
               </p>
             )}
@@ -104,24 +104,24 @@ export default function RegisterForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all"
+            className="w-full bg-primary text-primary-foreground py-2 rounded-lg font-semibold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all"
           >
             {loading ? "Registering..." : "Register"}
           </button>
 
           {errorMsg && (
-            <p className="text-red-500 text-center mt-2">{errorMsg}</p>
+            <p className="text-destructive text-center mt-2">{errorMsg}</p>
           )}
           {successMsg && (
-            <p className="text-green-500 text-center mt-2">{successMsg}</p>
+            <p className="text-success text-center mt-2">{successMsg}</p>
           )}
         </form>
 
-        <p className="text-center text-gray-600 mt-4">
+        <p className="text-center text-muted-foreground mt-4">
           Already have an account?{" "}
           <button
             onClick={() => router.push("/login")}
-            className="text-blue-600 font-medium hover:underline cursor-pointer"
+            className="text-primary font-medium hover:underline cursor-pointer"
           >
             Login
           </button>
@@ -129,9 +129,9 @@ export default function RegisterForm() {
         <div className="flex justify-center mt-4">
           <button
             onClick={() => router.push("/")}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2 bg-secondary text-secondary-foreground rounded-lg hover:bg-muted transition cursor-pointer"
           >
-            <FaHome className="text-gray-600" />
+            <FaHome className="text-muted-foreground" />
             Home
           </button>
         </div>

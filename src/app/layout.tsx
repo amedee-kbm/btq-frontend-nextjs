@@ -5,6 +5,7 @@ import { Bodoni_Moda, Inter, Noto_Sans, Playfair_Display } from "next/font/googl
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import NavBar from "./nav-bar";
+import TopBar from "./top-bar";
 
 const playfairDisplayHeading = Playfair_Display({
   subsets: ["latin"],
@@ -37,6 +38,7 @@ export default function RootLayout({
     >
       <body className="flex min-h-screen flex-col bg-surface font-sans">
         <Suspense>
+          <TopBar />
           <NavBar />
           <main className="flex flex-col flex-1 justify-center items-center">
             {children}

@@ -181,7 +181,7 @@ export default function Page() {
               </Field>
             )}
           />
-          {errors.root && <div className="text-red-500">{errors.root.message}</div>}
+          {errors.root && <div className="text-destructive">{errors.root.message}</div>}
           <Button type="submit" className="w-full mt-4">
             {isSubmitting ? "Loading..." : "Register"}
           </Button>

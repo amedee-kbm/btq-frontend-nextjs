@@ -4,13 +4,14 @@ export default function LoginForm({ onSubmit }) {
   return (
     <form
       onSubmit={onSubmit}
-      className="mx-auto flex w-full flex-col rounded-xl bg-white p-6 text-left text-sm text-gray-500 sm:p-8"
+      className="mx-auto flex w-full flex-col rounded-xl bg-card p-6 text-left text-sm text-muted-foreground sm:p-8"
     >
-      <h2 className="text-xl font-bold mb-9 text-center text-gray-800">
+      <h2 className="text-xl font-bold mb-9 text-center text-foreground">
         Welcome Back to Btq.
       </h2>
-      <div className="flex items-center my-2 border bg-indigo-500/5 border-gray-500/10 rounded gap-1 pl-2">
+      <div className="flex items-center my-2 border bg-muted border-border rounded gap-1 pl-2">
         <svg
+          className="text-muted-foreground"
           width="18"
           height="18"
           viewBox="0 0 15 15"
@@ -19,7 +20,7 @@ export default function LoginForm({ onSubmit }) {
         >
           <path
             d="m2.5 4.375 3.875 2.906c.667.5 1.583.5 2.25 0L12.5 4.375"
-            stroke="#6B7280"
+            stroke="currentColor"
             strokeOpacity=".6"
             strokeWidth="1.3"
             strokeLinecap="round"
@@ -27,7 +28,7 @@ export default function LoginForm({ onSubmit }) {
           />
           <path
             d="M11.875 3.125h-8.75c-.69 0-1.25.56-1.25 1.25v6.25c0 .69.56 1.25 1.25 1.25h8.75c.69 0 1.25-.56 1.25-1.25v-6.25c0-.69-.56-1.25-1.25-1.25Z"
-            stroke="#6B7280"
+            stroke="currentColor"
             strokeOpacity=".6"
             strokeWidth="1.3"
             strokeLinecap="round"
@@ -41,8 +42,9 @@ export default function LoginForm({ onSubmit }) {
           required
         />
       </div>
-      <div className="flex items-center mt-2 mb-4 border bg-indigo-500/5 border-gray-500/10 rounded gap-1 pl-2">
+      <div className="flex items-center mt-2 mb-4 border bg-muted border-border rounded gap-1 pl-2">
         <svg
+          className="text-muted-foreground"
           width="13"
           height="17"
           viewBox="0 0 13 17"
@@ -51,7 +53,7 @@ export default function LoginForm({ onSubmit }) {
         >
           <path
             d="M13 8.5c0-.938-.729-1.7-1.625-1.7h-.812V4.25C10.563 1.907 8.74 0 6.5 0S2.438 1.907 2.438 4.25V6.8h-.813C.729 6.8 0 7.562 0 8.5v6.8c0 .938.729 1.7 1.625 1.7h9.75c.896 0 1.625-.762 1.625-1.7zM4.063 4.25c0-1.406 1.093-2.55 2.437-2.55s2.438 1.144 2.438 2.55V6.8H4.061z"
-            fill="#6B7280"
+            fill="currentColor"
           />
         </svg>
         <input
@@ -69,7 +71,7 @@ export default function LoginForm({ onSubmit }) {
             Remember me
           </label>
         </div>
-        <Link className="whitespace-nowrap text-blue-600 underline" href="#">
+        <Link className="whitespace-nowrap text-primary underline" href="#">
           Forgot Password
         </Link>
       </div>
@@ -78,7 +80,7 @@ export default function LoginForm({ onSubmit }) {
       </Button>
       <p className="text-center mt-4">
         Don't have an account?{" "}
-        <a href="#" className="text-blue-500 underline">
+        <a href="#" className="text-primary underline">
           Signup
         </a>
       </p>

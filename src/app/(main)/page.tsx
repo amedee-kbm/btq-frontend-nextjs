@@ -90,12 +90,12 @@ export default function Home() {
                   />
                 </div>
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                  <h3 className="text-xl font-extrabold text-amber-50">
+                  <h3 className="text-xl font-extrabold text-white">
                     {img.title}
                   </h3>
                   {/* <ChevronRight
                     size={24}
-                    className="text-[#eabd63] transition-colors group-hover:text-[#efa105]"
+                    className="text-brand-soft transition-colors group-hover:text-brand"
                   /> */}
                 </div>
               </Link>
@@ -182,7 +182,7 @@ export default function Home() {
               </div>
               <div className="flex flex-col px-2 pt-4 pb-6">
                 <div className="text-base tracking-wide">{item.name}</div>
-                <div className="mt-1text-base font-bold">{item.price}</div>
+                <div className="mt-1 text-base font-bold text-price">{item.price}</div>
               </div>
             </li>
           ))}
