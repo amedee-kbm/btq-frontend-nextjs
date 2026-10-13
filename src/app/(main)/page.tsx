@@ -44,6 +44,49 @@ async function tileImage(category: Category) {
   return items[0]?.images[0]?.url ?? null;
 }
 
+/** A single home category: portrait photo + call to action (product photos are portrait, so no wide crop). */
+function CategoryBanner({
+  category,
+  image,
+}: {
+  category: Category;
+  image: string | null;
+}) {
+  return (
+    <Link
+      href={`/categories/${category.slug}`}
+      className="group grid w-full bg-brand-soft md:grid-cols-2"
+    >
+      <div className="relative aspect-4/5 w-full overflow-hidden bg-bone md:aspect-auto md:h-[min(70vh,640px)]">
+        {image && (
+          <Image
+            src={image}
+            fill
+            alt=""
+            priority
+            sizes="(min-width: 768px) 50vw, 100vw"
+            className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
+          />
+        )}
+        <div className="absolute inset-0 bg-black/15 md:hidden" />
+        <h2 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-3xl font-extrabold text-white drop-shadow md:hidden">
+          {category.name}
+        </h2>
+      </div>
+      <div className="hidden flex-col items-start justify-center gap-4 px-12 md:flex lg:px-20">
+        <p className="text-xs font-bold tracking-wider text-brand uppercase">
+          {category.product_count} styles
+        </p>
+        <h2 className="font-heading text-5xl text-ink">{category.name}</h2>
+        <span className="inline-flex h-11 items-center gap-1 bg-ink px-6 text-sm font-bold text-surface transition-colors group-hover:bg-brand">
+          Shop {category.name.toLowerCase()}
+          <ChevronRight size={16} aria-hidden="true" />
+        </span>
+      </div>
+    </Link>
+  );
+}
+
 async function CategoryTiles() {
   const categories = (await listCategories())
     .filter((c) => c.show_on_home)
@@ -51,23 +94,58 @@ async function CategoryTiles() {
   if (categories.length === 0) return null;
   const images = await Promise.all(categories.map(tileImage));
 
+  // The owner picks how many categories show on home, so the layout adapts:
+  // one becomes a banner, two or three fill the row, four+ tile.
+  const count = categories.length;
+  if (count === 1) {
+    return <CategoryBanner category={categories[0]} image={images[0]} />;
+  }
+  const layout =
+    count === 2
+      ? {
+          grid: "grid-cols-2",
+          tile: "aspect-479/565 lg:aspect-4/3",
+          sizes: "50vw",
+          item: () => "",
+        }
+      : count === 3
+        ? {
+            grid: "grid-cols-2 lg:grid-cols-3",
+            tile: "aspect-479/565",
+            sizes: "(min-width: 1024px) 33vw, 50vw",
+            // Mobile: first tile full width, then two side by side.
+            item: (i: number) => (i === 0 ? "col-span-2 lg:col-span-1" : ""),
+          }
+        : {
+            grid: "grid-cols-2 lg:grid-cols-4",
+            tile: "aspect-479/565",
+            sizes: "(min-width: 1024px) 25vw, 50vw",
+            // An odd last tile spans the row on mobile instead of leaving a gap.
+            item: (i: number) =>
+              count % 2 === 1 && i === count - 1
+                ? "col-span-2 lg:col-span-1"
+                : "",
+          };
+
   return (
-    <ul className="grid w-full grid-cols-2 lg:grid-cols-4">
+    <ul className={`grid w-full ${layout.grid}`}>
       {categories.map((category, i) => (
-        <li key={category.slug} className="overflow-hidden">
+        <li key={category.slug} className={`overflow-hidden ${layout.item(i)}`}>
           <Link
             className="group relative block"
             href={`/categories/${category.slug}`}
           >
-            <div className="relative aspect-479/565 w-full overflow-hidden bg-bone">
+            <div
+              className={`relative w-full overflow-hidden bg-bone ${layout.tile}`}
+            >
               {images[i] && (
                 <Image
                   src={images[i]}
                   fill
                   alt=""
                   priority={i < 4}
-                  sizes="(min-width: 1024px) 25vw, 50vw"
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  sizes={layout.sizes}
+                  className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
                 />
               )}
               <div className="absolute inset-0 bg-black/15 transition-colors group-hover:bg-black/25" />
