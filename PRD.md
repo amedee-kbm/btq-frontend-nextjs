@@ -5,7 +5,7 @@
 > [`ARCHITECTURE.md`](https://github.com/amedee-kbm/btq-backend/blob/main/ARCHITECTURE.md)
 > (the API contract lives there).
 >
-> Live: https://btq-frontend-nextjs.vercel.app · Design inspiration: [mrp.com](https://www.mrp.com)
+> Live: https://btq-frontend-nextjs.vercel.app · Design inspiration: [mrp.com](https://www.mrp.com),[nihemart.rw](https://www.nihemart.rw), [app.isokko.rw](https://app.isokko.rw)
 
 ## 1. Product overview (shared with the backend PRD)
 

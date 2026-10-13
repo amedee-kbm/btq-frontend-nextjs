@@ -1,34 +1,41 @@
-"use server";
-
-import { DJANGO_API_ENDPOINT } from "@/config/defaults";
 import { NextResponse } from "next/server";
+import { DJANGO_API_ENDPOINT } from "@/config/defaults";
+import { setTokens } from "@/lib/auth";
 
-const DJANGO_API_REGISTER_URL = `${DJANGO_API_ENDPOINT}/auth/register`;
+function post(path: string, body: unknown) {
+  return fetch(`${DJANGO_API_ENDPOINT}${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+    cache: "no-store",
+  });
+}
 
 export async function POST(request: Request) {
   try {
-    const requestData = await request.json();
-    const payload = {
-      email: requestData.email,
-      password: requestData.password,
-      username: requestData.username || undefined,
-    };
+    const { email, password, username } = await request.json();
 
-    const response = await fetch(DJANGO_API_REGISTER_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
+    const response = await post("/auth/register", {
+      email,
+      password,
+      username: username || undefined,
     });
-
     const responseData = await response.json();
+    if (!response.ok) {
+      return NextResponse.json(responseData, { status: response.status });
+    }
 
-    return NextResponse.json(responseData, { status: response.status });
-  } catch (error) {
+    // Log the new account straight in.
+    const pair = await post("/auth/pair", { email, password });
+    if (pair.ok) {
+      const { access, refresh } = await pair.json();
+      await setTokens({ access, refresh });
+    }
+    return NextResponse.json({ loggedIn: pair.ok, user: responseData });
+  } catch {
     return NextResponse.json(
-      { message: "An error occurred during registration" },
-      { status: 500 }
+      { detail: "An error occurred during registration" },
+      { status: 500 },
     );
   }
 }

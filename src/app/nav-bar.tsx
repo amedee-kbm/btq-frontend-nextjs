@@ -1,32 +1,16 @@
 "use client";
 
-import { Suspense } from "react";
+import { HeartIcon } from "@phosphor-icons/react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
-import { Heart, Menu, Search } from "lucide-react";
-import { HeartIcon, UserIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useState } from "react";
-
-import { Button } from "@/components/ui/button";
-import LoginDialog from "@/components/layout/login-dialog";
-import LoginSheet from "@/components/layout/login-sheet";
-import RegisterDialog from "@/components/layout/register-dialog";
-import RegisterSheet from "@/components/layout/register-sheet";
-import { useUser } from "@/hooks/use-user";
 import AccountDropdown from "@/components/layout/account-dropdown";
+import { useAuthSheet } from "@/components/layout/auth-sheet";
 import LoginOrRegister from "@/components/layout/login-or-register";
-
-const CATEGORIES = [
-  "Complete",
-  "Party Dresses",
-  "Casual Dresses",
-  "Jeans Dresses",
-  "Everyday Styles",
-  "Promos",
-  "New Arrivals",
-  "Top Dresses",
-  "Shorts",
-];
+import { MobileMenu } from "@/components/layout/mobile-menu";
+import type { NavCategory, NavLink } from "@/components/layout/nav-types";
+import { SearchBar } from "@/components/layout/search";
+import { useUser } from "@/hooks/use-user";
 
 const parentVariants = {
   visible: { opacity: 1, y: 0 },
@@ -40,41 +24,68 @@ const childVariants = {
 
 const MotionLink = motion.create(Link);
 
-function AuthActions({ mobile = false }: { mobile?: boolean }) {
+function AuthActions() {
   const { isAuthenticated, isLoading } = useUser();
 
   if (isLoading) {
-    return <div className="size-5 animate-pulse bg-muted rounded-full" />;
+    return <div className="size-5 animate-pulse rounded-full bg-muted" />;
   }
-
-  if (isAuthenticated) {
-    return <AccountDropdown />;
-  }
-
-  return <LoginOrRegister />;
+  return isAuthenticated ? <AccountDropdown /> : <LoginOrRegister />;
 }
 
-export default function NavBar() {
+function FavoritesLink() {
+  const { isAuthenticated } = useUser();
+  const { openAuthSheet } = useAuthSheet();
+
+  if (isAuthenticated) {
+    return (
+      <Link
+        href="/favorites"
+        aria-label="Favorites"
+        className="grid size-9 place-items-center"
+      >
+        <HeartIcon size={22} />
+      </Link>
+    );
+  }
+  return (
+    <button
+      type="button"
+      aria-label="Favorites"
+      onClick={() => openAuthSheet(undefined, "/favorites")}
+      className="grid size-9 place-items-center"
+    >
+      <HeartIcon size={22} />
+    </button>
+  );
+}
+
+export default function NavBar({
+  categories,
+  collections,
+}: {
+  categories: NavCategory[];
+  collections: NavLink[];
+}) {
   const [hidden, setHidden] = useState(false);
   const [prevScroll, setPrevScroll] = useState(0);
 
   const { scrollY } = useScroll();
 
-  function update(latest: number, prev: number): void {
-    if (latest < prev) {
+  useMotionValueEvent(scrollY, "change", (latest: number) => {
+    if (latest < prevScroll) {
       setHidden(false);
-    } else if (latest > 100 && latest > prev) {
+    } else if (latest > 100 && latest > prevScroll) {
       setHidden(true);
     }
-  }
-
-  useMotionValueEvent(scrollY, "change", (latest: number) => {
-    update(latest, prevScroll);
     setPrevScroll(latest);
   });
 
+  const barLinks: NavLink[] = [...categories, ...collections];
+
   return (
     <motion.nav
+      aria-label="Site"
       className="sticky top-0 z-40 w-full border-b border-divider/60 bg-surface/95 backdrop-blur supports-[backdrop-filter]:bg-surface/80"
       variants={parentVariants}
       initial="visible"
@@ -88,16 +99,8 @@ export default function NavBar() {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 px-4 pt-3">
         <div className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3">
           <div className="flex shrink-0 items-center gap-2">
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-sm"
-              className="md:hidden"
-              aria-label="Open menu"
-            >
-              <Menu />
-            </Button>
-            <Link href="/" className="shrink-0">
+            <MobileMenu categories={categories} collections={collections} />
+            <Link href="/" className="shrink-0" aria-label="Btq. home">
               <span className="font-logo text-3xl font-extrabold italic md:text-4xl">
                 Btq.
               </span>
@@ -105,51 +108,32 @@ export default function NavBar() {
           </div>
 
           <div className="hidden min-w-0 justify-center px-2 md:flex">
-            <button
-              type="button"
-              className="flex h-10 w-full max-w-xl items-center gap-2 rounded-pill border border-divider bg-card px-4 text-sm text-ink-muted transition-colors hover:border-ink-disabled"
-            >
-              <Search size={18} className="shrink-0" />
-              <span className="truncate">
-                Search items, occasions & categories
-              </span>
-            </button>
+            <SearchBar className="max-w-xl" />
           </div>
 
-          <div className="flex items-center justify-end gap-3">
-            <HeartIcon size={18} />
-            <div className="hidden items-center gap-2 md:flex">
-              <AuthActions />
-            </div>
-            <div className="flex items-center gap-2 md:hidden">
-              <AuthActions mobile />
-            </div>
+          <div className="flex items-center justify-end gap-2">
+            <FavoritesLink />
+            <AuthActions />
           </div>
         </div>
 
         <div className="md:hidden">
-          <button
-            type="button"
-            className="flex h-10 mb-2 w-full items-center gap-2 rounded-pill border border-divider bg-card px-4 text-sm text-ink-muted transition-colors hover:border-ink-disabled"
-          >
-            <Search size={18} />
-            <span>Search items, occasions & categories</span>
-          </button>
+          <SearchBar className="mb-2" />
         </div>
 
-        <div className="hidden lg:flex lg:items-center lg:justify-center lg:gap-1 lg:text-xs lg:font-bold">
-          {CATEGORIES.map((category) => (
+        <div className="hidden lg:flex lg:items-center lg:justify-center lg:gap-1">
+          {barLinks.map((link) => (
             <MotionLink
-              key={category}
-              href={`/categories/${category.toLowerCase().replace(/\s+/g, "-")}`}
-              className="nav_a shrink-0 text-xs font-bold"
+              key={link.href}
+              href={link.href}
+              className="nav_a shrink-0"
               variants={childVariants}
               transition={{
                 ease: [0.1, 0.25, 0.3, 1],
                 duration: 0.4,
               }}
             >
-              {category}
+              {link.label}
             </MotionLink>
           ))}
         </div>

@@ -1,58 +1,33 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { DJANGO_API_ENDPOINT } from "@/config/defaults";
 
-const protectedRoutes = ["/account", "/checkout", "/profile"];
+const protectedRoutes = ["/favorites"];
 const authRoutes = ["/login", "/register"];
-const meEndpoint = `${DJANGO_API_ENDPOINT}/me/`;
 
-async function isValidToken(token: string) {
-  try {
-    const response = await fetch(meEndpoint, {
-      headers: { Authorization: `Bearer ${token}` },
-      cache: "no-store",
-    });
+// Only checks that a session cookie exists (no Django round trip, which could
+// hit a cold start). Real validity is enforced by the BFF route handlers.
+export function proxy(request: NextRequest) {
+  const { pathname, search } = request.nextUrl;
+  const hasSession = request.cookies.has("auth-refresh-token");
 
-    return response.ok;
-  } catch {
-    return false;
-  }
-}
+  const matches = (routes: string[]) =>
+    routes.some(
+      (route) => pathname === route || pathname.startsWith(`${route}/`),
+    );
 
-export async function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  const token = request.cookies.get("auth-token")?.value;
-
-  const isProtectedRoute = protectedRoutes.some((route) =>
-    pathname.startsWith(route),
-  );
-  const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
-  const shouldValidateToken = isProtectedRoute || isAuthRoute;
-
-  const hasValidToken =
-    shouldValidateToken && token ? await isValidToken(token) : false;
-
-  if (isProtectedRoute && !hasValidToken) {
+  if (matches(protectedRoutes) && !hasSession) {
     const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("next", pathname);
-    const response = NextResponse.redirect(loginUrl);
-    if (token) response.cookies.delete("auth-token");
-    return response;
+    loginUrl.searchParams.set("next", `${pathname}${search}`);
+    return NextResponse.redirect(loginUrl);
   }
 
-  if (isAuthRoute && hasValidToken) {
+  if (matches(authRoutes) && hasSession) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  const response = NextResponse.next();
-  if (shouldValidateToken && token && !hasValidToken) {
-    response.cookies.delete("auth-token");
-  }
-  return response;
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-  ],
+  matcher: ["/favorites/:path*", "/login", "/register"],
 };

@@ -1,32 +1,34 @@
 "use client";
 
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import fetcher from "@/lib/fetcher";
 
 export interface UserProfile {
   id: string;
   email: string;
-  username: string;
+  username: string | null;
   is_staff: boolean;
 }
 
 export function useUser() {
+  const { mutate: globalMutate } = useSWRConfig();
   const { data, error, isLoading, mutate } = useSWR<UserProfile>(
     "/api/me",
     fetcher,
     {
       revalidateOnFocus: false,
       shouldRetryOnError: false,
-    }
+    },
   );
 
-  const isAuthenticated = Boolean(data && data.id);
+  const isAuthenticated = Boolean(data?.id);
 
   const logout = async () => {
     try {
       await fetch("/api/logout", { method: "POST" });
     } finally {
-      mutate(undefined, false);
+      await mutate(undefined, false);
+      await globalMutate("/api/favorites", undefined, false);
     }
   };
 

@@ -1,193 +1,192 @@
-"use client";
-import { useState } from "react";
+import {
+  HandbagIcon,
+  RulerIcon,
+  WalletIcon,
+  WhatsappLogoIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import useSWR from "swr";
-import { ChevronRight, CreditCard, Motorbike, Store } from "lucide-react";
-import { NavigationArrowIcon, KeyReturnIcon } from "@phosphor-icons/react";
-import {
-  FaFacebook,
-  FaInstagram,
-  FaTiktok,
-  FaWhatsapp,
-  FaYoutube,
-} from "react-icons/fa";
-import Hero from "@/components/ui/hero";
-import { VscTwitter } from "react-icons/vsc";
+import { ProductCard } from "@/components/catalog/product-card";
+import { getCollection, listCollections } from "@/lib/catalog/collections";
+import { listProducts } from "@/lib/catalog/products";
+import { listCategories } from "@/lib/catalog/taxonomy";
+import type { Category, Collection } from "@/lib/catalog/types";
 
-const new_arrivals = [
+const ROW_SIZE = 12;
+
+const STEPS = [
+  { Icon: HandbagIcon, title: "Browse", text: "Find a look you love." },
   {
-    src: "/dresses/1.jpg",
-    alt: "Dress 1",
-    name: "Dress 1",
-    price: "RWF 19,000",
+    Icon: RulerIcon,
+    title: "Pick size & colour",
+    text: "See what's available right away.",
   },
   {
-    src: "/dresses/4.jpg",
-    alt: "Dress 4",
-    name: "Dress 4",
-    price: "RWF 20,000",
+    Icon: WhatsappLogoIcon,
+    title: "Order on WhatsApp",
+    text: "One tap sends us the exact item.",
   },
   {
-    src: "/dresses/5.jpg",
-    alt: "Dress 5",
-    name: "Dress 5",
-    price: "RWF 22,000",
-  },
-  {
-    src: "/completes/2.jpg",
-    alt: "Complete 2",
-    name: "Complete 2",
-    price: "RWF 30,000",
-  },
-  {
-    src: "/completes/3.jpg",
-    alt: "Complete 3",
-    name: "Complete 3",
-    price: "RWF 28,000",
-  },
-  {
-    src: "/dresses/4.jpg",
-    alt: "Dress 4",
-    name: "Dress 4",
-    price: "RWF 20,000",
+    Icon: WalletIcon,
+    title: "Pay & receive",
+    text: "MoMo or cash on delivery, or pick up at CHIC Building B30A.",
   },
 ];
 
-const images = [
-  { src: "/hero/2.jpg", alt: "Photo 1", title: "casual" },
-  { src: "/hero/3.jpg", alt: "Photo 2", title: "party" },
-  { src: "/hero/6.jpg", alt: "Photo 3", title: "maxis" },
-  { src: "/hero/9.jpg", alt: "Photo 4", title: "minis" },
-  { src: "/hero/24.jpg", alt: "Photo 5", title: "boubous" },
-  { src: "/hero/31.jpg", alt: "Photo 6", title: "jeans" },
-  { src: "/hero/35.jpg", alt: "Photo 5", title: "top dresses" },
-  { src: "/hero/49.jpg", alt: "Photo 6", title: "completes" },
-];
-const fetcher = (...args: Parameters<typeof fetch>) =>
-  fetch(...args).then((res) => res.json());
+/** A tile's image: the category cover, else its first product's photo. */
+async function tileImage(category: Category) {
+  if (category.cover_image) return category.cover_image;
+  const { items } = await listProducts({
+    category: category.slug,
+    page_size: 1,
+  });
+  return items[0]?.images[0]?.url ?? null;
+}
+
+async function CategoryTiles() {
+  const categories = (await listCategories())
+    .filter((c) => c.show_on_home)
+    .sort((a, b) => a.position - b.position);
+  if (categories.length === 0) return null;
+  const images = await Promise.all(categories.map(tileImage));
+
+  return (
+    <ul className="grid w-full grid-cols-2 lg:grid-cols-4">
+      {categories.map((category, i) => (
+        <li key={category.slug} className="overflow-hidden">
+          <Link
+            className="group relative block"
+            href={`/categories/${category.slug}`}
+          >
+            <div className="relative aspect-479/565 w-full overflow-hidden bg-bone">
+              {images[i] && (
+                <Image
+                  src={images[i]}
+                  fill
+                  alt=""
+                  priority={i < 4}
+                  sizes="(min-width: 1024px) 25vw, 50vw"
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              )}
+              <div className="absolute inset-0 bg-black/15 transition-colors group-hover:bg-black/25" />
+            </div>
+            <h2 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-xl font-extrabold text-white drop-shadow md:text-2xl">
+              {category.name}
+            </h2>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+async function CollectionRow({ collection }: { collection: Collection }) {
+  const { items, count } = await getCollection(collection.slug, 1, ROW_SIZE);
+  if (items.length === 0) return null;
+  const href = `/collections/${collection.slug}`;
+
+  return (
+    <section className="w-full" aria-labelledby={`row-${collection.slug}`}>
+      <div className="mx-auto flex max-w-7xl items-end justify-between gap-4 px-4 pb-4">
+        <div>
+          <h2
+            id={`row-${collection.slug}`}
+            className="font-heading text-2xl md:text-3xl"
+          >
+            {collection.name}
+          </h2>
+          {collection.description && (
+            <p className="mt-1 text-sm text-ink-muted">
+              {collection.description}
+            </p>
+          )}
+        </div>
+        <Link
+          href={href}
+          className="flex shrink-0 items-center gap-0.5 text-sm font-bold underline-offset-4 hover:underline"
+        >
+          See all{count > items.length && ` ${count}`}
+          <ChevronRight size={16} aria-hidden="true" />
+        </Link>
+      </div>
+      <ul className="mx-auto flex max-w-7xl snap-x snap-mandatory gap-0.5 overflow-x-auto scroll-px-4 px-4 [scrollbar-width:thin]">
+        {items.map((product) => (
+          <li
+            key={product.slug}
+            className="w-[44vw] shrink-0 snap-start md:w-[30vw] lg:w-[calc((min(100vw,80rem)-2rem)/5)]"
+          >
+            <ProductCard product={product} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+async function CollectionRows() {
+  const collections = await listCollections();
+  return (
+    <>
+      {collections.map((collection) => (
+        <CollectionRow key={collection.slug} collection={collection} />
+      ))}
+    </>
+  );
+}
+
+function HowOrderingWorks() {
+  return (
+    <section
+      aria-labelledby="how-heading"
+      className="w-full border-y border-divider bg-card px-4 py-12"
+    >
+      <div className="mx-auto max-w-6xl">
+        <h2
+          id="how-heading"
+          className="text-center font-heading text-2xl md:text-3xl"
+        >
+          How ordering works
+        </h2>
+        <ol className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {STEPS.map(({ Icon, title, text }, i) => (
+            <li
+              key={title}
+              className="flex flex-col items-center gap-2 text-center"
+            >
+              <span className="grid size-14 place-items-center rounded-full bg-brand-soft text-brand">
+                <Icon size={28} aria-hidden="true" />
+              </span>
+              <span className="text-xs font-bold tracking-wider text-ink-muted uppercase">
+                Step {i + 1}
+              </span>
+              <span className="font-bold">{title}</span>
+              <span className="max-w-60 text-sm text-ink-soft">{text}</span>
+            </li>
+          ))}
+        </ol>
+        <p className="mt-8 text-center text-sm text-ink-muted">
+          Delivery by motard across Kigali, arranged with you on WhatsApp.
+        </p>
+      </div>
+    </section>
+  );
+}
 
 export default function Home() {
   return (
     <div className="flex w-full flex-col items-center gap-12 pb-2">
-      <ul className="grid w-full grid-cols-2 lg:grid-cols-4">
-        {images.map((img) => {
-          return (
-            <li key={img.title} className="overflow-hidden">
-              <Link
-                className="group relative block"
-                href={`/categories/${img.title}`}
-              >
-                <div
-                  className="relative w-full overflow-hidden"
-                  style={{ aspectRatio: "479 / 565" }}
-                >
-                  <Image
-                    src={img.src}
-                    fill
-                    alt={img.alt}
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                  <h3 className="text-xl font-extrabold text-white">
-                    {img.title}
-                  </h3>
-                  {/* <ChevronRight
-                    size={24}
-                    className="text-brand-soft transition-colors group-hover:text-brand"
-                  /> */}
-                </div>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-
-      <section className="flex flex-col items-center justify-center prose py-12 px-6  text-center">
-        <h1 className="text-3xl md:text-5xl font-bold">
-          Ready to bag your favourites?
-        </h1>
-        <p className="text-center">
-          Shop hot trends and looks from anywhere, anytime. Enjoy safe, secure
-          payment options and delivery choices to fit any budget — with all the
-          convenience you deserve. Not sure about the fit? Order online and
-          return in-store or by courier, whenever it suits you.
-        </p>
-      </section>
-
-      <section className="grid w-full grid-cols-1 gap-12 pb-12 md:grid-cols-2 md:px-12 lg:grid-cols-5 lg:gap-3 lg:items-center ">
-        <div className="flex flex-col items-center justify-center gap-3">
-          <CreditCard size={48} />
-          <span className="font-bold">Safe Payment</span>
-          <span>MoMo, Card payment coming soon</span>
-        </div>
-        <div className="flex flex-col items-center justify-center gap-3">
-          <Motorbike size={48} />
-          <span className="font-bold">DELIVERY INFO</span>
-          <span>Motard, Courier</span>
-        </div>
-        <div className="flex flex-col items-center justify-center gap-3">
-          <Store size={48} />
-          <span className="font-bold">STORE LOCATION</span>
-          <span>CHIC Building B30A</span>
-        </div>
-        <div className="flex flex-col items-center justify-center gap-3">
-          <NavigationArrowIcon size={48} />
-          <span className="font-bold">TRACK MY ORDER</span>
-          <span>Can't wait? Nor can we!</span>
-        </div>
-        <div className="flex flex-col items-center justify-center gap-3">
-          <KeyReturnIcon size={48} />
-          <span className="font-bold">HOW TO DO A RETURN</span>
-          <span>Free in-store returns</span>
-        </div>
-      </section>
-
-      <section>
-        <span>Got more questions? </span>
-        <span className="underline">
-          <Link href="faq">Visit our FAQ page</Link>
-        </span>
-      </section>
-
-      {/* <section className="flex flex-col gap-6">
-        <h1 className="font-medium">FOLLOW US</h1>
-        <div className="flex gap-4">
-          <FaInstagram size={32}/>
-          <FaTiktok size={32}/>
-          <VscTwitter size={32}/>
-          <FaWhatsapp size={32}/>
-          <FaFacebook size={32}/>
-          <FaYoutube size={32}/>
-        </div>
-      </section> */}
-
-      <section className="w-full">
-        <div className="px-4 pb-4 text-center text-2xl font-bold">
-          Welcome back... Let's get shopping!
-        </div>
-
-        <ul className="mt-4 px-4 grid grid-cols-2 gap-0.5 md:grid-cols-4 lg:grid-cols-6">
-          {new_arrivals.map((item, index) => (
-            <li key={index} className="flex flex-col">
-              <div className="relative aspect-2/3 w-full overflow-hidden bg-bone">
-                <Image
-                  src={item.src}
-                  alt={item.alt}
-                  fill
-                  sizes="(min-width: 1024px) 17vw, (min-width: 768px) 25vw, 50vw"
-                  className="object-cover"
-                />
-              </div>
-              <div className="flex flex-col px-2 pt-4 pb-6">
-                <div className="text-base tracking-wide">{item.name}</div>
-                <div className="mt-1 text-base font-bold text-price">{item.price}</div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <h1 className="sr-only">Btq. — women's fashion boutique in Kigali</h1>
+      <CategoryTiles />
+      <CollectionRows />
+      <HowOrderingWorks />
+      <p className="text-sm">
+        Got more questions?{" "}
+        <Link href="/faq" className="font-bold underline underline-offset-4">
+          Visit our FAQ
+        </Link>
+      </p>
     </div>
   );
 }
