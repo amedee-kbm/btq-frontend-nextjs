@@ -47,3 +47,34 @@ export function buildWhatsAppUrl(
 export function whatsAppChatUrl(number: string) {
   return `https://wa.me/${number.replace(/\D/g, "")}`;
 }
+
+// Questions, as opposed to orders. Not editable in the backend settings yet.
+const GENERAL_INQUIRY = "Hi Btq! I have a question.";
+const PRODUCT_INQUIRY = "Hi Btq! I have a question about {item}. {url}";
+
+/** The product a page is about, for "ask us" links. */
+export type InquirySubject = {
+  product: Pick<ProductListItem, "slug" | "code" | "name">;
+  size?: string;
+  color?: string;
+};
+
+/** A chat with a general question, or one about the given product. */
+export function buildInquiryUrl(number: string, subject?: InquirySubject) {
+  let message = GENERAL_INQUIRY;
+  if (subject) {
+    const { product, size, color } = subject;
+    const item = [
+      `${product.code} – ${product.name}`,
+      size && `size ${size}`,
+      color && `colour ${color}`,
+    ]
+      .filter(Boolean)
+      .join(", ");
+    message = PRODUCT_INQUIRY.replace("{item}", item).replace(
+      "{url}",
+      productUrl(product.slug, { size, color }),
+    );
+  }
+  return `${whatsAppChatUrl(number)}?text=${encodeURIComponent(message)}`;
+}

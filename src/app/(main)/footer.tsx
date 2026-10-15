@@ -121,7 +121,8 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
 
   return (
     <footer className="mt-16 w-full border-t border-divider bg-card px-4">
-      <div className="mx-auto max-w-6xl py-10 md:py-14">
+      {/* Bottom room so the floating "Ask us" button never covers the last row. */}
+      <div className="mx-auto max-w-6xl pt-10 pb-24 md:pt-14 md:pb-20">
         <div className="grid grid-cols-2 gap-10 lg:grid-cols-12">
           {/* Brand + contact */}
           <div className="col-span-2 lg:col-span-6">

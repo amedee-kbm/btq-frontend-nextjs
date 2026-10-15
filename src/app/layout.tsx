@@ -37,7 +37,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#fbf8f7",
+  themeColor: "#f8f6f0",
 };
 
 async function getNavData() {

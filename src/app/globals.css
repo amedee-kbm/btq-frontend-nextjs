@@ -152,118 +152,119 @@
 }
 
 :root {
-  /* Palette: "Rose quartz evening" (Figma website color schemes #19) */
-  --wine: #64242f;
-  --garnet: #b44446;
-  --rose: #fc8f8f;
-  --stone: #dfd9d8;
+  /* Palette: "Emerald & cream" */
+  --emerald: #1f4d3c;
+  --gold: #b8934a;
+  --mint: #e3ece6;
+  --stone: #dcd9cf;
 
   /* Derived tints & shades */
-  --wine-deep: #2b1619;
-  --wine-dark: #4a1a23;
-  --rose-soft: #fde4e4;
-  --stone-light: #f1ecea;
-  --stone-lighter: #fbf8f7;
-  --stone-muted: #76605f;
+  --pine-ink: #16241e;
+  --emerald-dark: #163a2d;
+  --bronze: #8a6a2f; /* gold dark enough for text and focus rings */
+  --champagne: #f3ecdc;
+  --stone-light: #efede6;
+  --ivory: #f8f6f0;
+  --stone-muted: #5f6b64;
 
-  --background: var(--stone-lighter);
-  --foreground: var(--wine-deep);
+  --background: var(--ivory);
+  --foreground: var(--pine-ink);
   --card: #fff;
-  --card-foreground: var(--wine-deep);
+  --card-foreground: var(--pine-ink);
   --popover: #fff;
-  --popover-foreground: var(--wine-deep);
-  --primary: var(--wine);
+  --popover-foreground: var(--pine-ink);
+  --primary: var(--emerald);
   --primary-foreground: #fff;
   --secondary: var(--stone-light);
-  --secondary-foreground: var(--wine);
+  --secondary-foreground: var(--emerald);
   --muted: var(--stone-light);
   --muted-foreground: var(--stone-muted);
-  --accent: var(--rose-soft);
-  --accent-foreground: var(--wine);
+  --accent: var(--mint);
+  --accent-foreground: var(--emerald);
   --destructive: #b3261e;
   --border: var(--stone);
   --input: var(--stone);
-  --ring: var(--garnet);
-  --chart-1: var(--wine);
-  --chart-2: var(--garnet);
-  --chart-3: var(--rose);
+  --ring: var(--bronze);
+  --chart-1: var(--emerald);
+  --chart-2: var(--gold);
+  --chart-3: #6f9c86;
   --chart-4: var(--stone-muted);
   --chart-5: var(--stone);
   --radius: 0rem;
-  --sidebar: var(--stone-lighter);
-  --sidebar-foreground: var(--wine-deep);
-  --sidebar-primary: var(--wine);
+  --sidebar: var(--ivory);
+  --sidebar-foreground: var(--pine-ink);
+  --sidebar-primary: var(--emerald);
   --sidebar-primary-foreground: #fff;
-  --sidebar-accent: var(--rose-soft);
-  --sidebar-accent-foreground: var(--wine);
+  --sidebar-accent: var(--mint);
+  --sidebar-accent-foreground: var(--emerald);
   --sidebar-border: var(--stone);
-  --sidebar-ring: var(--garnet);
+  --sidebar-ring: var(--bronze);
 
   /* Btq. tokens */
   --ink: var(--foreground);
-  --ink-soft: #4a2e32;
+  --ink-soft: #33443b;
   --ink-muted: var(--muted-foreground);
-  --ink-disabled: #b8aaa9;
-  --action: var(--wine);
-  --action-dark: var(--wine-dark);
-  --action-soft: var(--rose-soft);
-  --brand: var(--garnet);
-  --brand-dark: var(--wine);
-  --brand-soft: var(--rose-soft);
+  --ink-disabled: #a9b1ab;
+  --action: var(--emerald);
+  --action-dark: var(--emerald-dark);
+  --action-soft: var(--mint);
+  --brand: var(--bronze);
+  --brand-dark: var(--emerald);
+  --brand-soft: var(--champagne);
   --brand-foreground: #fff;
-  --price: var(--wine);
+  --price: var(--emerald);
   --surface: var(--background);
   --bone: var(--muted);
   --divider: var(--border);
   --danger: var(--destructive);
   --success: #2f7a4a;
-  --trending: var(--garnet);
+  --trending: var(--bronze);
   --info: #3d5a80;
 }
 
 .dark {
-  --background: #1c0f11;
-  --foreground: #f5efee;
-  --card: #2a171a;
-  --card-foreground: #f5efee;
-  --popover: #2a171a;
-  --popover-foreground: #f5efee;
-  --primary: var(--rose);
-  --primary-foreground: var(--wine-deep);
-  --secondary: #3a2226;
-  --secondary-foreground: #f5efee;
-  --muted: #3a2226;
-  --muted-foreground: #c4b6b5;
-  --accent: #4a2a2f;
-  --accent-foreground: #f5efee;
+  --background: #0f1915;
+  --foreground: #eef1ec;
+  --card: #17241e;
+  --card-foreground: #eef1ec;
+  --popover: #17241e;
+  --popover-foreground: #eef1ec;
+  --primary: #2f7a5c;
+  --primary-foreground: #fff;
+  --secondary: #22322b;
+  --secondary-foreground: #eef1ec;
+  --muted: #22322b;
+  --muted-foreground: #a9b5ae;
+  --accent: #22322b;
+  --accent-foreground: #eef1ec;
   --destructive: #f2867e;
   --border: rgb(255 255 255 / 10%);
   --input: rgb(255 255 255 / 15%);
-  --ring: var(--rose);
-  --chart-1: var(--rose);
-  --chart-2: var(--garnet);
+  --ring: #d4b373;
+  --chart-1: #6fbf9b;
+  --chart-2: #d4b373;
   --chart-3: var(--stone);
-  --chart-4: #c4b6b5;
-  --chart-5: var(--wine);
-  --sidebar: #2a171a;
-  --sidebar-foreground: #f5efee;
-  --sidebar-primary: var(--rose);
-  --sidebar-primary-foreground: var(--wine-deep);
-  --sidebar-accent: #3a2226;
-  --sidebar-accent-foreground: #f5efee;
+  --chart-4: #a9b5ae;
+  --chart-5: #2f7a5c;
+  --sidebar: #17241e;
+  --sidebar-foreground: #eef1ec;
+  --sidebar-primary: #2f7a5c;
+  --sidebar-primary-foreground: #fff;
+  --sidebar-accent: #22322b;
+  --sidebar-accent-foreground: #eef1ec;
   --sidebar-border: rgb(255 255 255 / 10%);
-  --sidebar-ring: var(--rose);
+  --sidebar-ring: #d4b373;
 
-  --ink-soft: #e3d8d7;
-  --ink-disabled: #6e5a5c;
-  --action: var(--rose);
-  --action-dark: var(--garnet);
-  --action-soft: #4a2a2f;
-  --brand: var(--rose);
-  --brand-dark: var(--garnet);
-  --brand-soft: #4a2a2f;
-  --brand-foreground: var(--wine-deep);
-  --price: var(--rose);
+  --ink-soft: #d3dbd5;
+  --ink-disabled: #55625b;
+  --action: #2f7a5c;
+  --action-dark: var(--emerald);
+  --action-soft: #22322b;
+  --brand: #d4b373;
+  --brand-dark: var(--gold);
+  --brand-soft: #2e2a1d;
+  --brand-foreground: var(--pine-ink);
+  --price: #6fbf9b;
 }
 
 @layer base {

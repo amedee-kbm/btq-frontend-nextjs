@@ -1,9 +1,11 @@
 "use client";
 
+import { ArrowsOutIcon } from "@phosphor-icons/react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { ProductImage } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
+import { type CloseViewer, PhotoViewer } from "./photo-viewer";
 
 const SIZES = "(min-width: 768px) 50vw, 100vw";
 
@@ -20,11 +22,21 @@ export function orderImages(images: ProductImage[], color?: string) {
 export function Gallery({
   images,
   name,
+  actions,
 }: {
   images: ProductImage[];
   name: string;
+  /** Purchase actions shown under the full-screen photos. */
+  actions?: (close: CloseViewer) => React.ReactNode;
 }) {
   const [index, setIndex] = useState(0);
+  // Kept separately from `viewing` so the photo doesn't jump while closing.
+  const [viewing, setViewing] = useState(false);
+  const [viewFrom, setViewFrom] = useState(0);
+  const view = (i: number) => {
+    setViewFrom(i);
+    setViewing(true);
+  };
   const track = useRef<HTMLElement>(null);
   const first = images[0]?.url;
 
@@ -61,8 +73,11 @@ export function Gallery({
           aria-label={`${name} photos`}
         >
           {images.map((image, i) => (
-            <div
+            <button
               key={image.url}
+              type="button"
+              onClick={() => view(i)}
+              aria-label={`View photo ${i + 1} full screen`}
               className="relative aspect-2/3 w-full shrink-0 snap-start bg-bone"
             >
               <Image
@@ -73,9 +88,15 @@ export function Gallery({
                 sizes={SIZES}
                 className="object-cover"
               />
-            </div>
+            </button>
           ))}
         </section>
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute top-3 right-3 grid size-9 place-items-center rounded-full bg-black/35 text-white"
+        >
+          <ArrowsOutIcon size={18} />
+        </span>
         {images.length > 1 && (
           <div className="absolute inset-x-0 bottom-3 flex justify-center gap-1.5">
             {images.map((image, i) => (
@@ -130,7 +151,12 @@ export function Gallery({
             ))}
           </ul>
         )}
-        <div className="relative aspect-2/3 flex-1 bg-bone">
+        <button
+          type="button"
+          onClick={() => view(index)}
+          aria-label="View photos full screen"
+          className="group relative aspect-2/3 flex-1 cursor-zoom-in bg-bone outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand"
+        >
           <Image
             key={images[index]?.url}
             src={images[index]?.url ?? images[0].url}
@@ -140,8 +166,29 @@ export function Gallery({
             sizes={SIZES}
             className="object-cover"
           />
-        </div>
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute top-3 right-3 grid size-9 place-items-center rounded-full bg-black/35 text-white opacity-0 transition-opacity group-hover:opacity-100"
+          >
+            <ArrowsOutIcon size={18} />
+          </span>
+        </button>
       </div>
+
+      <PhotoViewer
+        images={images}
+        name={name}
+        alt={alt}
+        open={viewing}
+        startAt={viewFrom}
+        onClose={(i) => {
+          // Leave the page gallery on the photo they ended on.
+          setViewing(false);
+          setIndex(i);
+          track.current?.scrollTo({ left: i * track.current.clientWidth });
+        }}
+        actions={actions}
+      />
     </div>
   );
 }

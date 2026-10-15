@@ -16,16 +16,31 @@ export function WhatsAppButton({
   product,
   size,
   color,
+  onPick,
 }: {
   settings: WhatsAppSettings;
   product: ProductDetail;
   size?: string;
   color?: string;
+  /** Makes the "Select a size/colour" prompt a button that leads to the picker. */
+  onPick?: (missing: "size" | "color") => void;
 }) {
   const needsSize = product.sizes.length > 0 && !size;
   const needsColor = product.colors.length > 0 && !color;
 
   if (!product.is_sold_out && (needsSize || needsColor)) {
+    const missing = needsSize ? "size" : "color";
+    if (onPick) {
+      return (
+        <button
+          type="button"
+          onClick={() => onPick(missing)}
+          className={cn(base, "bg-ink text-surface hover:bg-ink-soft")}
+        >
+          {needsSize ? "Select a size" : "Select a colour"}
+        </button>
+      );
+    }
     return (
       <button
         type="button"
