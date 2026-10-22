@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Logo } from "@/components/layout/logo";
 import type { SiteSettings } from "@/lib/catalog/types";
 import { whatsAppChatUrl } from "@/lib/whatsapp";
 
@@ -126,8 +127,8 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
         <div className="grid grid-cols-2 gap-10 lg:grid-cols-12">
           {/* Brand + contact */}
           <div className="col-span-2 lg:col-span-6">
-            <Link href="/" className="inline-flex font-logo text-2xl font-bold">
-              <em>Btq.</em>
+            <Link href="/" className="inline-flex">
+              <Logo />
             </Link>
 
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-ink-soft">
@@ -187,7 +188,8 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-divider pt-6 sm:flex-row sm:items-center">
           <span className="text-xs text-ink-muted">
-            © {year} Btq. · Kigali, Rwanda · Pay with MoMo · Cash
+            © {year} Kigali Fashion Store · Kigali, Rwanda · Pay with MoMo ·
+            Cash
           </span>
 
           {socials.length > 0 && (
@@ -198,7 +200,7 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
                     href={settings.socials[key]}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`Btq. on ${SOCIAL_NAMES[key]}`}
+                    aria-label={`Kigali Fashion Store on ${SOCIAL_NAMES[key]}`}
                     className="grid h-9 w-9 place-items-center rounded-full text-ink-muted transition-colors hover:bg-bone hover:text-ink"
                   >
                     {SOCIAL_ICONS[key]}

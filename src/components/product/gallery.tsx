@@ -3,6 +3,7 @@
 import { ArrowsOutIcon } from "@phosphor-icons/react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { LogoMark } from "@/components/layout/logo";
 import type { ProductImage } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
 import { type CloseViewer, PhotoViewer } from "./photo-viewer";
@@ -49,8 +50,8 @@ export function Gallery({
 
   if (images.length === 0) {
     return (
-      <div className="grid aspect-2/3 w-full place-items-center bg-bone font-logo text-4xl italic text-ink-disabled">
-        Btq.
+      <div className="grid aspect-2/3 w-full place-items-center bg-bone text-ink-disabled opacity-60">
+        <LogoMark className="size-24" />
       </div>
     );
   }

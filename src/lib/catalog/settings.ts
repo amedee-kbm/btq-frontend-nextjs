@@ -10,9 +10,9 @@ export function getSiteSettings() {
 const FALLBACK_SETTINGS: SiteSettings = {
   whatsapp_number: "250781427209",
   whatsapp_template:
-    "Hi Btq! I'd like {code} – {name}, size {size}, colour {color} ({price}). Is it available? {url}",
+    "Hi Kigali Fashion Store! I'd like {code} – {name}, size {size}, colour {color} ({price}). Is it available? {url}",
   whatsapp_restock_template:
-    "Hi Btq! Is {code} – {name} coming back in size {size}, colour {color}? {url}",
+    "Hi Kigali Fashion Store! Is {code} – {name} coming back in size {size}, colour {color}? {url}",
   phone: "+250781427209",
   email: "",
   address: "CHIC Building B30A, Kigali",

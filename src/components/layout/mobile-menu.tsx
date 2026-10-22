@@ -12,6 +12,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { Logo } from "./logo";
 import type { NavCategory, NavLink } from "./nav-types";
 
 const linkClass =
@@ -48,8 +49,8 @@ export function MobileMenu({
       />
       <SheetContent side="left" className="gap-0 overflow-y-auto">
         <SheetHeader className="border-b border-divider">
-          <SheetTitle className="font-logo text-2xl font-extrabold italic">
-            Btq.
+          <SheetTitle>
+            <Logo size="sm" />
           </SheetTitle>
         </SheetHeader>
         <nav aria-label="Main" className="flex flex-col py-2">

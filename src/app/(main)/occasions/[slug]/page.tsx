@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const tag = await loadTag((await params).slug);
   return {
     title: `${tag.name} outfits`,
-    description: `${tag.name} looks at Btq., Kigali: dresses and sets for the occasion. Order on WhatsApp.`,
+    description: `${tag.name} looks at Kigali Fashion Store: dresses and sets for the occasion. Order on WhatsApp.`,
   };
 }
 

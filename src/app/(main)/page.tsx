@@ -123,7 +123,9 @@ function HowOrderingWorks() {
 export default function Home() {
   return (
     <div className="flex w-full flex-col items-center gap-12 pb-2">
-      <h1 className="sr-only">Btq. — women's fashion boutique in Kigali</h1>
+      <h1 className="sr-only">
+        Kigali Fashion Store — women's fashion boutique
+      </h1>
       <CollectionRows />
       <HowOrderingWorks />
       <p className="text-sm">

@@ -77,7 +77,9 @@ export function RegisterForm() {
       const { next, savedFavorite } = await finishAuth(searchParams);
       await login();
       toast.success(
-        savedFavorite ? "Welcome! Saved to your favorites" : "Welcome to Btq.!",
+        savedFavorite
+          ? "Welcome! Saved to your favorites"
+          : "Welcome to Kigali Fashion Store!",
       );
       router.replace(next);
       router.refresh();

@@ -7,6 +7,7 @@ import { useState } from "react";
 import AccountDropdown from "@/components/layout/account-dropdown";
 import { useAuthSheet } from "@/components/layout/auth-sheet";
 import LoginOrRegister from "@/components/layout/login-or-register";
+import { Logo } from "@/components/layout/logo";
 import { MobileMenu } from "@/components/layout/mobile-menu";
 import type { NavCategory, NavLink } from "@/components/layout/nav-types";
 import { SearchBar } from "@/components/layout/search";
@@ -100,10 +101,12 @@ export default function NavBar({
         <div className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3">
           <div className="flex shrink-0 items-center gap-2">
             <MobileMenu categories={categories} collections={collections} />
-            <Link href="/" className="shrink-0" aria-label="Btq. home">
-              <span className="font-logo text-3xl font-extrabold italic md:text-4xl">
-                Btq.
-              </span>
+            <Link
+              href="/"
+              className="shrink-0"
+              aria-label="Kigali Fashion Store home"
+            >
+              <Logo />
             </Link>
           </div>
 

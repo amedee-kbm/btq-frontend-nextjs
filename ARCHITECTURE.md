@@ -1,4 +1,4 @@
-# Btq. — Frontend Architecture
+# Kigali Fashion Store — Frontend Architecture
 
 > Product requirements: [`PRD.md`](./PRD.md). **API contract:**
 > [`btq-backend/ARCHITECTURE.md` §4](https://github.com/amedee-kbm/btq-backend/blob/main/ARCHITECTURE.md#4-http-api-contract).

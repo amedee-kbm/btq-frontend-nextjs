@@ -34,7 +34,7 @@ export default function TopBar({ settings }: { settings: SiteSettings }) {
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Btq. on ${label}`}
+              aria-label={`Kigali Fashion Store on ${label}`}
               className="transition-colors hover:text-brand"
             >
               <Icon size={16} />

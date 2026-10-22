@@ -21,7 +21,7 @@ export async function generateMetadata({
     : {
         title: "Shop all",
         description:
-          "Browse every dress, matching set, jeans and more at Btq., Kigali. Order on WhatsApp.",
+          "Browse every dress, matching set, jeans and more at Kigali Fashion Store. Order on WhatsApp.",
       };
 }
 

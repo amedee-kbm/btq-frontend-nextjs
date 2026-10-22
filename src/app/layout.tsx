@@ -28,12 +28,16 @@ const bodoniModa = Bodoni_Moda({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Btq. — Women's fashion boutique in Kigali",
-    template: "%s | Btq.",
+    default: "Kigali Fashion Store — Women's fashion boutique",
+    template: "%s | Kigali Fashion Store",
   },
   description:
-    "Dresses, matching sets, jeans and boubous from Btq., Kigali. Browse the whole catalog, then order on WhatsApp. Pay with MoMo or cash.",
-  openGraph: { siteName: "Btq.", locale: "en_RW", type: "website" },
+    "Dresses, matching sets, jeans and boubous from Kigali Fashion Store. Browse the whole catalog, then order on WhatsApp. Pay with MoMo or cash.",
+  openGraph: {
+    siteName: "Kigali Fashion Store",
+    locale: "en_RW",
+    type: "website",
+  },
 };
 
 export const viewport: Viewport = {

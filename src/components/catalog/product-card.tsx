@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { LogoMark } from "@/components/layout/logo";
 import { FavoriteButton } from "@/components/product/favorite-button";
 import type { ProductListItem } from "@/lib/catalog/types";
 import { Price } from "./price";
@@ -43,8 +44,8 @@ export function ProductCard({
             )}
           </>
         ) : (
-          <div className="grid h-full place-items-center font-logo text-2xl italic text-ink-disabled">
-            Btq.
+          <div className="grid h-full place-items-center text-ink-disabled opacity-60">
+            <LogoMark className="size-14" />
           </div>
         )}
         {product.is_sold_out ? (
