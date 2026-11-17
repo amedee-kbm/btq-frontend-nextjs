@@ -1,8 +1,9 @@
 "use client";
 
-import { HeartIcon } from "@phosphor-icons/react";
+import { CaretLeftIcon, HeartIcon } from "@phosphor-icons/react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import AccountDropdown from "@/components/layout/account-dropdown";
 import { useAuthSheet } from "@/components/layout/auth-sheet";
@@ -11,6 +12,7 @@ import { Logo } from "@/components/layout/logo";
 import { MobileMenu } from "@/components/layout/mobile-menu";
 import type { NavCategory, NavLink } from "@/components/layout/nav-types";
 import { SearchBar } from "@/components/layout/search";
+import { usePwa } from "@/components/pwa/pwa-provider";
 import { useUser } from "@/hooks/use-user";
 
 const parentVariants = {
@@ -61,6 +63,28 @@ function FavoritesLink() {
   );
 }
 
+/** The installed app has no browser back button (notably on iOS), so add one. */
+function BackButton() {
+  const { isStandalone } = usePwa();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  if (!isStandalone || pathname === "/") return null;
+  return (
+    <button
+      type="button"
+      aria-label="Back"
+      onClick={() =>
+        // Opened straight onto this page (a shortcut or shared link).
+        window.history.length > 1 ? router.back() : router.push("/")
+      }
+      className="-ml-2 grid size-9 place-items-center"
+    >
+      <CaretLeftIcon size={22} />
+    </button>
+  );
+}
+
 export default function NavBar({
   categories,
   collections,
@@ -100,12 +124,9 @@ export default function NavBar({
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 px-4 pt-3">
         <div className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3">
           <div className="flex shrink-0 items-center gap-2">
+            <BackButton />
             <MobileMenu categories={categories} collections={collections} />
-            <Link
-              href="/"
-              className="shrink-0"
-              aria-label="Bukiaa home"
-            >
+            <Link href="/" className="shrink-0" aria-label="Bukiaa home">
               <Logo />
             </Link>
           </div>

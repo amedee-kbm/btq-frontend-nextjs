@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/layout/logo";
+import { InstallAppButton } from "@/components/pwa/install-banner";
 import type { SiteSettings } from "@/lib/catalog/types";
 import { whatsAppChatUrl } from "@/lib/whatsapp";
 
@@ -136,6 +137,10 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
               boubous. Browse here, order on WhatsApp.
             </p>
 
+            <InstallAppButton className="mt-4 inline-flex h-10 items-center gap-2 border border-action px-4 text-sm font-bold text-action transition-colors hover:bg-action-soft">
+              Get the Bukiaa app
+            </InstallAppButton>
+
             <ul className="mt-5 space-y-1.5 text-sm">
               {contacts.map((contact) => (
                 <li key={contact.label}>
@@ -188,8 +193,7 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-divider pt-6 sm:flex-row sm:items-center">
           <span className="text-xs text-ink-muted">
-            © {year} Bukiaa · Kigali, Rwanda · Pay with MoMo ·
-            Cash
+            © {year} Bukiaa · Kigali, Rwanda · Pay with MoMo · Cash
           </span>
 
           {socials.length > 0 && (

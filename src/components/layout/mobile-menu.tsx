@@ -4,6 +4,7 @@ import { Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { InstallAppButton } from "@/components/pwa/install-banner";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -93,6 +94,9 @@ export function MobileMenu({
           <Link href="/contact" className={linkClass}>
             Contact
           </Link>
+          <InstallAppButton
+            className={`${linkClass} w-full font-bold text-action`}
+          />
         </nav>
       </SheetContent>
     </Sheet>

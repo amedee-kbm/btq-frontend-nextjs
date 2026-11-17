@@ -25,6 +25,29 @@ if (process.env.R2_PUBLIC_DOMAIN) {
 
 const nextConfig: NextConfig = {
   images: { remotePatterns },
+  async headers() {
+    return [
+      {
+        // Browsers must always see the latest service worker, or users stay
+        // stuck on old caching rules.
+        source: "/sw.js",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "application/javascript; charset=utf-8",
+          },
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store, must-revalidate",
+          },
+          {
+            key: "Content-Security-Policy",
+            value: "default-src 'self'; script-src 'self'",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
