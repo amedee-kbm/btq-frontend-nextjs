@@ -4,7 +4,7 @@ import { ChevronDown } from "lucide-react";
 import { SORT_OPTIONS } from "@/lib/catalog/filters";
 import type { ProductSort } from "@/lib/catalog/types";
 import { useListing } from "./listing-state";
-import { useShowPrices } from "./show-prices";
+import { useShowPrices } from "./visibility";
 
 export function SortSelect() {
   const { filters, apply } = useListing();

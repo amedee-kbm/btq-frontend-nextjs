@@ -67,6 +67,10 @@ export type CollectionDetail = Collection & Paginated<ProductListItem>;
 export type SiteSettings = {
   /** Admin switch: when false, no prices (or price filters/sorts) appear anywhere. */
   show_prices: boolean;
+  /** Admin switch: when false, neither product names nor codes are shown. */
+  show_product_names: boolean;
+  /** Admin switch: when false, colour dots are hidden (colour names stay). */
+  show_color_swatches: boolean;
   whatsapp_number: string;
   whatsapp_template: string;
   whatsapp_restock_template: string;

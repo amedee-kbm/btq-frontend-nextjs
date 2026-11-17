@@ -4,8 +4,8 @@ import { LogoMark } from "@/components/layout/logo";
 import { FavoriteButton } from "@/components/product/favorite-button";
 import type { ProductListItem } from "@/lib/catalog/types";
 import { Price } from "./price";
-import { IfPricesShown } from "./show-prices";
 import { SwatchRow } from "./swatch";
+import { IfPricesShown } from "./visibility";
 
 // No "use client": renders on the server in listings and on the client after "Load more".
 
@@ -20,6 +20,9 @@ export function ProductCard({
   priority?: boolean;
 }) {
   const [first, second] = product.images;
+  // Blank when the admin hides names.
+  const named = Boolean(product.name);
+  const colorList = product.colors.map((c) => c.name).join(", ");
 
   return (
     <article className="group relative flex flex-col">
@@ -63,14 +66,25 @@ export function ProductCard({
       </div>
 
       <div className="flex flex-1 flex-col gap-1.5 px-2 pt-3 pb-6">
-        <h3 className="line-clamp-2 text-sm leading-snug tracking-wide">
+        {named ? (
+          <h3 className="line-clamp-2 text-sm leading-snug tracking-wide">
+            <Link
+              href={`/products/${product.slug}`}
+              className="after:absolute after:inset-0"
+            >
+              {product.name}
+            </Link>
+          </h3>
+        ) : (
           <Link
             href={`/products/${product.slug}`}
             className="after:absolute after:inset-0"
           >
-            {product.name}
+            <span className="sr-only">
+              View item{colorList && ` in ${colorList}`}
+            </span>
           </Link>
-        </h3>
+        )}
         <Price product={product} className="text-sm" />
         <SwatchRow colors={product.colors} />
       </div>

@@ -33,9 +33,9 @@ export function buildWhatsAppUrl(
     kind === "order"
       ? settings.whatsapp_template
       : settings.whatsapp_restock_template;
-  // Hidden prices: drop the placeholder with any brackets and space around it.
-  if (!settings.show_prices)
-    template = template.replace(/\s*\(?\{price\}\)?/g, "");
+  if (!settings.show_prices) template = dropPlaceholder(template, "price");
+  // Hidden names come blank; the code alone tells the shop what's wanted.
+  if (!product.name) template = dropPlaceholder(template, "name");
   const values: Record<string, string> = {
     code: product.code,
     name: product.name,
@@ -50,14 +50,21 @@ export function buildWhatsAppUrl(
   return `${whatsAppChatUrl(settings.whatsapp_number)}?text=${encodeURIComponent(message)}`;
 }
 
+/** Removes `{key}` with any brackets, dash and space before it: "A – {name}," → "A,". */
+function dropPlaceholder(template: string, key: string) {
+  return template.replace(
+    new RegExp(`\\s*[–-]?\\s*\\(?\\{${key}\\}\\)?`, "g"),
+    "",
+  );
+}
+
 export function whatsAppChatUrl(number: string) {
   return `https://wa.me/${number.replace(/\D/g, "")}`;
 }
 
 // Questions, as opposed to orders. Not editable in the backend settings yet.
 const GENERAL_INQUIRY = "Hi Bukiaa! I have a question.";
-const PRODUCT_INQUIRY =
-  "Hi Bukiaa! I have a question about {item}. {url}";
+const PRODUCT_INQUIRY = "Hi Bukiaa! I have a question about {item}. {url}";
 
 /** The product a page is about, for "ask us" links. */
 export type InquirySubject = {
@@ -72,7 +79,7 @@ export function buildInquiryUrl(number: string, subject?: InquirySubject) {
   if (subject) {
     const { product, size, color } = subject;
     const item = [
-      `${product.code} – ${product.name}`,
+      product.name ? `${product.code} – ${product.name}` : product.code,
       size && `size ${size}`,
       color && `colour ${color}`,
     ]

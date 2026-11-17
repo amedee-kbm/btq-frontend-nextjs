@@ -31,7 +31,7 @@ export function AskUsProvider({
           rel="noopener"
           aria-label={
             subject
-              ? `Ask us about ${subject.product.name} on WhatsApp`
+              ? `Ask us about ${subject.product.name || "this item"} on WhatsApp`
               : "Ask us a question on WhatsApp"
           }
           className="fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 flex h-12 items-center gap-2 rounded-full bg-action pr-5 pl-4 text-sm font-bold text-white shadow-lg transition-colors hover:bg-action-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"

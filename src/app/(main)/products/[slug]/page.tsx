@@ -43,16 +43,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? `${summary}. ${product.description}`.slice(0, 200)
     : summary;
   const image = product.images[0];
+  // Hidden names come blank; the category is the next best title.
+  const title = product.name || product.categories[0]?.name || "Product";
 
   return {
-    title: product.name,
+    title,
     description,
     alternates: { canonical: `/products/${product.slug}` },
     openGraph: {
       type: "website",
-      title: price ? `${product.name} – ${price}` : product.name,
+      title: price ? `${title} – ${price}` : title,
       description,
-      images: image ? [{ url: image.url, alt: image.alt || product.name }] : [],
+      images: image ? [{ url: image.url, alt: image.alt || title }] : [],
     },
     twitter: { card: "summary_large_image" },
   };

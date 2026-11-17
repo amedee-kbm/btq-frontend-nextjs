@@ -68,11 +68,12 @@ export function PhotoViewer({
         >
           <div className="flex h-14 shrink-0 items-center justify-between gap-4 px-4">
             <Dialog.Title className="truncate text-sm">
-              {name}
+              {/* `name` is blank when the admin hides product names. */}
+              {name || <span className="sr-only">Photos</span>}
               {images.length > 1 && (
                 <span className="text-white/60">
-                  {" "}
-                  · {index + 1}/{images.length}
+                  {name && " · "}
+                  {index + 1}/{images.length}
                 </span>
               )}
             </Dialog.Title>
@@ -92,7 +93,7 @@ export function PhotoViewer({
               setIndex(Math.round(el.scrollLeft / el.clientWidth));
             }}
             aria-roledescription="carousel"
-            aria-label={`${name} photos`}
+            aria-label={name ? `${name} photos` : "Photos"}
           >
             {images.map((image, i) => (
               <div

@@ -56,8 +56,9 @@ export function Gallery({
     );
   }
 
+  // `name` is blank when the admin hides product names.
   const alt = (image: ProductImage, i: number) =>
-    image.alt || `${name}, photo ${i + 1}`;
+    image.alt || (name ? `${name}, photo ${i + 1}` : `Photo ${i + 1}`);
 
   return (
     <div>
@@ -71,7 +72,7 @@ export function Gallery({
             setIndex(Math.round(el.scrollLeft / el.clientWidth));
           }}
           aria-roledescription="carousel"
-          aria-label={`${name} photos`}
+          aria-label={name ? `${name} photos` : "Photos"}
         >
           {images.map((image, i) => (
             <button

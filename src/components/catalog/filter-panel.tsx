@@ -15,8 +15,8 @@ import { countActiveFilters } from "@/lib/catalog/filters";
 import type { Category, Color, Tag } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
 import { useListing } from "./listing-state";
-import { useShowPrices } from "./show-prices";
 import { Swatch } from "./swatch";
+import { useShowPrices } from "./visibility";
 
 export type FilterOptions = {
   categories: Category[];

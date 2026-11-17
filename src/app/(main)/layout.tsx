@@ -1,4 +1,4 @@
-import { ShowPricesProvider } from "@/components/catalog/show-prices";
+import { VisibilityProvider } from "@/components/catalog/visibility";
 import { AskUsProvider } from "@/components/layout/ask-us";
 import { getSiteSettingsOrFallback } from "@/lib/catalog/settings";
 import Footer from "./footer";
@@ -10,11 +10,16 @@ export default async function MainLayout({
 }) {
   const settings = await getSiteSettingsOrFallback();
   return (
-    <ShowPricesProvider value={settings.show_prices}>
+    <VisibilityProvider
+      value={{
+        prices: settings.show_prices,
+        swatches: settings.show_color_swatches,
+      }}
+    >
       <AskUsProvider number={settings.whatsapp_number}>
         <div className="w-full flex-1">{children}</div>
         <Footer settings={settings} />
       </AskUsProvider>
-    </ShowPricesProvider>
+    </VisibilityProvider>
   );
 }

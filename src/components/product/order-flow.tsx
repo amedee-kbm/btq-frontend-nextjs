@@ -277,10 +277,17 @@ function Review({
           )}
         </div>
         <div className="flex flex-col gap-1">
-          <p className="text-xs tracking-wider text-ink-muted uppercase">
-            {product.code}
-          </p>
-          <p className="font-heading text-lg leading-tight">{product.name}</p>
+          {/* Hidden names come blank: then neither name nor code. */}
+          {product.name && (
+            <>
+              <p className="text-xs tracking-wider text-ink-muted uppercase">
+                {product.code}
+              </p>
+              <p className="font-heading text-lg leading-tight">
+                {product.name}
+              </p>
+            </>
+          )}
           <Price product={product} />
         </div>
       </div>

@@ -3,7 +3,7 @@
 import type { ProductListItem } from "@/lib/catalog/types";
 import { formatRWF } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { useShowPrices } from "./show-prices";
+import { useShowPrices } from "./visibility";
 
 /** Nothing at all when the admin hides prices. */
 export function Price({

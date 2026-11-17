@@ -16,6 +16,7 @@ export function FavoriteButton({
 }) {
   const { isFavorite, toggle } = useFavorites();
   const active = isFavorite(product.slug);
+  const name = product.name || "this item";
 
   return (
     <button
@@ -27,9 +28,7 @@ export function FavoriteButton({
       }}
       aria-pressed={active}
       aria-label={
-        active
-          ? `Remove ${product.name} from favorites`
-          : `Save ${product.name} to favorites`
+        active ? `Remove ${name} from favorites` : `Save ${name} to favorites`
       }
       className={cn(
         "grid place-items-center rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",

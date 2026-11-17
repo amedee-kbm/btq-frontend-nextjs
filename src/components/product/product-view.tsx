@@ -143,7 +143,7 @@ export function ProductView({
         className="size-13 shrink-0 rounded-none border border-divider bg-card"
       />
       <ShareButton
-        title={product.name}
+        title={product.name || "Bukiaa"}
         url={productUrl(product.slug)}
         className="size-13"
       />
@@ -169,12 +169,21 @@ export function ProductView({
 
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
-          <p className="text-xs tracking-wider text-ink-muted uppercase">
-            {product.code}
-          </p>
-          <h1 className="font-heading text-3xl leading-tight md:text-4xl">
-            {product.name}
-          </h1>
+          {product.name ? (
+            <>
+              <p className="text-xs tracking-wider text-ink-muted uppercase">
+                {product.code}
+              </p>
+              <h1 className="font-heading text-3xl leading-tight md:text-4xl">
+                {product.name}
+              </h1>
+            </>
+          ) : (
+            // Hidden name: no name or code on show, but keep a page heading.
+            <h1 className="sr-only">
+              {product.categories[0]?.name ?? "Product details"}
+            </h1>
+          )}
           <Price product={product} className="text-xl" />
           {product.is_sold_out && (
             <p className="w-fit bg-ink px-2 py-1 text-xs font-bold tracking-wider text-white uppercase">

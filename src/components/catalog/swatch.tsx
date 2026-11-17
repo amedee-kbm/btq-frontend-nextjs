@@ -1,4 +1,9 @@
+"use client";
+
 import { cn } from "@/lib/utils";
+import { useShowSwatches } from "./visibility";
+
+// Both render nothing when the admin hides colour swatches.
 
 /** A round color dot. Colors without a hex (e.g. "Multicolor") get a gradient. */
 export function Swatch({
@@ -8,6 +13,7 @@ export function Swatch({
   hex: string | null;
   className?: string;
 }) {
+  if (!useShowSwatches()) return null;
   return (
     <span
       aria-hidden="true"
@@ -31,7 +37,7 @@ export function SwatchRow({
   colors: { name: string; hex: string | null; is_available: boolean }[];
   max?: number;
 }) {
-  if (colors.length === 0) return null;
+  if (!useShowSwatches() || colors.length === 0) return null;
   const shown = colors.slice(0, max);
   return (
     <ul

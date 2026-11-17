@@ -9,6 +9,8 @@ export function getSiteSettings() {
 /** The backend's seeded values; only used if the API can't be reached for the page chrome. */
 const FALLBACK_SETTINGS: SiteSettings = {
   show_prices: true,
+  show_product_names: true,
+  show_color_swatches: true,
   whatsapp_number: "250781427209",
   whatsapp_template:
     "Hi Bukiaa! I'd like {code} – {name}, size {size}, colour {color} ({price}). Is it available? {url}",
