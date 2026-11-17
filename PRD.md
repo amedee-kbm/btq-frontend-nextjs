@@ -36,12 +36,13 @@ asked for more pictures. The Bukiaa website replaces that back-and-forth:
 | Product detail with variant availability | Password reset (until Bukiaa owns a domain) |
 | WhatsApp handoff (pre-filled message) | Guest (logged-out) favorites |
 | Favorites (login required) | Analytics / WhatsApp-tap tracking |
-| Contact details from admin | Kinyarwanda / multilingual UI |
+| Contact details from admin | Translated catalog content (product/category names, WhatsApp order templates) |
 | Instant refresh after admin edits | Mobile apps (remove app-store badges) |
+| Kinyarwanda (default) + English UI | |
 | | "Style me" AI, blog, notifications |
 | | Automated tests and CI |
 
-The site is **English only** and **mobile-first** (most traffic comes from TikTok on phones).
+The UI is in **Kinyarwanda (default) and English**, and **mobile-first** (most traffic comes from TikTok on phones).
 
 ## 2. Users & key journeys
 

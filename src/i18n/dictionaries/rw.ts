@@ -1,0 +1,341 @@
+import type { Dictionary } from "./en";
+
+// Kinyarwanda, the default language. Keep it in step with en.ts.
+
+const items = (n: number) => (n === 1 ? "igicuruzwa 1" : `ibicuruzwa ${n}`);
+
+export const rw: Dictionary = {
+  meta: {
+    title: "Bukiaa — Iduka ry'imyenda y'abagore",
+    description:
+      "Amakanzu, imyenda ijyana (sets), amajinisi na boubou kuri Bukiaa. Reba ibicuruzwa byose, hanyuma utumize kuri WhatsApp. Ishyura na MoMo cyangwa mu ntoki.",
+    ogLocale: "rw_RW",
+  },
+  common: {
+    home: "Ahabanza",
+    shop: "Iduka",
+    shopAll: "Ibicuruzwa byose",
+    favorites: "Ibyo nakunze",
+    contact: "Twandikire",
+    howToOrder: "Uko watumiza / Ibibazo",
+    close: "Funga",
+    back: "Subira inyuma",
+    tryAgain: "Ongera ugerageze",
+    loading: "Biraza…",
+    items,
+    soldOut: "Byashize",
+    sale: "Promo",
+    size: "Ingano",
+    colour: "Ibara",
+    fit: "Uko bikwira",
+    material: "Igitambaro",
+    orderOnWhatsApp: "Tumiza kuri WhatsApp",
+    payAndDelivery:
+      "Ishyura na MoMo cyangwa mu ntoki ukibonye · Motari akakugezaho, cyangwa ukagifatira kuri CHIC Building B30A",
+    signIn: "Injira",
+    register: "Iyandikishe",
+    logOut: "Sohoka",
+    account: "Konti",
+    thisItem: "iki gicuruzwa",
+  },
+  language: {
+    label: "Ururimi",
+  },
+  topBar: {
+    pickupShort: "Fatira kuri CHIC B30A",
+    pickupLong:
+      "Fatira kuri CHIC Building B30A · Motari akugezaho i Kigali hose",
+    call: (phone) => `Hamagara ${phone}`,
+    onSocial: (network) => `Bukiaa kuri ${network}`,
+  },
+  nav: {
+    site: "Urubuga",
+    main: "Menu nyamukuru",
+    homeLink: "Ahabanza ha Bukiaa",
+    openMenu: "Fungura menu",
+    accountMenu: "Menu ya konti",
+    signInOrRegister: "Injira cyangwa wiyandikishe",
+    signInRegister: "Injira / Iyandikishe",
+  },
+  authSheet: {
+    title: "Bika ibyo ukunda",
+    description:
+      "Fungura konti, ubike ibyo ukunda ubibone no ku bindi bikoresho.",
+  },
+  search: {
+    placeholder: "Shakisha imyenda, kode (BQ-0142), ibirori…",
+    label: "Shakisha ibicuruzwa",
+  },
+  footer: {
+    tagline:
+      "Imyenda y'abagore i Kigali: amakanzu, sets, amajinisi na boubou. Hitamo hano, utumize kuri WhatsApp.",
+    getTheApp: "Shyira Bukiaa muri telefoni",
+    shop: "Iduka",
+    newArrivals: "Ibishya",
+    promos: "Promo",
+    occasions: "Ibirori",
+    help: "Ubufasha",
+    legal: "Amategeko",
+    terms: "Amabwiriza",
+    privacy: "Ibanga",
+    call: "Hamagara",
+    email: "Imeri",
+    visit: "Dusure",
+    bottomLine: "Kigali, Rwanda · Ishyura na MoMo · Mu ntoki",
+  },
+  home: {
+    heading: "Bukiaa — iduka ry'imyenda y'abagore",
+    howItWorks: "Uko gutumiza bikorwa",
+    step: (n) => `Intambwe ya ${n}`,
+    steps: [
+      { title: "Reba", text: "Shaka umwambaro ukunda." },
+      {
+        title: "Hitamo ingano n'ibara",
+        text: "Uhita ubona ibihari.",
+      },
+      {
+        title: "Tumiza kuri WhatsApp",
+        text: "Ukanze rimwe, tuba tumenye icyo ushaka nyirizina.",
+      },
+      {
+        title: "Ishyura, wakire",
+        text: "MoMo cyangwa mu ntoki ukibonye, cyangwa ugifatire kuri CHIC Building B30A.",
+      },
+    ],
+    delivery:
+      "Motari akugezaho ibyo waguze i Kigali hose; tubyumvikanaho kuri WhatsApp.",
+    moreQuestions: "Ufite ibindi bibazo?",
+    visitFaq: "Reba ibibazo bikunze kubazwa",
+  },
+  listing: {
+    emptyTitle: "Nta gihuye n'ibyo wahisemo",
+    emptyText: "Gerageza gukuraho kimwe cyangwa bibiri mu byo wahisemo.",
+    clearFilters: "Siba ibyo wahisemo",
+    loadingProducts: "Turimo kuzana ibicuruzwa…",
+    showing: (shown, total) => `Werekwa ${shown} kuri ${total}`,
+    loadMoreFailed: "Ntitwabashije kuzana ibindi. Ongera ugerageze.",
+    loadMore: "Reba ibindi",
+  },
+  filters: {
+    filters: "Shungura",
+    filter: "Shungura",
+    clearAll: "Siba byose",
+    clear: "Siba",
+    updating: "Birimo kuvugururwa…",
+    show: (n) => `Erekana ${items(n)}`,
+    category: "Icyiciro",
+    occasion: "Ibirori",
+    price: "Igiciro",
+    min: "Gito (RWF)",
+    max: "Kinini (RWF)",
+    apply: "Emeza",
+    onSale: "Ibiri kuri promo",
+    inStock: "Ibihari gusa",
+  },
+  sort: {
+    label: "Tondeka",
+    newest: "Ibishya mbere",
+    price_asc: "Igiciro: gito → kinini",
+    price_desc: "Igiciro: kinini → gito",
+  },
+  price: {
+    sale: "Igiciro cya promo ",
+    original: "Igiciro gisanzwe ",
+  },
+  card: {
+    viewItem: (colours) =>
+      colours ? `Reba iki gicuruzwa (${colours})` : "Reba iki gicuruzwa",
+    colours: (list) => `Amabara: ${list}`,
+  },
+  product: {
+    detailsFallback: "Ibisobanuro by'igicuruzwa",
+    colourCount: (n) => `Amabara ${n}`,
+    sizeList: (list) => `Ingano: ${list}`,
+    occasions: "Ibirori",
+    related: "Ushobora no gukunda ibi",
+    unavailable: (option) => `${option} (ntibihari)`,
+    selectSize: "Hitamo ingano",
+    selectColour: "Hitamo ibara",
+    askIfComingBack: "Baza niba bizagaruka",
+    share: "Sangiza iki gicuruzwa",
+    linkCopied: "Link yakoporowe",
+    copyFailed: "Ntitwabashije gukoporora link",
+    saveFavorite: (name) => `Bika ${name} mu byo ukunda`,
+    removeFavorite: (name) => `Kura ${name} mu byo ukunda`,
+  },
+  gallery: {
+    photos: "Amafoto",
+    photosOf: (name) => `Amafoto ya ${name}`,
+    photoAlt: (name, n) => `${name}, ifoto ya ${n}`,
+    photo: (n) => `Ifoto ya ${n}`,
+    showPhoto: (n) => `Erekana ifoto ya ${n}`,
+    viewPhoto: (n) => `Reba ifoto ya ${n} yagutse`,
+    viewAll: "Reba amafoto yagutse",
+    closePhotos: "Funga amafoto",
+  },
+  order: {
+    whichColour: "Ushaka irihe bara?",
+    whichSize: "Wambara iyihe ngano?",
+    review: "Reba neza ibyo utumije",
+    stepOf: (step, total) => `Intambwe ya ${step} kuri ${total}`,
+    soldOutInSize: (size) => `Byashize mu ngano ya ${size}`,
+    fit: "Uko bikwira: ",
+    notSure:
+      "Ntubizi neza? Hitamo iyegereye — turagufasha kubyemeza kuri WhatsApp.",
+    opensWhatsApp:
+      "Ibi bifungura WhatsApp ubutumwa bwawe bwanditse. Kanda wohereze gusa.",
+    soldOutNow:
+      "Iki cyashize ubu. Tubaze niba kizagaruka, cyangwa usubire inyuma uhitemo ikindi.",
+    change: "Hindura",
+  },
+  askUs: {
+    aboutLabel: (name) => `Tubaze ibijyanye na ${name} kuri WhatsApp`,
+    generalLabel: "Tubaze ikibazo kuri WhatsApp",
+    aboutThis: "Baza kuri iki",
+    askUs: "Tubaze",
+  },
+  inquiry: {
+    general: "Muraho Bukiaa! Mfite ikibazo.",
+    about: (item, url) => `Muraho Bukiaa! Mfite ikibazo kuri ${item}. ${url}`,
+    size: (size) => `ingano ${size}`,
+    colour: (colour) => `ibara ${colour}`,
+  },
+  favorites: {
+    loading: "Turimo kuzana ibyo wakunze…",
+    emptyTitle: "Nta cyo urabika",
+    emptyText: "Kanda ♥ ku cyo ukunze cyose, kizabikwa hano.",
+    startShopping: "Tangira guhaha",
+    saveFailed: "Ntitwabashije kubika iki gicuruzwa",
+    removeFailed: "Ntitwabashije gukuramo iki gicuruzwa",
+  },
+  auth: {
+    email: "Imeri",
+    password: "Ijambo ry'ibanga",
+    invalidEmail: "Imeri yanditse nabi",
+    passwordMin: "Ijambo ry'ibanga rigomba kugira nibura inyuguti 6",
+    somethingWrong: "Habaye ikibazo. Ongera ugerageze.",
+  },
+  login: {
+    subtitle: "Injira urebe ibyo wakunze",
+    invalidCredentials: "Imeri cyangwa ijambo ry'ibanga si byo",
+    signedIn: "Winjiye",
+    signedInSaved: "Winjiye — byabitswe mu byo ukunda",
+    signingIn: "Birimo kwinjira…",
+    noAccount: "Nta konti ufite?",
+  },
+  register: {
+    subtitle: "Fungura konti, ubike ibyo ukunda ubibone no ku bindi bikoresho",
+    preferredName: "Izina ukunda kwitwa",
+    optional: "(si ngombwa)",
+    confirmPassword: "Emeza ijambo ry'ibanga",
+    confirmRequired: "Ongera wandike ijambo ry'ibanga",
+    mismatch: "Amagambo y'ibanga ntahuye",
+    failed: "Kwiyandikisha byanze",
+    created: "Konti yafunguwe. Injira.",
+    welcome: "Murakaza neza kuri Bukiaa!",
+    welcomeSaved: "Murakaza neza! Byabitswe mu byo ukunda",
+    networkError: "Ikibazo cya interineti. Ongera ugerageze.",
+    creating: "Turimo gufungura konti…",
+    haveAccount: "Usanzwe ufite konti?",
+  },
+  pwa: {
+    getTheApp: "Shyira Bukiaa muri telefoni",
+    installTheApp: "Shyira porogaramu muri telefoni",
+    bannerLabel: "Shyira porogaramu ya Bukiaa muri telefoni",
+    bannerText: "Ireba vuba, kandi ibyo warebye bikora nta interineti.",
+    install: "Shyiramo",
+    notNow: "Ubutaha",
+    installedTitle: "Bukiaa iri muri telefoni yawe",
+    installedText: "Yifungure aho igihe cyose.",
+    updateReady: "Bukiaa nshya yabonetse",
+    refresh: "Vugurura",
+    offlineTitle: "Nta interineti ufite",
+    offlineText: "Amapaji wafunguye mbere aracyakora.",
+    backOnline: "Interineti yagarutse",
+    iosHelp:
+      "Shyira Bukiaa ahabanza ha telefoni yawe. Ifunguka yuzuye ecran, yihuta, kandi ibika ibyo warebye ngo ubibone nta interineti.",
+    inAppHelp:
+      "Mushakisha y'iyi porogaramu ntishobora gushyiramo izindi porogaramu. Banza ufungure Bukiaa muri mushakisha ya telefoni yawe.",
+    gotIt: "Nabyumvise",
+  },
+  install: {
+    metaTitle: "Shyira Bukiaa muri telefoni",
+    metaDescription:
+      "Shyira Bukiaa muri telefoni yawe: ifunguka yuzuye ecran, yihuta, kandi ibika ibyo warebye ngo ubibone nta interineti.",
+    ogDescription: "Shyira Bukiaa ahabanza ha telefoni yawe ukanze rimwe.",
+    text: "Ifunguka yuzuye ecran uhereye ahabanza ha telefoni yawe, yihuta, kandi ibika ibyo warebye ngo ubibone nta interineti. Ni ubuntu, kandi ntukeneye app store.",
+    browse: "Reba iduka",
+    alreadyInApp: "Usanzwe ukoresha porogaramu.",
+    installBukiaa: "Shyiramo Bukiaa",
+    oneMoment: "Akanya gato…",
+  },
+  offline: {
+    text: "Iyi paji ntirabikwa muri telefoni yawe. Reba interineti yawe wongere ugerageze. Izongera kwifungura ubwayo interineti nigaruka.",
+    saved: "Ibibitswe kuri iyi telefoni",
+    category: "Icyiciro",
+    collection: "Icyegeranyo",
+    occasion: "Ibirori",
+  },
+  error: {
+    title: "Ntitwabashije gufungura iyi paji",
+    text: "Iduka ryacu riri gukanguka — bishobora gufata amasegonda make. Ongera ugerageze.",
+  },
+  notFound: {
+    title: "Iki gicuruzwa ntikikiboneka",
+    text: "Gishobora kuba cyakuwe mu iduka. Reba ibishya byageze.",
+  },
+  shop: {
+    description:
+      "Reba amakanzu yose, sets, amajinisi n'ibindi kuri Bukiaa. Tumiza kuri WhatsApp.",
+    search: "Gushakisha",
+    searchTitle: (q) => `Gushakisha: ${q}`,
+    resultsFor: (q) => `Ibisubizo bya “${q}”`,
+  },
+  category: {
+    description: (name) =>
+      `Gura ${name} kuri Bukiaa. Reba ingano, amabara n'ibiciro, hanyuma utumize kuri WhatsApp.`,
+    subcategories: "Ibyiciro bito",
+    all: "Byose",
+  },
+  collection: {
+    description: (name) => `${name} kuri Bukiaa.`,
+    empty: "Nta kirimo ubu — uzagaruke vuba.",
+  },
+  occasions: {
+    title: "Hitamo ukurikije ibirori",
+    description:
+      "Ubukwe, urusengero, akazi, ibirori: shaka umwambaro ukwiriye kuri Bukiaa.",
+    crumb: "Ibirori",
+    pageTitle: (name) => `Imyambaro ya ${name}`,
+    pageDescription: (name) =>
+      `Imyambaro ya ${name} kuri Bukiaa: amakanzu na sets bikwiriye ibirori. Tumiza kuri WhatsApp.`,
+  },
+  productPage: {
+    fallbackTitle: "Igicuruzwa",
+  },
+  contact: {
+    description:
+      "Vugana na Bukiaa kuri WhatsApp, uduhamagare, cyangwa udusure kuri CHIC Building B30A, Kigali.",
+    intro:
+      "Uburyo bwihuse bwo kutubona ni WhatsApp — ni naho gutumiza kose gukorerwa.",
+    chat: "Vugana natwe",
+    phone: "Telefoni",
+    call: "Hamagara",
+    email: "Imeri",
+    sendEmail: "Ohereza imeri",
+    visit: "Dusure / Fatira",
+    openMaps: "Fungura muri Maps",
+  },
+  faq: {
+    title: "Uko watumiza n'ibibazo",
+    description:
+      "Uko gutumiza kuri WhatsApp bikorwa kuri Bukiaa: kwishyura na MoMo cyangwa mu ntoki, motari cyangwa gufatira kuri CHIC Building B30A, guhinduza n'ingano.",
+    crumb: "Ibibazo",
+    stillQuestion: "Uracyafite ikibazo?",
+    contactUs: "Twandikire",
+  },
+  legal: {
+    terms: "Amabwiriza yo gukoresha",
+    privacy: "Ibanga",
+  },
+};

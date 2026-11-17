@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { LogoMark } from "@/components/layout/logo";
 import { FavoriteButton } from "@/components/product/favorite-button";
+import { getDictionary, type Locale, localizePath } from "@/i18n";
 import type { ProductListItem } from "@/lib/catalog/types";
 import { Price } from "./price";
 import { SwatchRow } from "./swatch";
@@ -14,11 +15,15 @@ export const GRID_IMAGE_SIZES =
 
 export function ProductCard({
   product,
+  lang,
   priority = false,
 }: {
   product: ProductListItem;
+  lang: Locale;
   priority?: boolean;
 }) {
+  const t = getDictionary(lang);
+  const href = localizePath(lang, `/products/${product.slug}`);
   const [first, second] = product.images;
   // Blank when the admin hides names.
   const named = Boolean(product.name);
@@ -54,12 +59,12 @@ export function ProductCard({
         )}
         {product.is_sold_out ? (
           <span className="absolute top-2 left-2 bg-ink px-2 py-1 text-[11px] font-bold tracking-wider text-white uppercase">
-            Sold out
+            {t.common.soldOut}
           </span>
         ) : product.is_on_sale ? (
           <IfPricesShown>
             <span className="absolute top-2 left-2 bg-danger px-2 py-1 text-[11px] font-bold tracking-wider text-white uppercase">
-              Sale
+              {t.common.sale}
             </span>
           </IfPricesShown>
         ) : null}
@@ -68,21 +73,13 @@ export function ProductCard({
       <div className="flex flex-1 flex-col gap-1.5 px-2 pt-3 pb-6">
         {named ? (
           <h3 className="line-clamp-2 text-sm leading-snug tracking-wide">
-            <Link
-              href={`/products/${product.slug}`}
-              className="after:absolute after:inset-0"
-            >
+            <Link href={href} className="after:absolute after:inset-0">
               {product.name}
             </Link>
           </h3>
         ) : (
-          <Link
-            href={`/products/${product.slug}`}
-            className="after:absolute after:inset-0"
-          >
-            <span className="sr-only">
-              View item{colorList && ` in ${colorList}`}
-            </span>
+          <Link href={href} className="after:absolute after:inset-0">
+            <span className="sr-only">{t.card.viewItem(colorList)}</span>
           </Link>
         )}
         <Price product={product} className="text-sm" />

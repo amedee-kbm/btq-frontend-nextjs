@@ -1,13 +1,16 @@
+import type { Locale } from "@/i18n/config";
 import type { ProductListItem } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
 import { ProductCard } from "./product-card";
 
 export function ProductGrid({
   products,
+  lang,
   className,
   priorityCount = 0,
 }: {
   products: ProductListItem[];
+  lang: Locale;
   className?: string;
   priorityCount?: number;
 }) {
@@ -20,7 +23,11 @@ export function ProductGrid({
     >
       {products.map((product, index) => (
         <li key={product.slug}>
-          <ProductCard product={product} priority={index < priorityCount} />
+          <ProductCard
+            product={product}
+            lang={lang}
+            priority={index < priorityCount}
+          />
         </li>
       ))}
     </ul>

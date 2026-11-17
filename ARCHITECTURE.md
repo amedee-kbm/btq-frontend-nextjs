@@ -243,7 +243,25 @@ buildWhatsAppUrl(settings, product, { size, color }, kind: "order" | "restock"):
 | `NEXT_PUBLIC_SITE_URL` | both | 🆕 absolute links in WhatsApp messages and OG tags |
 | `R2_PUBLIC_DOMAIN` | build | 🆕 `next/image` remote pattern |
 
-## 11. Build order
+## 11. Languages `src/i18n/`
+
+- **Kinyarwanda is the default** and keeps the unprefixed URLs (`/shop`, `/products/x`), so links
+  already shared on TikTok/WhatsApp open in Kinyarwanda. **English** lives under `/en/...`.
+- Every page sits under `app/[lang]/`. `proxy.ts` rewrites unprefixed paths to `/rw/...`
+  internally, redirects `/rw/...` to the unprefixed URL, and runs the auth checks on the
+  language-stripped path. Both languages are prerendered (`generateStaticParams` in the root layout).
+- The switcher (top bar, footer, mobile menu) sets the `NEXT_LOCALE` cookie. An unprefixed page
+  load with `NEXT_LOCALE=en` redirects to `/en/...` (only for `sec-fetch-dest: document`, so the
+  service worker's precache isn't redirected).
+- Strings: `dictionaries/en.ts` is the source of truth and `rw.ts` must type-check against it.
+  Server code calls `getDictionary(lang)`; client code calls `useI18n()` → `{ lang, t, href }`.
+  Rich prose (FAQ, terms, privacy, install steps) is per-language JSX next to its page.
+- Links: import `Link` from `@/i18n/link` (it localizes `"/shop"` → `"/en/shop"`); use
+  `href()` from `useI18n()` for `router.push` and similar.
+- Not translated: catalog data from Django and the admin's WhatsApp order templates. Questions
+  sent through "Ask us" are worded by the frontend in the shopper's language.
+
+## 12. Build order
 
 1. **Auth fix:** `lib/auth.ts` cookie options, `djangoAuthed` with refresh, slim `proxy.ts`
    (protect `/favorites`). This depends on the backend JWT settings.

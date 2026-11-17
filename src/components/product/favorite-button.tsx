@@ -2,6 +2,7 @@
 
 import { HeartIcon } from "@phosphor-icons/react";
 import { useFavorites } from "@/hooks/use-favorites";
+import { useI18n } from "@/i18n/provider";
 import type { ProductListItem } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
 
@@ -15,8 +16,9 @@ export function FavoriteButton({
   size?: number;
 }) {
   const { isFavorite, toggle } = useFavorites();
+  const { t } = useI18n();
   const active = isFavorite(product.slug);
-  const name = product.name || "this item";
+  const name = product.name || t.common.thisItem;
 
   return (
     <button
@@ -28,7 +30,7 @@ export function FavoriteButton({
       }}
       aria-pressed={active}
       aria-label={
-        active ? `Remove ${name} from favorites` : `Save ${name} to favorites`
+        active ? t.product.removeFavorite(name) : t.product.saveFavorite(name)
       }
       className={cn(
         "grid place-items-center rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",

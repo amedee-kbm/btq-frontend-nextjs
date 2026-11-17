@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/i18n/provider";
 import type { Paginated, ProductListItem } from "@/lib/catalog/types";
 import { ProductGrid } from "./product-grid";
 
@@ -19,6 +20,7 @@ export function LoadMore({
   shown: number;
   total: number;
 }) {
+  const { lang, t } = useI18n();
   const [items, setItems] = useState<ProductListItem[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -49,15 +51,13 @@ export function LoadMore({
 
   return (
     <>
-      {items.length > 0 && <ProductGrid products={items} />}
+      {items.length > 0 && <ProductGrid products={items} lang={lang} />}
       <div className="flex flex-col items-center gap-3 py-8">
         <p className="text-sm text-ink-muted" aria-live="polite">
-          Showing {count} of {total}
+          {t.listing.showing(count, total)}
         </p>
         {failed && (
-          <p className="text-sm text-danger">
-            Couldn't load more items. Please try again.
-          </p>
+          <p className="text-sm text-danger">{t.listing.loadMoreFailed}</p>
         )}
         {count < total && (
           <Button
@@ -67,7 +67,7 @@ export function LoadMore({
             onClick={loadMore}
             disabled={loading}
           >
-            {loading ? "Loading…" : "Load more"}
+            {loading ? t.common.loading : t.listing.loadMore}
           </Button>
         )}
       </div>

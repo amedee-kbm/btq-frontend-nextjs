@@ -11,6 +11,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useI18n } from "@/i18n/provider";
 import { countActiveFilters } from "@/lib/catalog/filters";
 import type { Category, Color, Tag } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
@@ -63,6 +64,7 @@ const chipState = (active: boolean) =>
 
 function PriceRange() {
   const { filters, apply } = useListing();
+  const { t } = useI18n();
   const field =
     "h-9 w-full min-w-0 border border-divider bg-card px-2 text-sm focus-visible:outline-2 focus-visible:outline-brand";
 
@@ -82,7 +84,7 @@ function PriceRange() {
       }}
     >
       <label className="flex-1 text-xs text-ink-muted">
-        Min (RWF)
+        {t.filters.min}
         <input
           name="min_price"
           type="number"
@@ -94,7 +96,7 @@ function PriceRange() {
         />
       </label>
       <label className="flex-1 text-xs text-ink-muted">
-        Max (RWF)
+        {t.filters.max}
         <input
           name="max_price"
           type="number"
@@ -106,7 +108,7 @@ function PriceRange() {
         />
       </label>
       <Button type="submit" variant="outline" className="h-9">
-        Apply
+        {t.filters.apply}
       </Button>
     </form>
   );
@@ -115,11 +117,12 @@ function PriceRange() {
 function FilterFields({ options }: { options: FilterOptions }) {
   const { filters, fixed, apply } = useListing();
   const showPrices = useShowPrices();
+  const { t } = useI18n();
 
   return (
     <div>
       {!fixed.category && options.categories.length > 0 && (
-        <Section title="Category">
+        <Section title={t.filters.category}>
           <ul className="flex flex-col gap-1">
             {options.categories.map((parent) => (
               <li key={parent.slug}>
@@ -140,7 +143,7 @@ function FilterFields({ options }: { options: FilterOptions }) {
       )}
 
       {!fixed.tag?.length && options.tags.length > 0 && (
-        <Section title="Occasion">
+        <Section title={t.filters.occasion}>
           <div className="flex flex-wrap gap-2">
             {options.tags.map((tag) => {
               const active = filters.tag.includes(tag.slug);
@@ -161,7 +164,7 @@ function FilterFields({ options }: { options: FilterOptions }) {
       )}
 
       {options.sizes.length > 0 && (
-        <Section title="Size">
+        <Section title={t.common.size}>
           <div className="flex flex-wrap gap-2">
             {options.sizes.map((size) => {
               const active = filters.size.includes(size);
@@ -186,7 +189,7 @@ function FilterFields({ options }: { options: FilterOptions }) {
       )}
 
       {options.colors.length > 0 && (
-        <Section title="Colour">
+        <Section title={t.common.colour}>
           <div className="grid grid-cols-2 gap-1">
             {options.colors.map((color) => {
               const active = filters.color.includes(color.name);
@@ -219,7 +222,7 @@ function FilterFields({ options }: { options: FilterOptions }) {
       )}
 
       {showPrices && (
-        <Section title="Price">
+        <Section title={t.filters.price}>
           <PriceRange />
         </Section>
       )}
@@ -233,7 +236,7 @@ function FilterFields({ options }: { options: FilterOptions }) {
               checked={filters.on_sale}
               onChange={(event) => apply({ on_sale: event.target.checked })}
             />
-            On sale
+            {t.filters.onSale}
           </label>
         )}
         <label className="flex min-h-9 cursor-pointer items-center gap-3 text-sm">
@@ -243,7 +246,7 @@ function FilterFields({ options }: { options: FilterOptions }) {
             checked={filters.in_stock}
             onChange={(event) => apply({ in_stock: event.target.checked })}
           />
-          In stock only
+          {t.filters.inStock}
         </label>
       </div>
     </div>
@@ -271,12 +274,16 @@ function CategoryOption({ category }: { category: Category }) {
 
 export function FilterSidebar({ options }: { options: FilterOptions }) {
   const { filters, fixed, clear } = useListing();
+  const { t } = useI18n();
   const active = countActiveFilters(filters, fixed);
   return (
-    <aside aria-label="Filters" className="hidden w-64 shrink-0 lg:block">
+    <aside
+      aria-label={t.filters.filters}
+      className="hidden w-64 shrink-0 lg:block"
+    >
       <div className="flex items-center justify-between pb-2">
         <h2 className="text-sm font-extrabold tracking-wider uppercase">
-          Filters
+          {t.filters.filters}
         </h2>
         {active > 0 && (
           <button
@@ -284,7 +291,7 @@ export function FilterSidebar({ options }: { options: FilterOptions }) {
             onClick={clear}
             className="text-xs text-ink-muted underline hover:text-ink"
           >
-            Clear all
+            {t.filters.clearAll}
           </button>
         )}
       </div>
@@ -301,6 +308,7 @@ export function FilterSheet({
   count: number;
 }) {
   const { filters, fixed, isPending, clear } = useListing();
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const active = countActiveFilters(filters, fixed);
 
@@ -310,13 +318,16 @@ export function FilterSheet({
         render={
           <Button variant="outline" className="h-9 gap-2 lg:hidden">
             <SlidersHorizontal size={16} />
-            Filter{active > 0 && ` (${active})`}
+            {t.filters.filter}
+            {active > 0 && ` (${active})`}
           </Button>
         }
       />
       <SheetContent side="bottom" className="max-h-[88dvh] gap-0">
         <SheetHeader className="border-b border-divider">
-          <SheetTitle className="text-base font-bold">Filter</SheetTitle>
+          <SheetTitle className="text-base font-bold">
+            {t.filters.filter}
+          </SheetTitle>
         </SheetHeader>
         <div className="overflow-y-auto px-4">
           <FilterFields options={options} />
@@ -329,12 +340,10 @@ export function FilterSheet({
             onClick={clear}
             disabled={active === 0}
           >
-            Clear
+            {t.filters.clear}
           </Button>
           <Button size="lg" className="flex-2" onClick={() => setOpen(false)}>
-            {isPending
-              ? "Updating…"
-              : `Show ${count} ${count === 1 ? "item" : "items"}`}
+            {isPending ? t.filters.updating : t.filters.show(count)}
           </Button>
         </SheetFooter>
       </SheetContent>

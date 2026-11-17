@@ -1,0 +1,172 @@
+"use client";
+
+import { CaretLeftIcon, HeartIcon } from "@phosphor-icons/react";
+import { motion, useMotionValueEvent, useScroll } from "motion/react";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
+import AccountDropdown from "@/components/layout/account-dropdown";
+import { useAuthSheet } from "@/components/layout/auth-sheet";
+import LoginOrRegister from "@/components/layout/login-or-register";
+import { Logo } from "@/components/layout/logo";
+import { MobileMenu } from "@/components/layout/mobile-menu";
+import type { NavCategory, NavLink } from "@/components/layout/nav-types";
+import { SearchBar } from "@/components/layout/search";
+import { usePwa } from "@/components/pwa/pwa-provider";
+import { useUser } from "@/hooks/use-user";
+import { splitLocale } from "@/i18n/config";
+import { Link } from "@/i18n/link";
+import { useI18n } from "@/i18n/provider";
+
+const parentVariants = {
+  visible: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, y: "-4rem" },
+};
+
+const childVariants = {
+  visible: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, y: "-2rem" },
+};
+
+const MotionLink = motion.create(Link);
+
+function AuthActions() {
+  const { isAuthenticated, isLoading } = useUser();
+
+  if (isLoading) {
+    return <div className="size-5 animate-pulse rounded-full bg-muted" />;
+  }
+  return isAuthenticated ? <AccountDropdown /> : <LoginOrRegister />;
+}
+
+function FavoritesLink() {
+  const { isAuthenticated } = useUser();
+  const { openAuthSheet } = useAuthSheet();
+  const { t, href } = useI18n();
+
+  if (isAuthenticated) {
+    return (
+      <Link
+        href="/favorites"
+        aria-label={t.common.favorites}
+        className="grid size-9 place-items-center"
+      >
+        <HeartIcon size={22} />
+      </Link>
+    );
+  }
+  return (
+    <button
+      type="button"
+      aria-label={t.common.favorites}
+      onClick={() => openAuthSheet(undefined, href("/favorites"))}
+      className="grid size-9 place-items-center"
+    >
+      <HeartIcon size={22} />
+    </button>
+  );
+}
+
+/** The installed app has no browser back button (notably on iOS), so add one. */
+function BackButton() {
+  const { isStandalone } = usePwa();
+  const pathname = usePathname();
+  const router = useRouter();
+  const { t, href } = useI18n();
+
+  if (!isStandalone || splitLocale(pathname).path === "/") return null;
+  return (
+    <button
+      type="button"
+      aria-label={t.common.back}
+      onClick={() =>
+        // Opened straight onto this page (a shortcut or shared link).
+        window.history.length > 1 ? router.back() : router.push(href("/"))
+      }
+      className="-ml-2 grid size-9 place-items-center"
+    >
+      <CaretLeftIcon size={22} />
+    </button>
+  );
+}
+
+export default function NavBar({
+  categories,
+  collections,
+}: {
+  categories: NavCategory[];
+  collections: NavLink[];
+}) {
+  const { t } = useI18n();
+  const [hidden, setHidden] = useState(false);
+  const [prevScroll, setPrevScroll] = useState(0);
+
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest: number) => {
+    if (latest < prevScroll) {
+      setHidden(false);
+    } else if (latest > 100 && latest > prevScroll) {
+      setHidden(true);
+    }
+    setPrevScroll(latest);
+  });
+
+  const barLinks: NavLink[] = [...categories, ...collections];
+
+  return (
+    <motion.nav
+      aria-label={t.nav.site}
+      className="sticky top-0 z-40 w-full border-b border-divider/60 bg-surface/95 backdrop-blur supports-[backdrop-filter]:bg-surface/80"
+      variants={parentVariants}
+      initial="visible"
+      animate={hidden ? "hidden" : "visible"}
+      transition={{
+        ease: [0.1, 0.25, 0.3, 1],
+        duration: 0.6,
+        staggerChildren: 0.05,
+      }}
+    >
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 px-4 pt-3">
+        <div className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3">
+          <div className="flex shrink-0 items-center gap-2">
+            <BackButton />
+            <MobileMenu categories={categories} collections={collections} />
+            <Link href="/" className="shrink-0" aria-label={t.nav.homeLink}>
+              <Logo />
+            </Link>
+          </div>
+
+          <div className="hidden min-w-0 justify-center px-2 md:flex">
+            <SearchBar className="max-w-xl" />
+          </div>
+
+          <div className="flex items-center justify-end gap-2">
+            <FavoritesLink />
+            <AuthActions />
+          </div>
+        </div>
+
+        <div className="md:hidden">
+          <SearchBar className="mb-2" />
+        </div>
+
+        <div className="hidden lg:flex lg:items-center lg:justify-center lg:gap-1">
+          {barLinks.map((link) => (
+            <MotionLink
+              key={link.href}
+              href={link.href}
+              className="nav_a shrink-0"
+              variants={childVariants}
+              transition={{
+                ease: [0.1, 0.25, 0.3, 1],
+                duration: 0.4,
+              }}
+            >
+              {link.label}
+            </MotionLink>
+          ))}
+        </div>
+      </div>
+    </motion.nav>
+  );
+}

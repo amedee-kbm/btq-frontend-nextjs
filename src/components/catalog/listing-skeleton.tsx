@@ -1,7 +1,12 @@
+"use client";
+
 import { PageContainer } from "@/components/layout/page-header";
+import { useI18n } from "@/i18n/provider";
 import { ProductGridSkeleton } from "./product-grid";
 
+// A client component: loading.tsx gets no route params to read the language from.
 export function ListingSkeleton() {
+  const { t } = useI18n();
   return (
     <PageContainer>
       <div
@@ -21,7 +26,7 @@ export function ListingSkeleton() {
           <ProductGridSkeleton />
         </div>
       </div>
-      <output className="sr-only">Loading products…</output>
+      <output className="sr-only">{t.listing.loadingProducts}</output>
     </PageContainer>
   );
 }

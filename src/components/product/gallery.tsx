@@ -4,6 +4,7 @@ import { ArrowsOutIcon } from "@phosphor-icons/react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { LogoMark } from "@/components/layout/logo";
+import { useI18n } from "@/i18n/provider";
 import type { ProductImage } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
 import { type CloseViewer, PhotoViewer } from "./photo-viewer";
@@ -30,6 +31,7 @@ export function Gallery({
   /** Purchase actions shown under the full-screen photos. */
   actions?: (close: CloseViewer) => React.ReactNode;
 }) {
+  const { t } = useI18n();
   const [index, setIndex] = useState(0);
   // Kept separately from `viewing` so the photo doesn't jump while closing.
   const [viewing, setViewing] = useState(false);
@@ -58,7 +60,8 @@ export function Gallery({
 
   // `name` is blank when the admin hides product names.
   const alt = (image: ProductImage, i: number) =>
-    image.alt || (name ? `${name}, photo ${i + 1}` : `Photo ${i + 1}`);
+    image.alt ||
+    (name ? t.gallery.photoAlt(name, i + 1) : t.gallery.photo(i + 1));
 
   return (
     <div>
@@ -72,14 +75,14 @@ export function Gallery({
             setIndex(Math.round(el.scrollLeft / el.clientWidth));
           }}
           aria-roledescription="carousel"
-          aria-label={name ? `${name} photos` : "Photos"}
+          aria-label={name ? t.gallery.photosOf(name) : t.gallery.photos}
         >
           {images.map((image, i) => (
             <button
               key={image.url}
               type="button"
               onClick={() => view(i)}
-              aria-label={`View photo ${i + 1} full screen`}
+              aria-label={t.gallery.viewPhoto(i + 1)}
               className="relative aspect-2/3 w-full shrink-0 snap-start bg-bone"
             >
               <Image
@@ -105,7 +108,7 @@ export function Gallery({
               <button
                 key={image.url}
                 type="button"
-                aria-label={`Show photo ${i + 1}`}
+                aria-label={t.gallery.showPhoto(i + 1)}
                 aria-current={i === index}
                 onClick={() =>
                   track.current?.scrollTo({
@@ -132,7 +135,7 @@ export function Gallery({
                 <button
                   type="button"
                   onClick={() => setIndex(i)}
-                  aria-label={`Show photo ${i + 1}`}
+                  aria-label={t.gallery.showPhoto(i + 1)}
                   aria-current={i === index}
                   className={cn(
                     "relative block aspect-2/3 w-full overflow-hidden bg-bone outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand",
@@ -156,7 +159,7 @@ export function Gallery({
         <button
           type="button"
           onClick={() => view(index)}
-          aria-label="View photos full screen"
+          aria-label={t.gallery.viewAll}
           className="group relative aspect-2/3 flex-1 cursor-zoom-in bg-bone outline-offset-2 focus-visible:outline-2 focus-visible:outline-brand"
         >
           <Image

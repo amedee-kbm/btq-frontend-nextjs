@@ -5,10 +5,11 @@ import type { ProductFilters, ProductSort } from "./types";
 
 export const PAGE_SIZE = 24;
 
-export const SORT_OPTIONS: { value: ProductSort; label: string }[] = [
-  { value: "newest", label: "Newest" },
-  { value: "price_asc", label: "Price: low to high" },
-  { value: "price_desc", label: "Price: high to low" },
+/** Labels are in the dictionaries under `sort`. */
+export const SORT_OPTIONS: ProductSort[] = [
+  "newest",
+  "price_asc",
+  "price_desc",
 ];
 
 type ParamsLike =
@@ -44,7 +45,7 @@ export function parseFilters(params: ParamsLike): ProductFilters {
     on_sale: getOne(params, "on_sale") === "true",
     in_stock: getOne(params, "in_stock") === "true",
     q: getOne(params, "q")?.trim() || undefined,
-    sort: SORT_OPTIONS.some((o) => o.value === sort)
+    sort: SORT_OPTIONS.includes(sort as ProductSort)
       ? (sort as ProductSort)
       : "newest",
     page: toInt(getOne(params, "page")) || 1,

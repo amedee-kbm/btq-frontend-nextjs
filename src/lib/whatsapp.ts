@@ -1,4 +1,6 @@
 import { SITE_URL } from "@/config/defaults";
+import { DEFAULT_LOCALE, type Locale, localizePath } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/dictionaries/en";
 import type { ProductListItem, SiteSettings } from "@/lib/catalog/types";
 import { formatRWF } from "@/lib/format";
 
@@ -12,15 +14,18 @@ export type WhatsAppSettings = Pick<
   | "whatsapp_restock_template"
 >;
 
+/** Absolute product link; in the default language unless `lang` says otherwise. */
 export function productUrl(
   slug: string,
   { size, color }: { size?: string; color?: string } = {},
+  lang: Locale = DEFAULT_LOCALE,
 ) {
   const params = new URLSearchParams();
   if (size) params.set("size", size);
   if (color) params.set("color", color);
   const query = params.toString();
-  return `${SITE_URL}/products/${slug}${query ? `?${query}` : ""}`;
+  const path = localizePath(lang, `/products/${slug}`);
+  return `${SITE_URL}${path}${query ? `?${query}` : ""}`;
 }
 
 export function buildWhatsAppUrl(
@@ -62,10 +67,6 @@ export function whatsAppChatUrl(number: string) {
   return `https://wa.me/${number.replace(/\D/g, "")}`;
 }
 
-// Questions, as opposed to orders. Not editable in the backend settings yet.
-const GENERAL_INQUIRY = "Hi Bukiaa! I have a question.";
-const PRODUCT_INQUIRY = "Hi Bukiaa! I have a question about {item}. {url}";
-
 /** The product a page is about, for "ask us" links. */
 export type InquirySubject = {
   product: Pick<ProductListItem, "slug" | "code" | "name">;
@@ -73,22 +74,27 @@ export type InquirySubject = {
   color?: string;
 };
 
-/** A chat with a general question, or one about the given product. */
-export function buildInquiryUrl(number: string, subject?: InquirySubject) {
-  let message = GENERAL_INQUIRY;
+/**
+ * A chat with a general question, or one about the given product. Questions, as
+ * opposed to orders, are worded in the shopper's language (`messages`), not by
+ * the backend templates.
+ */
+export function buildInquiryUrl(
+  number: string,
+  messages: Dictionary["inquiry"],
+  subject?: InquirySubject,
+) {
+  let message = messages.general;
   if (subject) {
     const { product, size, color } = subject;
     const item = [
       product.name ? `${product.code} – ${product.name}` : product.code,
-      size && `size ${size}`,
-      color && `colour ${color}`,
+      size && messages.size(size),
+      color && messages.colour(color),
     ]
       .filter(Boolean)
       .join(", ");
-    message = PRODUCT_INQUIRY.replace("{item}", item).replace(
-      "{url}",
-      productUrl(product.slug, { size, color }),
-    );
+    message = messages.about(item, productUrl(product.slug, { size, color }));
   }
   return `${whatsAppChatUrl(number)}?text=${encodeURIComponent(message)}`;
 }

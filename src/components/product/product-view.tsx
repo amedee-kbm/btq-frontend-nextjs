@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Price } from "@/components/catalog/price";
 import { SwatchRow } from "@/components/catalog/swatch";
 import { useAskUsAbout } from "@/components/layout/ask-us";
+import { useI18n } from "@/i18n/provider";
 import type { ProductDetail } from "@/lib/catalog/types";
 import { productUrl, type WhatsAppSettings } from "@/lib/whatsapp";
 import { FavoriteButton } from "./favorite-button";
@@ -29,6 +30,7 @@ export function ProductView({
   /** Server-rendered details shown under the purchase controls. */
   children?: React.ReactNode;
 }) {
+  const { lang, t } = useI18n();
   const colorNames = product.colors.map((c) => c.name);
   const [selection, setSelection] = useState<Selection>({
     size: only(product.sizes),
@@ -133,7 +135,7 @@ export function ProductView({
             className="flex h-13 w-full items-center justify-center gap-2 bg-action px-4 text-base font-bold text-white transition-colors hover:bg-action-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
             <WhatsappLogoIcon size={22} weight="fill" aria-hidden="true" />
-            Order on WhatsApp
+            {t.common.orderOnWhatsApp}
           </button>
         )}
       </div>
@@ -144,7 +146,7 @@ export function ProductView({
       />
       <ShareButton
         title={product.name || "Bukiaa"}
-        url={productUrl(product.slug)}
+        url={productUrl(product.slug, {}, lang)}
         className="size-13"
       />
     </div>
@@ -181,13 +183,13 @@ export function ProductView({
           ) : (
             // Hidden name: no name or code on show, but keep a page heading.
             <h1 className="sr-only">
-              {product.categories[0]?.name ?? "Product details"}
+              {product.categories[0]?.name ?? t.product.detailsFallback}
             </h1>
           )}
           <Price product={product} className="text-xl" />
           {product.is_sold_out && (
             <p className="w-fit bg-ink px-2 py-1 text-xs font-bold tracking-wider text-white uppercase">
-              Sold out
+              {t.common.soldOut}
             </p>
           )}
         </div>
@@ -198,13 +200,15 @@ export function ProductView({
             {product.colors.length > 1 && (
               <div className="flex items-center gap-2">
                 <span className="text-ink-muted">
-                  {product.colors.length} colours
+                  {t.product.colourCount(product.colors.length)}
                 </span>
                 <SwatchRow colors={product.colors} />
               </div>
             )}
             {product.sizes.length > 1 && (
-              <p className="text-ink-muted">Sizes {product.sizes.join(", ")}</p>
+              <p className="text-ink-muted">
+                {t.product.sizeList(product.sizes.join(", "))}
+              </p>
             )}
           </div>
         )}
@@ -228,10 +232,7 @@ export function ProductView({
 
         <div className="flex flex-col gap-3">
           {buttons()}
-          <p className="text-xs text-ink-muted">
-            Pay with MoMo or cash on delivery · Motard delivery or pickup at
-            CHIC Building B30A
-          </p>
+          <p className="text-xs text-ink-muted">{t.common.payAndDelivery}</p>
         </div>
 
         {children}

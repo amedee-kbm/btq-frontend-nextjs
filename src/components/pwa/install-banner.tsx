@@ -5,6 +5,8 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { splitLocale } from "@/i18n/config";
+import { useI18n } from "@/i18n/provider";
 import { usePwa } from "./pwa-provider";
 
 const STORAGE_KEY = "bukiaa:install-banner";
@@ -34,7 +36,8 @@ function write(value: Stored) {
 /** A one-off invitation to install, shown to returning or engaged shoppers. */
 export function InstallBanner() {
   const { installMethod, install } = usePwa();
-  const pathname = usePathname();
+  const pathname = splitLocale(usePathname()).path;
+  const { t } = useI18n();
   const returning = useRef(false);
   const [pagesSeen, setPagesSeen] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -75,7 +78,7 @@ export function InstallBanner() {
 
   return (
     <section
-      aria-label="Install the Bukiaa app"
+      aria-label={t.pwa.bannerLabel}
       className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 mx-auto flex max-w-md items-center gap-3 border border-divider bg-card p-3 shadow-lg duration-300 animate-in fade-in-0 slide-in-from-bottom-6 md:right-4 md:left-auto md:mx-0"
     >
       <Image
@@ -86,10 +89,8 @@ export function InstallBanner() {
         className="size-12 shrink-0"
       />
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-bold text-ink">Get the Bukiaa app</p>
-        <p className="text-xs text-ink-muted">
-          Faster browsing, and your viewed pieces work offline.
-        </p>
+        <p className="text-sm font-bold text-ink">{t.pwa.getTheApp}</p>
+        <p className="text-xs text-ink-muted">{t.pwa.bannerText}</p>
       </div>
       <Button
         size="lg"
@@ -99,12 +100,12 @@ export function InstallBanner() {
           dismiss();
         }}
       >
-        Install
+        {t.pwa.install}
       </Button>
       <button
         type="button"
         onClick={dismiss}
-        aria-label="Not now"
+        aria-label={t.pwa.notNow}
         className="-mr-1 grid size-8 shrink-0 place-items-center text-ink-muted hover:text-ink"
       >
         <XIcon size={18} />
@@ -119,16 +120,17 @@ export function InstallBanner() {
  */
 export function InstallAppButton({
   className,
-  children = "Install the app",
+  children,
 }: {
   className?: string;
   children?: React.ReactNode;
 }) {
   const { installMethod, install } = usePwa();
+  const { t } = useI18n();
   if (!installMethod) return null;
   return (
     <button type="button" onClick={install} className={className}>
-      {children}
+      {children ?? t.pwa.installTheApp}
     </button>
   );
 }

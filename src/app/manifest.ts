@@ -2,14 +2,16 @@ import type { MetadataRoute } from "next";
 
 // Icons and iOS splash screens in public/icons and public/splash are drawn from
 // the logo mark; regenerate them together if the mark changes.
+// In Kinyarwanda, the default language: the start URL is unprefixed, so the
+// proxy still opens English for shoppers who chose it.
 export default function manifest(): MetadataRoute.Manifest {
   return {
     id: "/",
-    name: "Bukiaa — Women's fashion boutique",
+    name: "Bukiaa — Iduka ry'imyenda y'abagore",
     short_name: "Bukiaa",
     description:
-      "Dresses, matching sets, jeans and boubous from Bukiaa. Browse the catalog, save favorites and order on WhatsApp.",
-    lang: "en-RW",
+      "Amakanzu, sets, amajinisi na boubou kuri Bukiaa. Reba ibicuruzwa, ubike ibyo ukunda, utumize kuri WhatsApp.",
+    lang: "rw-RW",
     dir: "ltr",
     start_url: "/?source=pwa",
     scope: "/",
@@ -54,22 +56,22 @@ export default function manifest(): MetadataRoute.Manifest {
     ],
     shortcuts: [
       {
-        name: "Shop all",
+        name: "Ibicuruzwa byose",
         url: "/shop?source=pwa-shortcut",
         icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }],
       },
       {
-        name: "New arrivals",
+        name: "Ibishya",
         url: "/collections/new-arrivals?source=pwa-shortcut",
         icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }],
       },
       {
-        name: "Favorites",
+        name: "Ibyo nakunze",
         url: "/favorites?source=pwa-shortcut",
         icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }],
       },
       {
-        name: "How to order",
+        name: "Uko watumiza",
         url: "/faq?source=pwa-shortcut",
         icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }],
       },

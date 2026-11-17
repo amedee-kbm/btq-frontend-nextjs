@@ -2,6 +2,8 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { createContext, useContext, useTransition } from "react";
+import { splitLocale } from "@/i18n/config";
+import { useI18n } from "@/i18n/provider";
 import { serializeFilters } from "@/lib/catalog/filters";
 import type { ProductFilters } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
@@ -36,7 +38,9 @@ export function ListingProvider({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const pathname = usePathname();
+  // Normalized, in case the server render saw the internal /rw path.
+  const { href } = useI18n();
+  const pathname = href(splitLocale(usePathname()).path);
   const [isPending, startTransition] = useTransition();
 
   const navigate = (next: ProductFilters) => {

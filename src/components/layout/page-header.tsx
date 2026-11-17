@@ -1,5 +1,8 @@
+"use client";
+
 import { ChevronRight } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/i18n/link";
+import { useI18n } from "@/i18n/provider";
 import { cn } from "@/lib/utils";
 
 export type Crumb = { label: string; href?: string };
@@ -11,7 +14,8 @@ export function Breadcrumb({
   items: Crumb[];
   className?: string;
 }) {
-  const crumbs: Crumb[] = [{ label: "Home", href: "/" }, ...items];
+  const { t } = useI18n();
+  const crumbs: Crumb[] = [{ label: t.common.home, href: "/" }, ...items];
   return (
     <nav aria-label="Breadcrumb" className={className}>
       <ol className="flex flex-wrap items-center gap-1 text-xs text-ink-muted">

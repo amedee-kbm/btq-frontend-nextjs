@@ -1,3 +1,4 @@
+import { getDictionary, type Locale } from "@/i18n";
 import {
   parseFilters,
   serializeFilters,
@@ -27,12 +28,15 @@ export type SearchParams = Record<string, string | string[] | undefined>;
  * first page and "Load more".
  */
 export async function ProductListing({
+  lang,
   searchParams,
   fixed = {},
 }: {
+  lang: Locale;
   searchParams: SearchParams;
   fixed?: Partial<ProductFilters>;
 }) {
+  const t = getDictionary(lang);
   const settings = await getSiteSettingsOrFallback();
   const parsed: ProductFilters = {
     ...parseFilters(searchParams),
@@ -59,7 +63,7 @@ export async function ProductListing({
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-3 pb-4">
             <p className="text-sm text-ink-muted" aria-live="polite">
-              {data.count} {data.count === 1 ? "item" : "items"}
+              {t.common.items(data.count)}
             </p>
             <div className="flex items-center gap-2">
               <FilterSheet options={options} count={data.count} />
@@ -71,7 +75,11 @@ export async function ProductListing({
               <EmptyState />
             ) : (
               <>
-                <ProductGrid products={data.items} priorityCount={4} />
+                <ProductGrid
+                  products={data.items}
+                  lang={lang}
+                  priorityCount={4}
+                />
                 <LoadMore
                   key={query}
                   query={query}

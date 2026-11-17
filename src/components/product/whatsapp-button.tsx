@@ -1,4 +1,7 @@
+"use client";
+
 import { WhatsappLogoIcon } from "@phosphor-icons/react";
+import { useI18n } from "@/i18n/provider";
 import type { ProductDetail } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
 import { buildWhatsAppUrl, type WhatsAppSettings } from "@/lib/whatsapp";
@@ -25,6 +28,7 @@ export function WhatsAppButton({
   /** Makes the "Select a size/colour" prompt a button that leads to the picker. */
   onPick?: (missing: "size" | "color") => void;
 }) {
+  const { t } = useI18n();
   const needsSize = product.sizes.length > 0 && !size;
   const needsColor = product.colors.length > 0 && !color;
 
@@ -37,7 +41,7 @@ export function WhatsAppButton({
           onClick={() => onPick(missing)}
           className={cn(base, "bg-ink text-surface hover:bg-ink-soft")}
         >
-          {needsSize ? "Select a size" : "Select a colour"}
+          {needsSize ? t.product.selectSize : t.product.selectColour}
         </button>
       );
     }
@@ -47,7 +51,7 @@ export function WhatsAppButton({
         disabled
         className={cn(base, "cursor-not-allowed bg-bone text-ink-muted")}
       >
-        {needsSize ? "Select a size" : "Select a colour"}
+        {needsSize ? t.product.selectSize : t.product.selectColour}
       </button>
     );
   }
@@ -70,7 +74,7 @@ export function WhatsAppButton({
       )}
     >
       <WhatsappLogoIcon size={22} weight="fill" aria-hidden="true" />
-      {kind === "order" ? "Order on WhatsApp" : "Ask if it's coming back"}
+      {kind === "order" ? t.common.orderOnWhatsApp : t.product.askIfComingBack}
     </a>
   );
 }

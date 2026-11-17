@@ -1,7 +1,6 @@
 "use client";
 
 import { Menu } from "lucide-react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { InstallAppButton } from "@/components/pwa/install-banner";
@@ -13,6 +12,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { Link } from "@/i18n/link";
+import { useI18n } from "@/i18n/provider";
+import { LanguageSwitcher } from "./language-switcher";
 import { Logo } from "./logo";
 import type { NavCategory, NavLink } from "./nav-types";
 
@@ -28,6 +30,7 @@ export function MobileMenu({
 }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const { t } = useI18n();
 
   // Close after navigating.
   // biome-ignore lint/correctness/useExhaustiveDependencies: close on route change
@@ -42,7 +45,7 @@ export function MobileMenu({
             variant="ghost"
             size="icon-sm"
             className="lg:hidden"
-            aria-label="Open menu"
+            aria-label={t.nav.openMenu}
           >
             <Menu />
           </Button>
@@ -54,9 +57,9 @@ export function MobileMenu({
             <Logo size="sm" />
           </SheetTitle>
         </SheetHeader>
-        <nav aria-label="Main" className="flex flex-col py-2">
+        <nav aria-label={t.nav.main} className="flex flex-col py-2">
           <Link href="/shop" className={`${linkClass} font-bold`}>
-            Shop all
+            {t.common.shopAll}
           </Link>
           {collections.map((c) => (
             <Link
@@ -86,17 +89,19 @@ export function MobileMenu({
           ))}
           <div className="my-2 border-t border-divider" />
           <Link href="/favorites" className={linkClass}>
-            Favorites
+            {t.common.favorites}
           </Link>
           <Link href="/faq" className={linkClass}>
-            How to order / FAQ
+            {t.common.howToOrder}
           </Link>
           <Link href="/contact" className={linkClass}>
-            Contact
+            {t.common.contact}
           </Link>
           <InstallAppButton
             className={`${linkClass} w-full font-bold text-action`}
           />
+          <div className="my-2 border-t border-divider" />
+          <LanguageSwitcher full className="min-h-11 px-4 text-sm" />
         </nav>
       </SheetContent>
     </Sheet>

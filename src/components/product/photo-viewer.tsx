@@ -4,6 +4,7 @@ import { Dialog } from "@base-ui/react/dialog";
 import { XIcon } from "@phosphor-icons/react";
 import Image from "next/image";
 import { useCallback, useRef, useState } from "react";
+import { useI18n } from "@/i18n/provider";
 import type { ProductImage } from "@/lib/catalog/types";
 
 /** Closes the viewer; `then` runs once it's gone (and takes over focus). */
@@ -31,6 +32,7 @@ export function PhotoViewer({
   onClose: (index: number) => void;
   actions?: (close: CloseViewer) => React.ReactNode;
 }) {
+  const { t } = useI18n();
   const [index, setIndex] = useState(startAt);
   const pending = useRef<(() => void) | null>(null);
   // Open on the photo that was tapped.
@@ -69,7 +71,7 @@ export function PhotoViewer({
           <div className="flex h-14 shrink-0 items-center justify-between gap-4 px-4">
             <Dialog.Title className="truncate text-sm">
               {/* `name` is blank when the admin hides product names. */}
-              {name || <span className="sr-only">Photos</span>}
+              {name || <span className="sr-only">{t.gallery.photos}</span>}
               {images.length > 1 && (
                 <span className="text-white/60">
                   {name && " · "}
@@ -78,7 +80,7 @@ export function PhotoViewer({
               )}
             </Dialog.Title>
             <Dialog.Close
-              aria-label="Close photos"
+              aria-label={t.gallery.closePhotos}
               className="-mr-2 grid size-11 shrink-0 place-items-center focus-visible:outline-2 focus-visible:outline-white"
             >
               <XIcon size={24} />
@@ -93,7 +95,7 @@ export function PhotoViewer({
               setIndex(Math.round(el.scrollLeft / el.clientWidth));
             }}
             aria-roledescription="carousel"
-            aria-label={name ? `${name} photos` : "Photos"}
+            aria-label={name ? t.gallery.photosOf(name) : t.gallery.photos}
           >
             {images.map((image, i) => (
               <div

@@ -8,14 +8,15 @@
 // - /api, RSC payloads, non-GET and cross-origin requests are never touched:
 //   auth and favorites must always hit the network.
 
-const VERSION = "v1";
+const VERSION = "v2";
 const PAGES = `pages-${VERSION}`;
 const STATIC = `static-${VERSION}`;
 const IMAGES = `images-${VERSION}`;
 const CURRENT = [PAGES, STATIC, IMAGES];
 
-const OFFLINE_URL = "/offline";
-const PRECACHE_PAGES = [OFFLINE_URL, "/"];
+// Kinyarwanda pages are unprefixed, English ones under /en.
+const OFFLINE_URLS = ["/offline", "/en/offline"];
+const PRECACHE_PAGES = [...OFFLINE_URLS, "/", "/en"];
 const PRECACHE_ASSETS = ["/icons/icon-192.png", "/brand/logo-mark.svg"];
 
 const MAX_PAGES = 60;
@@ -95,7 +96,7 @@ async function precache() {
       ].map((match) => match[1].replace(/&amp;/g, "&"));
       await assets.addAll([...new Set(urls)]);
     } catch (error) {
-      if (path === OFFLINE_URL) throw error;
+      if (OFFLINE_URLS.includes(path)) throw error;
     }
   }
   await assets.addAll(PRECACHE_ASSETS);
@@ -130,10 +131,18 @@ async function handleNavigation(event) {
   } catch {
     return (
       (await cachedPage(cache, request)) ||
-      (await cache.match(OFFLINE_URL)) ||
+      (await cache.match(offlineUrl(request))) ||
       Response.error()
     );
   }
+}
+
+/** The offline page in the language of the page that couldn't load. */
+function offlineUrl(request) {
+  const { pathname } = new URL(request.url);
+  return pathname === "/en" || pathname.startsWith("/en/")
+    ? "/en/offline"
+    : "/offline";
 }
 
 /** The saved copy of this page; for a filtered or variant URL, the plain page. */

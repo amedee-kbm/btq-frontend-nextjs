@@ -3,6 +3,8 @@
 // After login/register: save the favorite whose ♥ tap started the flow, then go
 // back to where the shopper was. The slug travels in `?fav=` and sessionStorage.
 
+import { splitLocale } from "@/i18n/config";
+
 const PENDING_FAVORITE_KEY = "btq:pending-favorite";
 const BLOCKED_NEXT = ["/login", "/register"];
 
@@ -24,11 +26,11 @@ function takePendingFavorite(fromQuery: string | null) {
   return slug;
 }
 
-/** Only same-site paths, never back to an auth page. */
-export function safeNext(next: string | null) {
-  if (!next?.startsWith("/") || next.startsWith("//")) return "/";
-  const path = next.split(/[?#]/)[0];
-  return BLOCKED_NEXT.includes(path) ? "/" : next;
+/** Only same-site paths, never back to an auth page; otherwise `home`. */
+export function safeNext(next: string | null, home = "/") {
+  if (!next?.startsWith("/") || next.startsWith("//")) return home;
+  const { path } = splitLocale(next.split(/[?#]/)[0]);
+  return BLOCKED_NEXT.includes(path) ? home : next;
 }
 
 /** Query string that carries `next` and `fav` between /login and /register. */
@@ -42,12 +44,15 @@ export function authQuery(searchParams: URLSearchParams) {
   return query ? `?${query}` : "";
 }
 
-export async function finishAuth(searchParams: URLSearchParams) {
+export async function finishAuth(searchParams: URLSearchParams, home = "/") {
   const slug = takePendingFavorite(searchParams.get("fav"));
   if (slug) {
     await fetch(`/api/favorites/${encodeURIComponent(slug)}`, {
       method: "PUT",
     }).catch(() => {});
   }
-  return { next: safeNext(searchParams.get("next")), savedFavorite: !!slug };
+  return {
+    next: safeNext(searchParams.get("next"), home),
+    savedFavorite: !!slug,
+  };
 }

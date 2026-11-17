@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import { toast } from "sonner";
+import { useI18n } from "@/i18n/provider";
 import { InstallHelpSheet } from "./install-help";
 
 /** Chromium's install event; not in the DOM typings. */
@@ -68,7 +69,9 @@ export function PwaProvider({ children }: { children: React.ReactNode }) {
     useState<BeforeInstallPromptEvent | null>(null);
   const [fallback, setFallback] = useState<"ios" | "in-app" | null>(null);
   const [helpOpen, setHelpOpen] = useState(false);
+  const { t } = useI18n();
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: listeners are set up once; the language is fixed per page load
   useEffect(() => {
     setIsStandalone(detectStandalone());
     if (IN_APP_BROWSER.test(navigator.userAgent)) setFallback("in-app");
@@ -83,8 +86,8 @@ export function PwaProvider({ children }: { children: React.ReactNode }) {
     };
     const onInstalled = () => {
       setPromptEvent(null);
-      toast.success("Bukiaa is on your home screen", {
-        description: "Open it from there any time.",
+      toast.success(t.pwa.installedTitle, {
+        description: t.pwa.installedText,
       });
     };
 
@@ -141,6 +144,8 @@ export function PwaProvider({ children }: { children: React.ReactNode }) {
 const UPDATE_CHECK_MS = 60 * 60 * 1000;
 
 function useServiceWorker() {
+  const { t } = useI18n();
+  // biome-ignore lint/correctness/useExhaustiveDependencies: register once; the language is fixed per page load
   useEffect(() => {
     // In dev the worker would serve stale bundles over hot reload.
     if (process.env.NODE_ENV !== "production") return;
@@ -153,11 +158,11 @@ function useServiceWorker() {
     let updateRequested = false;
 
     const offerUpdate = (worker: ServiceWorker) => {
-      toast("A new version of Bukiaa is ready", {
+      toast(t.pwa.updateReady, {
         id: "sw-update",
         duration: Number.POSITIVE_INFINITY,
         action: {
-          label: "Refresh",
+          label: t.pwa.refresh,
           onClick: () => {
             updateRequested = true;
             worker.postMessage({ type: "SKIP_WAITING" });
@@ -220,15 +225,17 @@ function useServiceWorker() {
 }
 
 function useNetworkStatus() {
+  const { t } = useI18n();
+  // biome-ignore lint/correctness/useExhaustiveDependencies: listen once; the language is fixed per page load
   useEffect(() => {
     const onOffline = () =>
-      toast.warning("You're offline", {
+      toast.warning(t.pwa.offlineTitle, {
         id: "network",
-        description: "Pages you've already opened still work.",
+        description: t.pwa.offlineText,
         duration: Number.POSITIVE_INFINITY,
       });
     const onOnline = () =>
-      toast.success("Back online", { id: "network", duration: 3000 });
+      toast.success(t.pwa.backOnline, { id: "network", duration: 3000 });
 
     if (!navigator.onLine) onOffline();
     window.addEventListener("offline", onOffline);

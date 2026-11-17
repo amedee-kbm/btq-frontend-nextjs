@@ -2,6 +2,7 @@
 
 import { ShareNetworkIcon } from "@phosphor-icons/react";
 import { toast } from "sonner";
+import { useI18n } from "@/i18n/provider";
 import { cn } from "@/lib/utils";
 
 export function ShareButton({
@@ -13,6 +14,7 @@ export function ShareButton({
   url: string;
   className?: string;
 }) {
+  const { t } = useI18n();
   const share = async () => {
     if (navigator.share) {
       try {
@@ -24,9 +26,9 @@ export function ShareButton({
     }
     try {
       await navigator.clipboard.writeText(url);
-      toast.success("Link copied");
+      toast.success(t.product.linkCopied);
     } catch {
-      toast.error("Couldn't copy the link");
+      toast.error(t.product.copyFailed);
     }
   };
 
@@ -34,7 +36,7 @@ export function ShareButton({
     <button
       type="button"
       onClick={share}
-      aria-label="Share this item"
+      aria-label={t.product.share}
       className={cn(
         "grid size-11 place-items-center border border-divider bg-card transition-colors hover:border-ink-muted focus-visible:outline-2 focus-visible:outline-brand",
         className,

@@ -11,6 +11,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { Price } from "@/components/catalog/price";
 import { Swatch } from "@/components/catalog/swatch";
+import { useI18n } from "@/i18n/provider";
 import type { ProductDetail } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
 import type { WhatsAppSettings } from "@/lib/whatsapp";
@@ -63,6 +64,7 @@ function Flow({
   isColorAvailable,
   isSizeAvailable,
 }: FlowProps) {
+  const { t } = useI18n();
   const steps: Step[] = [
     ...(product.colors.length > 1 ? (["color"] as const) : []),
     ...(product.sizes.length > 1 ? (["size"] as const) : []),
@@ -75,9 +77,9 @@ function Flow({
   const next = () => setStep(steps[at + 1]);
 
   const title = {
-    color: "Which colour would you like?",
-    size: "Which size do you wear?",
-    review: "Check your order",
+    color: t.order.whichColour,
+    size: t.order.whichSize,
+    review: t.order.review,
   }[step];
 
   return (
@@ -90,16 +92,16 @@ function Flow({
             className="flex h-11 items-center gap-1 px-2 text-sm font-medium focus-visible:outline-2 focus-visible:outline-brand"
           >
             <ArrowLeftIcon size={20} aria-hidden="true" />
-            Back
+            {t.common.back}
           </button>
         ) : (
           <span className="w-11" />
         )}
         <p className="flex-1 text-center text-sm text-ink-muted">
-          Step {at + 1} of {steps.length}
+          {t.order.stepOf(at + 1, steps.length)}
         </p>
         <Dialog.Close
-          aria-label="Close"
+          aria-label={t.common.close}
           className="grid size-11 place-items-center focus-visible:outline-2 focus-visible:outline-brand"
         >
           <XIcon size={22} />
@@ -160,8 +162,9 @@ function Flow({
                         <span className="font-bold">{color.name}</span>
                         {!available && (
                           <span className="text-xs text-ink-muted">
-                            Sold out
-                            {selection.size && ` in size ${selection.size}`}
+                            {selection.size
+                              ? t.order.soldOutInSize(selection.size)
+                              : t.common.soldOut}
                           </span>
                         )}
                       </span>
@@ -177,7 +180,7 @@ function Flow({
           <>
             {product.fit_note && (
               <p className="bg-bone p-3 text-sm text-ink-soft">
-                <span className="font-bold text-ink">Fit: </span>
+                <span className="font-bold text-ink">{t.order.fit}</span>
                 {product.fit_note}
               </p>
             )}
@@ -204,16 +207,16 @@ function Flow({
                     >
                       {size}
                       {!available && (
-                        <span className="text-xs font-normal">Sold out</span>
+                        <span className="text-xs font-normal">
+                          {t.common.soldOut}
+                        </span>
                       )}
                     </button>
                   </li>
                 );
               })}
             </ul>
-            <p className="text-sm text-ink-muted">
-              Not sure? Pick the closest — we'll help you confirm on WhatsApp.
-            </p>
+            <p className="text-sm text-ink-muted">{t.order.notSure}</p>
           </>
         )}
 
@@ -236,8 +239,7 @@ function Flow({
             color={selection.color}
           />
           <p className="pt-2 text-center text-xs text-ink-muted">
-            This opens WhatsApp with your order written for you. Just press
-            send.
+            {t.order.opensWhatsApp}
           </p>
         </div>
       )}
@@ -256,10 +258,11 @@ function Review({
   canEdit: (step: Step) => boolean;
   onEdit: (step: Step) => void;
 }) {
+  const { t } = useI18n();
   const photo = orderImages(product.images, selection.color)[0];
   const rows = [
-    { step: "color" as const, label: "Colour", value: selection.color },
-    { step: "size" as const, label: "Size", value: selection.size },
+    { step: "color" as const, label: t.common.colour, value: selection.color },
+    { step: "size" as const, label: t.common.size, value: selection.size },
   ].filter((row) => row.value);
 
   return (
@@ -305,7 +308,7 @@ function Review({
                   className="flex h-11 items-center gap-1 px-2 text-sm underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-brand"
                 >
                   <PencilSimpleIcon size={16} aria-hidden="true" />
-                  Change
+                  {t.order.change}
                   <span className="sr-only"> {row.label.toLowerCase()}</span>
                 </button>
               </dd>
@@ -319,17 +322,9 @@ function Review({
           v.size === selection.size &&
           v.color === selection.color &&
           v.is_available,
-      ) && (
-        <p className="bg-bone p-3 text-sm">
-          This one is sold out right now. Ask us if it's coming back, or go back
-          and pick another option.
-        </p>
-      )}
+      ) && <p className="bg-bone p-3 text-sm">{t.order.soldOutNow}</p>}
 
-      <p className="text-sm text-ink-muted">
-        Pay with MoMo or cash on delivery · Motard delivery or pickup at CHIC
-        Building B30A
-      </p>
+      <p className="text-sm text-ink-muted">{t.common.payAndDelivery}</p>
     </div>
   );
 }

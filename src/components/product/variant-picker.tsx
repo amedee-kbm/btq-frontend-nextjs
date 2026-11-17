@@ -1,6 +1,7 @@
 "use client";
 
 import { Swatch } from "@/components/catalog/swatch";
+import { useI18n } from "@/i18n/provider";
 import type { ProductColor } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
 
@@ -21,11 +22,12 @@ export function SizePicker({
   isAvailable: (size: string) => boolean;
   onSelect: (size: string) => void;
 }) {
+  const { t } = useI18n();
   if (sizes.length === 0) return null;
   return (
     <fieldset>
       <legend className="pb-2 text-sm">
-        <span className="font-bold">Size</span>
+        <span className="font-bold">{t.common.size}</span>
         {selected && <span className="text-ink-muted">: {selected}</span>}
       </legend>
       <div className="flex flex-wrap gap-2">
@@ -37,7 +39,7 @@ export function SizePicker({
               key={size}
               type="button"
               aria-pressed={active}
-              aria-label={available ? size : `${size} (unavailable)`}
+              aria-label={available ? size : t.product.unavailable(size)}
               onClick={() => onSelect(size)}
               className={cn(
                 "relative inline-flex h-11 min-w-12 items-center justify-center overflow-hidden border px-3 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand",
@@ -68,11 +70,12 @@ export function ColorPicker({
   isAvailable: (color: string) => boolean;
   onSelect: (color: string) => void;
 }) {
+  const { t } = useI18n();
   if (colors.length === 0) return null;
   return (
     <fieldset>
       <legend className="pb-2 text-sm">
-        <span className="font-bold">Colour</span>
+        <span className="font-bold">{t.common.colour}</span>
         {selected && <span className="text-ink-muted">: {selected}</span>}
       </legend>
       <div className="flex flex-wrap gap-2">
@@ -85,7 +88,7 @@ export function ColorPicker({
               type="button"
               aria-pressed={active}
               aria-label={
-                available ? color.name : `${color.name} (unavailable)`
+                available ? color.name : t.product.unavailable(color.name)
               }
               onClick={() => onSelect(color.name)}
               className={cn(

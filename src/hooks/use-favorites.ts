@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import useSWR from "swr";
 import { useAuthSheet } from "@/components/layout/auth-sheet";
 import { useUser } from "@/hooks/use-user";
+import { useI18n } from "@/i18n/provider";
 import type { ProductListItem } from "@/lib/catalog/types";
 import fetcher from "@/lib/fetcher";
 
@@ -26,6 +27,7 @@ async function removeFavorite(slug: string) {
 export function useFavorites() {
   const { isAuthenticated, isLoading: userLoading } = useUser();
   const { openAuthSheet } = useAuthSheet();
+  const { t } = useI18n();
   const { data, isLoading, mutate } = useSWR<ProductListItem[]>(
     isAuthenticated ? FAVORITES_KEY : null,
     fetcher,
@@ -61,11 +63,7 @@ export function useFavorites() {
         },
       );
     } catch {
-      toast.error(
-        adding
-          ? "Couldn't save this favorite"
-          : "Couldn't remove this favorite",
-      );
+      toast.error(adding ? t.favorites.saveFailed : t.favorites.removeFailed);
     }
   };
 

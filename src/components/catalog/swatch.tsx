@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "@/i18n/provider";
 import { cn } from "@/lib/utils";
 import { useShowSwatches } from "./visibility";
 
@@ -37,12 +38,13 @@ export function SwatchRow({
   colors: { name: string; hex: string | null; is_available: boolean }[];
   max?: number;
 }) {
+  const { t } = useI18n();
   if (!useShowSwatches() || colors.length === 0) return null;
   const shown = colors.slice(0, max);
   return (
     <ul
       className="flex items-center gap-1.5"
-      aria-label={`Colours: ${colors.map((c) => c.name).join(", ")}`}
+      aria-label={t.card.colours(colors.map((c) => c.name).join(", "))}
     >
       {shown.map((color) => (
         <li

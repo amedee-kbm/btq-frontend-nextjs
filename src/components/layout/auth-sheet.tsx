@@ -1,7 +1,6 @@
 "use client";
 
 import { HeartIcon } from "@phosphor-icons/react";
-import Link from "next/link";
 import { createContext, useCallback, useContext, useState } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -11,6 +10,8 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { Link } from "@/i18n/link";
+import { useI18n } from "@/i18n/provider";
 import { rememberPendingFavorite } from "@/lib/auth-redirect";
 import { cn } from "@/lib/utils";
 
@@ -30,6 +31,7 @@ export function useAuthSheet() {
 export function AuthSheetProvider({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const { t } = useI18n();
 
   // Reads the current URL at tap time (not via useSearchParams, which would
   // force every static page to render on the client).
@@ -54,11 +56,9 @@ export function AuthSheetProvider({ children }: { children: React.ReactNode }) {
           <SheetHeader className="items-center pt-8 text-center">
             <HeartIcon size={32} weight="fill" className="text-brand" />
             <SheetTitle className="text-xl font-bold">
-              Save your favorites
+              {t.authSheet.title}
             </SheetTitle>
-            <SheetDescription>
-              Create an account to save favorites across devices.
-            </SheetDescription>
+            <SheetDescription>{t.authSheet.description}</SheetDescription>
           </SheetHeader>
           <div className="flex flex-col gap-3 px-4">
             <Link
@@ -66,7 +66,7 @@ export function AuthSheetProvider({ children }: { children: React.ReactNode }) {
               onClick={() => setOpen(false)}
               className={cn(buttonVariants({ size: "lg" }), "w-full")}
             >
-              Sign in
+              {t.common.signIn}
             </Link>
             <Link
               href={`/register?${query}`}
@@ -76,7 +76,7 @@ export function AuthSheetProvider({ children }: { children: React.ReactNode }) {
                 "w-full",
               )}
             >
-              Register
+              {t.common.register}
             </Link>
           </div>
         </SheetContent>
