@@ -13,7 +13,7 @@ const SNOOZE_MS = 21 * 24 * 60 * 60 * 1000;
 const PAGES_BEFORE_OFFER = 3;
 const NEW_VISIT_AFTER_MS = 30 * 60 * 1000;
 const SHOW_DELAY_MS = 2500;
-const HIDDEN_ON = ["/login", "/register", "/offline"];
+const HIDDEN_ON = ["/login", "/register", "/offline", "/install"];
 
 type Stored = { visits: number; lastSeen: number; dismissedAt?: number };
 

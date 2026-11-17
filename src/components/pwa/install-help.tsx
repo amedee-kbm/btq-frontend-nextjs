@@ -15,6 +15,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
 
 const STEPS = {
   ios: [
@@ -59,6 +60,28 @@ const STEPS = {
   ],
 };
 
+/** The by-hand steps for browsers with no install dialog. */
+export function InstallSteps({
+  method,
+  className,
+}: {
+  method: keyof typeof STEPS;
+  className?: string;
+}) {
+  return (
+    <ol className={cn("flex flex-col gap-3", className)}>
+      {STEPS[method].map(({ id, Icon, text }) => (
+        <li key={id} className="flex items-center gap-3 text-sm">
+          <span className="grid size-9 shrink-0 place-items-center bg-bone text-action">
+            <Icon size={20} aria-hidden="true" />
+          </span>
+          <span>{text}</span>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 /** Where browsers have no install dialog: how to add the app by hand. */
 export function InstallHelpSheet({
   method,
@@ -85,16 +108,7 @@ export function InstallHelpSheet({
               : "This app's built-in browser can't install apps. Open Bukiaa in your phone's browser first."}
           </SheetDescription>
         </SheetHeader>
-        <ol className="flex flex-col gap-3 px-4">
-          {STEPS[method].map(({ id, Icon, text }) => (
-            <li key={id} className="flex items-center gap-3 text-sm">
-              <span className="grid size-9 shrink-0 place-items-center bg-bone text-action">
-                <Icon size={20} aria-hidden="true" />
-              </span>
-              <span>{text}</span>
-            </li>
-          ))}
-        </ol>
+        <InstallSteps method={method} className="px-4" />
         <SheetFooter>
           <SheetClose render={<Button size="lg">Got it</Button>} />
         </SheetFooter>
