@@ -82,22 +82,22 @@ async function precache() {
   const assets = await caches.open(STATIC);
   // The offline page must work with no network at all, so also cache the
   // scripts, styles and fonts it references. The home page is best effort.
-  await Promise.all(
-    PRECACHE_PAGES.map(async (path) => {
-      try {
-        const response = await fetch(path, { cache: "reload" });
-        if (!response.ok) throw new Error(`${path}: ${response.status}`);
-        await pages.put(path, response.clone());
-        const html = await response.text();
-        const urls = [
-          ...html.matchAll(/(?:href|src)="(\/_next\/static\/[^"]+)"/g),
-        ].map((match) => match[1].replace(/&amp;/g, "&"));
-        await assets.addAll([...new Set(urls)]);
-      } catch (error) {
-        if (path === OFFLINE_URL) throw error;
-      }
-    }),
-  );
+  // One page at a time: they share chunks, and concurrent addAll() calls
+  // writing the same entry reject the whole install.
+  for (const path of PRECACHE_PAGES) {
+    try {
+      const response = await fetch(path, { cache: "reload" });
+      if (!response.ok) throw new Error(`${path}: ${response.status}`);
+      await pages.put(path, response.clone());
+      const html = await response.text();
+      const urls = [
+        ...html.matchAll(/(?:href|src)="(\/_next\/static\/[^"]+)"/g),
+      ].map((match) => match[1].replace(/&amp;/g, "&"));
+      await assets.addAll([...new Set(urls)]);
+    } catch (error) {
+      if (path === OFFLINE_URL) throw error;
+    }
+  }
   await assets.addAll(PRECACHE_ASSETS);
 }
 
