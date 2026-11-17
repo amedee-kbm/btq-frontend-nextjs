@@ -9,7 +9,7 @@ export default function TermsPage() {
   return (
     <ProsePage title="Terms of use">
       <p>
-        Kigali Fashion Store is a boutique in Kigali, Rwanda. This website is a
+        Bukiaa is a boutique in Kigali, Rwanda. This website is a
         catalog: it shows our items, prices and what's available, so you can
         choose before you contact us.
       </p>

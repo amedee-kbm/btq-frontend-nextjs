@@ -6,7 +6,7 @@ import { listTags } from "@/lib/catalog/taxonomy";
 export const metadata: Metadata = {
   title: "Shop by occasion",
   description:
-    "Wedding guest, church, office, party: find the right outfit for the occasion at Kigali Fashion Store.",
+    "Wedding guest, church, office, party: find the right outfit for the occasion at Bukiaa.",
 };
 
 export default async function OccasionsPage() {

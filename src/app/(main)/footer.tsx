@@ -188,7 +188,7 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-divider pt-6 sm:flex-row sm:items-center">
           <span className="text-xs text-ink-muted">
-            © {year} Kigali Fashion Store · Kigali, Rwanda · Pay with MoMo ·
+            © {year} Bukiaa · Kigali, Rwanda · Pay with MoMo ·
             Cash
           </span>
 
@@ -200,7 +200,7 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
                     href={settings.socials[key]}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`Kigali Fashion Store on ${SOCIAL_NAMES[key]}`}
+                    aria-label={`Bukiaa on ${SOCIAL_NAMES[key]}`}
                     className="grid h-9 w-9 place-items-center rounded-full text-ink-muted transition-colors hover:bg-bone hover:text-ink"
                   >
                     {SOCIAL_ICONS[key]}

@@ -28,13 +28,13 @@ const bodoniModa = Bodoni_Moda({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Kigali Fashion Store — Women's fashion boutique",
-    template: "%s | Kigali Fashion Store",
+    default: "Bukiaa — Women's fashion boutique",
+    template: "%s | Bukiaa",
   },
   description:
-    "Dresses, matching sets, jeans and boubous from Kigali Fashion Store. Browse the whole catalog, then order on WhatsApp. Pay with MoMo or cash.",
+    "Dresses, matching sets, jeans and boubous from Bukiaa. Browse the whole catalog, then order on WhatsApp. Pay with MoMo or cash.",
   openGraph: {
-    siteName: "Kigali Fashion Store",
+    siteName: "Bukiaa",
     locale: "en_RW",
     type: "website",
   },

@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 250" role="img" aria-labelledby="title"><title id="title">Kigali Fashion Store icon</title><g transform="translate(0 0)">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 250" role="img" aria-labelledby="title"><title id="title">Bukiaa icon</title><g transform="translate(0 0)">
 <path d="M53 62 H206 L224 204 Q225 214 214 214 H35 Q25 214 27 203 Z" fill="none" stroke="#111111" stroke-width="8" stroke-linejoin="round"/>
 <path d="M88 62 V42 C88 12 169 12 169 42 V62" fill="none" stroke="#111111" stroke-width="8" stroke-linecap="round"/>
-<path d="M70 166 L122 81 Q126 75 132 80 Q137 84 133 91 L113 124 L177 80 Q184 75 189 81 Q193 87 185 93 L137 126 L194 177 Q201 184 194 190 Q188 195 181 189 L124 142 L94 191 Q90 198 83 194 Q77 190 81 183 L98 153 L70 177 Z" fill="#C9902E" transform="translate(-2 -3)"/>
+<path d="M78 86 Q78 80 84 80 H142 C166 80 176 94 176 108 C176 120 169 128 160 132 C176 136 186 148 186 162 C186 180 172 192 148 192 H84 Q78 192 78 186 Z M104 102 V124 H138 C146 124 150 120 150 113 C150 106 146 102 138 102 Z M104 144 V170 H144 C153 170 158 165 158 157 C158 149 153 144 144 144 Z" fill="#C9902E" fill-rule="evenodd"/>
 <path d="M37 212 L214 212" stroke="#111111" stroke-width="5"/></g></svg>

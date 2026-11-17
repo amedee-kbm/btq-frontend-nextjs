@@ -1,4 +1,4 @@
-# Kigali Fashion Store — Product Requirements (Frontend)
+# Bukiaa — Product Requirements (Frontend)
 
 > Companion docs: [`ARCHITECTURE.md`](./ARCHITECTURE.md) (this repo) and the backend's
 > [`PRD.md`](https://github.com/amedee-kbm/btq-backend/blob/main/PRD.md) /
@@ -9,12 +9,12 @@
 
 ## 1. Product overview (shared with the backend PRD)
 
-Kigali Fashion Store is a single fashion boutique in Kigali, Rwanda, selling women's clothing: dresses,
+Bukiaa is a single fashion boutique in Kigali, Rwanda, selling women's clothing: dresses,
 matching sets ("completes"), jeans, shorts, boubous and more. Most customers arrive
 organically from TikTok videos.
 
 Until now, shoppers screenshotted items they liked, sent them to the seller on WhatsApp, and
-asked for more pictures. The Kigali Fashion Store website replaces that back-and-forth:
+asked for more pictures. The Bukiaa website replaces that back-and-forth:
 
 - Customers **browse the whole catalog themselves**, filtering by **category** (party, casual,
   maxi dresses…), by **occasion/style tags** (wedding guest, church…), and by **hand-picked
@@ -33,7 +33,7 @@ asked for more pictures. The Kigali Fashion Store website replaces that back-and
 | In v1 | Deferred / out |
 |---|---|
 | Catalog browse, filter, search, sort | Cart, online payments, orders, order tracking |
-| Product detail with variant availability | Password reset (until Kigali Fashion Store owns a domain) |
+| Product detail with variant availability | Password reset (until Bukiaa owns a domain) |
 | WhatsApp handoff (pre-filled message) | Guest (logged-out) favorites |
 | Favorites (login required) | Analytics / WhatsApp-tap tracking |
 | Contact details from admin | Kinyarwanda / multilingual UI |
@@ -49,7 +49,7 @@ The site is **English only** and **mobile-first** (most traffic comes from TikTo
 link (often a collection or product URL). They land on the product page and see photos, price,
 material and fit. They pick a color (the photos switch to that color) and a size; unavailable
 combinations are crossed out. They tap **"Order on WhatsApp"** and WhatsApp opens with:
-*"Hi Kigali Fashion Store! I'd like BQ-0142 – Emerald Satin Maxi, size M, colour Emerald (RWF 19,000). Is it
+*"Hi Bukiaa! I'd like BQ-0142 – Emerald Satin Maxi, size M, colour Emerald (RWF 19,000). Is it
 available? https://…/products/emerald-satin-maxi"*.
 
 **J2 — Browse by need.** From home, the shopper taps a category tile or an occasion (e.g.
@@ -71,7 +71,7 @@ where they were. `/favorites` lists saved items. The shopper stays logged in for
 
 ### 3.1 Global header (exists; adjust)
 
-- Logo "Kigali Fashion Store" → `/`.
+- Logo "Bukiaa" → `/`.
 - **Search** (exists as a dead button): opens a search input; submitting goes to
   `/shop?q=…`.
 - ♥ → `/favorites` (opens the auth sheet for guests).
@@ -156,7 +156,7 @@ shows to guests).
 - Columns: **Shop** (Shop all, New arrivals, Promos, Occasions), **Help** (How to order / FAQ,
   Contact), **Legal** (Terms, Privacy).
 - Socials from `/settings` (hidden when blank).
-- Bottom: "© Kigali Fashion Store · Kigali, Rwanda · Pay with MoMo · Cash".
+- Bottom: "© Bukiaa · Kigali, Rwanda · Pay with MoMo · Cash".
 - Remove: app-store badges, My orders, Addresses, Notifications, Blog, Return Policy (moved into
   FAQ), "same day delivery" claim (unless the owner confirms), and the "Isokko" aria-labels.
   Internal links must not open in a new tab.

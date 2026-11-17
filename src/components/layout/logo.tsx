@@ -1,12 +1,12 @@
 import { cn } from "@/lib/utils";
 
-export const BRAND_NAME = "Kigali Fashion Store";
+export const BRAND_NAME = "Bukiaa";
 
 const GOLD = "#C9902E";
 
 /**
- * The shopping bag + gold "K" from public/brand/logo-mark.svg, drawn inline so the bag
- * follows the text colour (dark mode) while the K stays gold.
+ * The shopping bag + gold "B" from public/brand/logo-mark.svg, drawn inline so the bag
+ * follows the text colour (dark mode) while the B stays gold.
  */
 export function LogoMark({ className }: { className?: string }) {
   return (
@@ -30,17 +30,17 @@ export function LogoMark({ className }: { className?: string }) {
         strokeLinecap="round"
       />
       <path
-        d="M70 166 L122 81 Q126 75 132 80 Q137 84 133 91 L113 124 L177 80 Q184 75 189 81 Q193 87 185 93 L137 126 L194 177 Q201 184 194 190 Q188 195 181 189 L124 142 L94 191 Q90 198 83 194 Q77 190 81 183 L98 153 L70 177 Z"
+        d="M78 86 Q78 80 84 80 H142 C166 80 176 94 176 108 C176 120 169 128 160 132 C176 136 186 148 186 162 C186 180 172 192 148 192 H84 Q78 192 78 186 Z M104 102 V124 H138 C146 124 150 120 150 113 C150 106 146 102 138 102 Z M104 144 V170 H144 C153 170 158 165 158 157 C158 149 153 144 144 144 Z"
         fill={GOLD}
-        transform="translate(-2 -3)"
+        fillRule="evenodd"
       />
     </svg>
   );
 }
 
 /**
- * Mark + wordmark. The wordmark is live text rather than the SVG's, because the
- * "FASHION STORE" line becomes unreadable at header size.
+ * Mark + wordmark. The wordmark is live text rather than the SVG's so it stays
+ * crisp and follows the text colour at header size.
  */
 export function Logo({
   className,
@@ -55,12 +55,11 @@ export function Logo({
       <span
         aria-hidden="true"
         className={cn(
-          "flex flex-col border-l border-current pl-2 font-bold leading-[1.15]",
-          size === "sm" ? "text-[8px]" : "text-[12px] md:text-xs",
+          "flex flex-col border-l border-current pl-2 font-bold leading-none",
+          size === "sm" ? "text-base" : "text-lg md:text-xl",
         )}
       >
-        <span className="tracking-[0.1em]">KIGALI</span>
-        <span className="tracking-[0.03em]">FASHION STORE</span>
+        <span className="tracking-[0.12em]">BUKIAA</span>
         {/* The gold swoosh from public/brand/logo.svg. */}
         <svg
           viewBox="0 0 404 22"

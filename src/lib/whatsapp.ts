@@ -49,9 +49,9 @@ export function whatsAppChatUrl(number: string) {
 }
 
 // Questions, as opposed to orders. Not editable in the backend settings yet.
-const GENERAL_INQUIRY = "Hi Kigali Fashion Store! I have a question.";
+const GENERAL_INQUIRY = "Hi Bukiaa! I have a question.";
 const PRODUCT_INQUIRY =
-  "Hi Kigali Fashion Store! I have a question about {item}. {url}";
+  "Hi Bukiaa! I have a question about {item}. {url}";
 
 /** The product a page is about, for "ask us" links. */
 export type InquirySubject = {

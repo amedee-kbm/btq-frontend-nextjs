@@ -79,7 +79,7 @@ export function RegisterForm() {
       toast.success(
         savedFavorite
           ? "Welcome! Saved to your favorites"
-          : "Welcome to Kigali Fashion Store!",
+          : "Welcome to Bukiaa!",
       );
       router.replace(next);
       router.refresh();

@@ -104,7 +104,7 @@ export default function NavBar({
             <Link
               href="/"
               className="shrink-0"
-              aria-label="Kigali Fashion Store home"
+              aria-label="Bukiaa home"
             >
               <Logo />
             </Link>

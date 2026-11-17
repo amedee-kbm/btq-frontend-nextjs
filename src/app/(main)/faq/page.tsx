@@ -7,7 +7,7 @@ import { whatsAppChatUrl } from "@/lib/whatsapp";
 export const metadata: Metadata = {
   title: "How to order & FAQ",
   description:
-    "How ordering on WhatsApp works at Kigali Fashion Store: payment with MoMo or cash, motard delivery or pickup at CHIC Building B30A, exchanges and sizing.",
+    "How ordering on WhatsApp works at Bukiaa: payment with MoMo or cash, motard delivery or pickup at CHIC Building B30A, exchanges and sizing.",
 };
 
 type Faq = { q: string; a: React.ReactNode };

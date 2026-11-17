@@ -12,7 +12,7 @@ import { whatsAppChatUrl } from "@/lib/whatsapp";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Chat with Kigali Fashion Store on WhatsApp, call us, or visit us at CHIC Building B30A, Kigali.",
+    "Chat with Bukiaa on WhatsApp, call us, or visit us at CHIC Building B30A, Kigali.",
 };
 
 export default async function ContactPage() {

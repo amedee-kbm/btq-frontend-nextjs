@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const name = parent ? `${category.name} ${parent.name}` : category.name;
   return {
     title: name,
-    description: `Shop ${name.toLowerCase()} at Kigali Fashion Store. See sizes, colours and prices, then order on WhatsApp.`,
+    description: `Shop ${name.toLowerCase()} at Bukiaa. See sizes, colours and prices, then order on WhatsApp.`,
     openGraph: category.cover_image
       ? { images: [category.cover_image] }
       : undefined,
