@@ -73,6 +73,17 @@ export function serializeFilters(filters: Partial<ProductFilters>) {
   return params;
 }
 
+/** Drops price filters and sorts, for when the admin hides prices. */
+export function withoutPriceFilters(filters: ProductFilters): ProductFilters {
+  return {
+    ...filters,
+    min_price: undefined,
+    max_price: undefined,
+    on_sale: false,
+    sort: "newest", // the only sort that isn't by price
+  };
+}
+
 /** Number of user-chosen filters (not search, sort or the page's fixed filter). */
 export function countActiveFilters(
   filters: ProductFilters,

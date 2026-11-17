@@ -4,9 +4,12 @@ import { ChevronDown } from "lucide-react";
 import { SORT_OPTIONS } from "@/lib/catalog/filters";
 import type { ProductSort } from "@/lib/catalog/types";
 import { useListing } from "./listing-state";
+import { useShowPrices } from "./show-prices";
 
 export function SortSelect() {
   const { filters, apply } = useListing();
+  // With prices hidden only "Newest" is left, so there's nothing to choose.
+  if (!useShowPrices()) return null;
   return (
     <label className="relative flex items-center gap-2 text-sm">
       <span className="sr-only md:not-sr-only md:text-ink-muted">Sort by</span>

@@ -1,7 +1,11 @@
+"use client";
+
 import type { ProductListItem } from "@/lib/catalog/types";
 import { formatRWF } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { useShowPrices } from "./show-prices";
 
+/** Nothing at all when the admin hides prices. */
 export function Price({
   product,
   className,
@@ -9,6 +13,7 @@ export function Price({
   product: Pick<ProductListItem, "price" | "effective_price" | "is_on_sale">;
   className?: string;
 }) {
+  if (!useShowPrices()) return null;
   return (
     <p className={cn("flex flex-wrap items-baseline gap-x-2", className)}>
       <span

@@ -25,9 +25,15 @@ export function generateStaticParams() {
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const product = await getProduct((await params).slug);
+  const [product, settings] = await Promise.all([
+    getProduct((await params).slug),
+    getSiteSettings(),
+  ]);
+  const price = settings.show_prices
+    ? formatRWF(product.effective_price)
+    : undefined;
   const summary = [
-    formatRWF(product.effective_price),
+    price,
     product.material,
     product.is_sold_out ? "Sold out" : "Order on WhatsApp",
   ]
@@ -44,7 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: { canonical: `/products/${product.slug}` },
     openGraph: {
       type: "website",
-      title: `${product.name} – ${formatRWF(product.effective_price)}`,
+      title: price ? `${product.name} – ${price}` : product.name,
       description,
       images: image ? [{ url: image.url, alt: image.alt || product.name }] : [],
     },
@@ -125,6 +131,7 @@ export default async function ProductPage({ params }: Props) {
       <ProductView
         product={product}
         settings={{
+          show_prices: settings.show_prices,
           whatsapp_number: settings.whatsapp_number,
           whatsapp_template: settings.whatsapp_template,
           whatsapp_restock_template: settings.whatsapp_restock_template,

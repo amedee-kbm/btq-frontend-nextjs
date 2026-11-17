@@ -65,6 +65,8 @@ export type Collection = { slug: string; name: string; description: string };
 export type CollectionDetail = Collection & Paginated<ProductListItem>;
 
 export type SiteSettings = {
+  /** Admin switch: when false, no prices (or price filters/sorts) appear anywhere. */
+  show_prices: boolean;
   whatsapp_number: string;
   whatsapp_template: string;
   whatsapp_restock_template: string;

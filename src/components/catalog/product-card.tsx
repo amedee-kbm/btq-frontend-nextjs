@@ -4,6 +4,7 @@ import { LogoMark } from "@/components/layout/logo";
 import { FavoriteButton } from "@/components/product/favorite-button";
 import type { ProductListItem } from "@/lib/catalog/types";
 import { Price } from "./price";
+import { IfPricesShown } from "./show-prices";
 import { SwatchRow } from "./swatch";
 
 // No "use client": renders on the server in listings and on the client after "Load more".
@@ -53,9 +54,11 @@ export function ProductCard({
             Sold out
           </span>
         ) : product.is_on_sale ? (
-          <span className="absolute top-2 left-2 bg-danger px-2 py-1 text-[11px] font-bold tracking-wider text-white uppercase">
-            Sale
-          </span>
+          <IfPricesShown>
+            <span className="absolute top-2 left-2 bg-danger px-2 py-1 text-[11px] font-bold tracking-wider text-white uppercase">
+              Sale
+            </span>
+          </IfPricesShown>
         ) : null}
       </div>
 

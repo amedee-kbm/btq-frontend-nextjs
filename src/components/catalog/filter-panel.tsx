@@ -15,6 +15,7 @@ import { countActiveFilters } from "@/lib/catalog/filters";
 import type { Category, Color, Tag } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
 import { useListing } from "./listing-state";
+import { useShowPrices } from "./show-prices";
 import { Swatch } from "./swatch";
 
 export type FilterOptions = {
@@ -113,6 +114,7 @@ function PriceRange() {
 
 function FilterFields({ options }: { options: FilterOptions }) {
   const { filters, fixed, apply } = useListing();
+  const showPrices = useShowPrices();
 
   return (
     <div>
@@ -216,20 +218,24 @@ function FilterFields({ options }: { options: FilterOptions }) {
         </Section>
       )}
 
-      <Section title="Price">
-        <PriceRange />
-      </Section>
+      {showPrices && (
+        <Section title="Price">
+          <PriceRange />
+        </Section>
+      )}
 
       <div className="flex flex-col gap-3 py-4">
-        <label className="flex min-h-9 cursor-pointer items-center gap-3 text-sm">
-          <input
-            type="checkbox"
-            className="size-4 accent-primary"
-            checked={filters.on_sale}
-            onChange={(event) => apply({ on_sale: event.target.checked })}
-          />
-          On sale
-        </label>
+        {showPrices && (
+          <label className="flex min-h-9 cursor-pointer items-center gap-3 text-sm">
+            <input
+              type="checkbox"
+              className="size-4 accent-primary"
+              checked={filters.on_sale}
+              onChange={(event) => apply({ on_sale: event.target.checked })}
+            />
+            On sale
+          </label>
+        )}
         <label className="flex min-h-9 cursor-pointer items-center gap-3 text-sm">
           <input
             type="checkbox"

@@ -6,7 +6,10 @@ export type WhatsAppKind = "order" | "restock";
 
 export type WhatsAppSettings = Pick<
   SiteSettings,
-  "whatsapp_number" | "whatsapp_template" | "whatsapp_restock_template"
+  | "show_prices"
+  | "whatsapp_number"
+  | "whatsapp_template"
+  | "whatsapp_restock_template"
 >;
 
 export function productUrl(
@@ -26,10 +29,13 @@ export function buildWhatsAppUrl(
   { size, color }: { size?: string; color?: string },
   kind: WhatsAppKind,
 ) {
-  const template =
+  let template =
     kind === "order"
       ? settings.whatsapp_template
       : settings.whatsapp_restock_template;
+  // Hidden prices: drop the placeholder with any brackets and space around it.
+  if (!settings.show_prices)
+    template = template.replace(/\s*\(?\{price\}\)?/g, "");
   const values: Record<string, string> = {
     code: product.code,
     name: product.name,

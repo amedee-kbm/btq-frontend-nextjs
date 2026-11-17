@@ -1,5 +1,10 @@
-import { parseFilters, serializeFilters } from "@/lib/catalog/filters";
+import {
+  parseFilters,
+  serializeFilters,
+  withoutPriceFilters,
+} from "@/lib/catalog/filters";
 import { listProducts } from "@/lib/catalog/products";
+import { getSiteSettingsOrFallback } from "@/lib/catalog/settings";
 import {
   listCategories,
   listColors,
@@ -28,11 +33,14 @@ export async function ProductListing({
   searchParams: SearchParams;
   fixed?: Partial<ProductFilters>;
 }) {
-  const filters: ProductFilters = {
+  const settings = await getSiteSettingsOrFallback();
+  const parsed: ProductFilters = {
     ...parseFilters(searchParams),
     ...fixed,
     page: 1,
   };
+  // Hidden prices mustn't be discoverable by hand-written ?min_price= or ?sort=.
+  const filters = settings.show_prices ? parsed : withoutPriceFilters(parsed);
 
   const [data, categories, tags, sizes, colors] = await Promise.all([
     listProducts(filters),
