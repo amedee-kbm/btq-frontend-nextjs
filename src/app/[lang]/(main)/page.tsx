@@ -6,6 +6,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import type { Metadata } from "next";
 import { ProductGrid } from "@/components/catalog/product-grid";
+import { CategoryTileContent } from "@/components/layout/category-tile";
 import {
   getDictionary,
   type Locale,
@@ -14,6 +15,7 @@ import {
 } from "@/i18n";
 import { Link } from "@/i18n/link";
 import { getCollection, listCollections } from "@/lib/catalog/collections";
+import { listCategories } from "@/lib/catalog/taxonomy";
 import type { Collection } from "@/lib/catalog/types";
 
 // The API's maximum page size; any further pages are fetched together.
@@ -46,7 +48,8 @@ async function CollectionRow({
   collection: Collection;
   lang: Locale;
 }) {
-  const items = await getWholeCollection(collection.slug);
+  // A failing row is dropped rather than taking the whole home page down.
+  const items = await getWholeCollection(collection.slug).catch(() => []);
   if (items.length === 0) return null;
 
   return (
@@ -73,8 +76,54 @@ async function CollectionRow({
   );
 }
 
+/** Photo tiles of the categories, first thing on the page, so browsing starts with a tap. */
+async function CategoryTiles({ lang }: { lang: Locale }) {
+  const t = getDictionary(lang);
+  const all = await listCategories().catch(() => []);
+  const featured = all.filter((c) => c.show_on_home);
+  const categories = (featured.length > 0 ? featured : all).toSorted(
+    (a, b) => a.position - b.position,
+  );
+  if (categories.length === 0) return null;
+
+  return (
+    <section
+      aria-labelledby="categories-heading"
+      className="mx-auto w-full max-w-7xl px-4 pt-6"
+    >
+      <div className="flex items-baseline justify-between gap-4 pb-4">
+        <h2
+          id="categories-heading"
+          className="font-heading text-2xl md:text-3xl"
+        >
+          {t.browse.shopByCategory}
+        </h2>
+        <Link
+          href="/shop"
+          className="shrink-0 text-sm font-semibold text-action underline underline-offset-4"
+        >
+          {t.common.shopAll}
+        </Link>
+      </div>
+      <ul className="grid grid-cols-3 gap-x-3 gap-y-5 sm:grid-cols-4 lg:grid-cols-6">
+        {categories.map((c) => (
+          <li key={c.slug}>
+            <Link href={`/categories/${c.slug}`} className="group block">
+              <CategoryTileContent
+                label={c.name}
+                image={c.cover_image}
+                sizes="(min-width: 1024px) 16vw, (min-width: 640px) 25vw, 33vw"
+              />
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 async function CollectionRows({ lang }: { lang: Locale }) {
-  const collections = await listCollections();
+  const collections = await listCollections().catch(() => []);
   return (
     <>
       {collections.map((collection) => (
@@ -136,6 +185,7 @@ export default async function Home({ params }: Props) {
   return (
     <div className="flex w-full flex-col items-center gap-12 pb-2">
       <h1 className="sr-only">{t.home.heading}</h1>
+      <CategoryTiles lang={lang} />
       <CollectionRows lang={lang} />
       <HowOrderingWorks lang={lang} />
       <p className="text-sm">

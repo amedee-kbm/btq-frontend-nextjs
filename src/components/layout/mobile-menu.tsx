@@ -1,107 +1,154 @@
 "use client";
 
-import { Menu } from "lucide-react";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import {
+  CaretRightIcon,
+  ChatCircleDotsIcon,
+  DownloadSimpleIcon,
+  QuestionIcon,
+  SparkleIcon,
+  SquaresFourIcon,
+  TagIcon,
+  TranslateIcon,
+} from "@phosphor-icons/react";
 import { InstallAppButton } from "@/components/pwa/install-banner";
-import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet";
 import { Link } from "@/i18n/link";
 import { useI18n } from "@/i18n/provider";
 import { LanguageSwitcher } from "./language-switcher";
 import { Logo } from "./logo";
-import type { NavCategory, NavLink } from "./nav-types";
+import type { NavLink } from "./nav-types";
 
-const linkClass =
-  "flex min-h-11 items-center px-4 text-sm font-medium hover:bg-bone focus-visible:bg-bone focus-visible:outline-none";
+const rowClass =
+  "flex min-h-13 w-full items-center gap-3 px-4 text-base font-medium text-ink hover:bg-bone focus-visible:bg-bone focus-visible:outline-none";
 
-export function MobileMenu({
-  categories,
-  collections,
+function Row({
+  href,
+  icon,
+  children,
+  className,
+  onClick,
 }: {
-  categories: NavCategory[];
-  collections: NavLink[];
+  href: string;
+  onClick: () => void;
+  icon: React.ReactNode;
+  children: React.ReactNode;
+  className?: string;
 }) {
-  const [open, setOpen] = useState(false);
-  const pathname = usePathname();
-  const { t } = useI18n();
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      className={`${rowClass} ${className ?? ""}`}
+    >
+      <span aria-hidden="true" className="text-ink-muted">
+        {icon}
+      </span>
+      <span className="flex-1">{children}</span>
+      <CaretRightIcon
+        size={18}
+        aria-hidden="true"
+        className="text-ink-disabled"
+      />
+    </Link>
+  );
+}
 
-  // Close after navigating.
-  // biome-ignore lint/correctness/useExhaustiveDependencies: close on route change
-  useEffect(() => setOpen(false), [pathname]);
+/** Everything that isn't a category: collections, help, the app, language. */
+export function MobileMenu({
+  collections,
+  open,
+  onOpenChange,
+  onBrowseCategories,
+}: {
+  collections: NavLink[];
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onBrowseCategories: () => void;
+}) {
+  const { t } = useI18n();
+  // Closes even when the link is to the page already shown.
+  const close = () => onOpenChange(false);
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger
-        render={
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon-sm"
-            className="lg:hidden"
-            aria-label={t.nav.openMenu}
-          >
-            <Menu />
-          </Button>
-        }
-      />
-      <SheetContent side="left" className="gap-0 overflow-y-auto">
-        <SheetHeader className="border-b border-divider">
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent
+        side="bottom"
+        className="max-h-[88dvh] gap-0 pb-[env(safe-area-inset-bottom)]"
+      >
+        <SheetHeader className="min-h-16 justify-center border-b border-divider">
           <SheetTitle>
             <Logo size="sm" />
           </SheetTitle>
         </SheetHeader>
-        <nav aria-label={t.nav.main} className="flex flex-col py-2">
-          <Link href="/shop" className={`${linkClass} font-bold`}>
+        <nav
+          aria-label={t.nav.main}
+          className="flex flex-col overflow-y-auto overscroll-contain py-2"
+        >
+          <button
+            type="button"
+            onClick={onBrowseCategories}
+            className={`${rowClass} font-bold`}
+          >
+            <span aria-hidden="true" className="text-ink-muted">
+              <SquaresFourIcon size={22} />
+            </span>
+            <span className="flex-1 text-left">{t.browse.title}</span>
+            <CaretRightIcon
+              size={18}
+              aria-hidden="true"
+              className="text-ink-disabled"
+            />
+          </button>
+          <Row
+            onClick={close}
+            href="/shop"
+            icon={<TagIcon size={22} />}
+            className="font-bold"
+          >
             {t.common.shopAll}
-          </Link>
+          </Row>
           {collections.map((c) => (
-            <Link
+            <Row
+              onClick={close}
               key={c.href}
               href={c.href}
-              className={`${linkClass} font-bold text-brand`}
+              icon={<SparkleIcon size={22} className="text-brand" />}
+              className="font-bold text-brand"
             >
               {c.label}
-            </Link>
+            </Row>
           ))}
           <div className="my-2 border-t border-divider" />
-          {categories.map((category) => (
-            <div key={category.href}>
-              <Link href={category.href} className={linkClass}>
-                {category.label}
-              </Link>
-              {category.children.map((child) => (
-                <Link
-                  key={child.href}
-                  href={child.href}
-                  className={`${linkClass} min-h-10 pl-8 font-normal text-ink-soft`}
-                >
-                  {child.label}
-                </Link>
-              ))}
-            </div>
-          ))}
-          <div className="my-2 border-t border-divider" />
-          <Link href="/favorites" className={linkClass}>
-            {t.common.favorites}
-          </Link>
-          <Link href="/faq" className={linkClass}>
+          <Row onClick={close} href="/faq" icon={<QuestionIcon size={22} />}>
             {t.common.howToOrder}
-          </Link>
-          <Link href="/contact" className={linkClass}>
+          </Row>
+          <Row
+            onClick={close}
+            href="/contact"
+            icon={<ChatCircleDotsIcon size={22} />}
+          >
             {t.common.contact}
-          </Link>
-          <InstallAppButton
-            className={`${linkClass} w-full font-bold text-action`}
-          />
+          </Row>
+          <InstallAppButton className={`${rowClass} font-bold text-action`}>
+            <span aria-hidden="true">
+              <DownloadSimpleIcon size={22} />
+            </span>
+            <span className="flex-1 text-left">{t.pwa.installTheApp}</span>
+          </InstallAppButton>
           <div className="my-2 border-t border-divider" />
-          <LanguageSwitcher full className="min-h-11 px-4 text-sm" />
+          <div className="flex min-h-13 items-center gap-3 px-4">
+            <TranslateIcon
+              size={22}
+              aria-hidden="true"
+              className="text-ink-muted"
+            />
+            <LanguageSwitcher full className="text-base" />
+          </div>
         </nav>
       </SheetContent>
     </Sheet>

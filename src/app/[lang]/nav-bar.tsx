@@ -8,7 +8,6 @@ import AccountDropdown from "@/components/layout/account-dropdown";
 import { useAuthSheet } from "@/components/layout/auth-sheet";
 import LoginOrRegister from "@/components/layout/login-or-register";
 import { Logo } from "@/components/layout/logo";
-import { MobileMenu } from "@/components/layout/mobile-menu";
 import type { NavCategory, NavLink } from "@/components/layout/nav-types";
 import { SearchBar } from "@/components/layout/search";
 import { usePwa } from "@/components/pwa/pwa-provider";
@@ -130,7 +129,6 @@ export default function NavBar({
         <div className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3">
           <div className="flex shrink-0 items-center gap-2">
             <BackButton />
-            <MobileMenu categories={categories} collections={collections} />
             <Link href="/" className="shrink-0" aria-label={t.nav.homeLink}>
               <Logo />
             </Link>
@@ -141,7 +139,10 @@ export default function NavBar({
           </div>
 
           <div className="flex items-center justify-end gap-2">
-            <FavoritesLink />
+            {/* Phones and tablets have Favorites in the bottom tab bar. */}
+            <div className="hidden lg:block">
+              <FavoritesLink />
+            </div>
             <AuthActions />
           </div>
         </div>

@@ -57,11 +57,9 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     <PageContainer>
       <PageHeader title={category.name} breadcrumb={breadcrumb}>
         {siblings.length > 0 && (
-          <nav
-            aria-label={t.category.subcategories}
-            className="-mx-4 overflow-x-auto px-4 pt-2"
-          >
-            <ul className="flex gap-2">
+          <nav aria-label={t.category.subcategories} className="pt-2">
+            {/* Wrapped, not scrolled sideways: every option is visible at once. */}
+            <ul className="flex flex-wrap gap-2">
               {[{ ...parentLink, name: t.category.all }, ...siblings].map(
                 (c) => {
                   const active = c.slug === category.slug;
@@ -72,8 +70,8 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                         aria-current={active ? "page" : undefined}
                         className={
                           active
-                            ? "inline-flex h-9 items-center border border-ink bg-ink px-4 text-sm whitespace-nowrap text-surface"
-                            : "inline-flex h-9 items-center border border-divider bg-card px-4 text-sm whitespace-nowrap hover:border-ink-muted"
+                            ? "inline-flex min-h-11 items-center rounded-pill border border-ink bg-ink px-4 text-sm font-semibold text-surface"
+                            : "inline-flex min-h-11 items-center rounded-pill border border-divider bg-card px-4 text-sm font-medium hover:border-ink-muted"
                         }
                       >
                         {c.name}

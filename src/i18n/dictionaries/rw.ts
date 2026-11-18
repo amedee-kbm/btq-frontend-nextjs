@@ -57,6 +57,22 @@ export const rw: Dictionary = {
     signInOrRegister: "Injira cyangwa wiyandikishe",
     signInRegister: "Injira / Iyandikishe",
   },
+  tabs: {
+    label: "Inzira zihuse",
+    home: "Ahabanza",
+    categories: "Ibyiciro",
+    search: "Shakisha",
+    favorites: "Nakunze",
+    menu: "Menu",
+  },
+  browse: {
+    title: "Ibyiciro",
+    seeAll: (name) => `Reba ${name} byose`,
+    backTo: "Ibyiciro byose",
+    moreIn: (name) => `Reba amoko ya ${name}`,
+    shopByCategory: "Hitamo icyiciro",
+    orBrowse: "Cyangwa uhitemo icyiciro",
+  },
   authSheet: {
     title: "Bika ibyo ukunda",
     description:

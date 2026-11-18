@@ -18,19 +18,21 @@ export function Breadcrumb({
   const crumbs: Crumb[] = [{ label: t.common.home, href: "/" }, ...items];
   return (
     <nav aria-label="Breadcrumb" className={className}>
-      <ol className="flex flex-wrap items-center gap-1 text-xs text-ink-muted">
+      <ol className="flex flex-wrap items-center gap-x-1 text-sm text-ink-muted">
         {crumbs.map((crumb, i) => (
           <li key={`${crumb.label}-${i}`} className="flex items-center gap-1">
-            {i > 0 && <ChevronRight size={12} aria-hidden="true" />}
+            {i > 0 && <ChevronRight size={14} aria-hidden="true" />}
             {crumb.href ? (
               <Link
                 href={crumb.href}
-                className="hover:text-ink hover:underline"
+                className="inline-flex min-h-9 items-center underline decoration-divider underline-offset-4 hover:text-ink hover:decoration-ink"
               >
                 {crumb.label}
               </Link>
             ) : (
-              <span aria-current="page">{crumb.label}</span>
+              <span aria-current="page" className="font-medium text-ink-soft">
+                {crumb.label}
+              </span>
             )}
           </li>
         ))}
@@ -51,7 +53,7 @@ export function PageHeader({
   children?: React.ReactNode;
 }) {
   return (
-    <header className="flex flex-col gap-2 pt-6 pb-6 md:pt-10">
+    <header className="flex flex-col gap-2 pt-4 pb-6 md:pt-10">
       <Breadcrumb items={breadcrumb} />
       <h1 className="font-heading text-3xl md:text-4xl">{title}</h1>
       {description && (

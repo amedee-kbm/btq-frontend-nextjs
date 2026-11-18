@@ -56,6 +56,23 @@ export const en = {
     signInOrRegister: "Sign in or register",
     signInRegister: "Sign In / Register",
   },
+  /** The mobile tab bar: labels must stay short. */
+  tabs: {
+    label: "Quick links",
+    home: "Home",
+    categories: "Categories",
+    search: "Search",
+    favorites: "Favorites",
+    menu: "Menu",
+  },
+  browse: {
+    title: "Categories",
+    seeAll: (name: string) => `See all ${name}`,
+    backTo: "All categories",
+    moreIn: (name: string) => `Show the types of ${name}`,
+    shopByCategory: "Shop by category",
+    orBrowse: "Or pick a category",
+  },
   authSheet: {
     title: "Save your favorites",
     description: "Create an account to save favorites across devices.",

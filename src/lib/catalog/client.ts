@@ -16,13 +16,25 @@ export async function apiGet<T>(
   tags: CacheTag[] = ["catalog"],
 ): Promise<T> {
   const query = params?.toString();
-  const res = await fetch(
-    `${DJANGO_API_ENDPOINT}${path}${query ? `?${query}` : ""}`,
-    {
-      next: { tags, revalidate: 3600 },
-      signal: AbortSignal.timeout(TIMEOUT_MS),
-    },
-  );
+  let res: Response;
+  try {
+    res = await fetch(
+      `${DJANGO_API_ENDPOINT}${path}${query ? `?${query}` : ""}`,
+      {
+        next: { tags, revalidate: 3600 },
+        signal: AbortSignal.timeout(TIMEOUT_MS),
+      },
+    );
+  } catch (err) {
+    // AbortSignal.timeout rejects with a DOMException whose `message` is a
+    // read-only getter; Next/React try to rewrite error messages and crash
+    // ("Cannot set property message ... which has only a getter"). Rethrow
+    // a plain Error so callers' fallbacks and error boundaries work.
+    if (err instanceof DOMException) {
+      throw new Error(`API ${path} ${err.name}: ${err.message}`, { cause: err });
+    }
+    throw err;
+  }
   if (res.status === 404) notFound();
   if (!res.ok) throw new Error(`API ${path} ${res.status}`);
   return res.json() as Promise<T>;

@@ -36,7 +36,7 @@ export function AskUsProvider({
               ? t.askUs.aboutLabel(subject.product.name || t.common.thisItem)
               : t.askUs.generalLabel
           }
-          className="fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 flex h-12 items-center gap-2 rounded-full bg-action pr-5 pl-4 text-sm font-bold text-white shadow-lg transition-colors hover:bg-action-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          className="fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 max-lg:bottom-[calc(var(--bottom-nav-h)+0.75rem)] flex h-12 items-center gap-2 rounded-full bg-action pr-5 pl-4 text-sm font-bold text-white shadow-lg transition-colors hover:bg-action-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
         >
           <WhatsappLogoIcon size={22} weight="fill" aria-hidden="true" />
           {subject ? t.askUs.aboutThis : t.askUs.askUs}

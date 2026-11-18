@@ -59,6 +59,7 @@ export function LanguageSwitcher({
             onClick={(event) => choose(locale, event.currentTarget)}
             className={cn(
               "transition-colors hover:text-brand",
+              full && "inline-flex min-h-11 items-center",
               locale === lang ? "font-bold" : "opacity-75",
             )}
           >

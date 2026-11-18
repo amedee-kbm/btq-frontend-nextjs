@@ -58,12 +58,12 @@ export function ProductCard({
           </div>
         )}
         {product.is_sold_out ? (
-          <span className="absolute top-2 left-2 bg-ink px-2 py-1 text-[11px] font-bold tracking-wider text-white uppercase">
+          <span className="absolute top-2 left-2 bg-ink px-2 py-1 text-xs font-bold tracking-wider text-white uppercase">
             {t.common.soldOut}
           </span>
         ) : product.is_on_sale ? (
           <IfPricesShown>
-            <span className="absolute top-2 left-2 bg-danger px-2 py-1 text-[11px] font-bold tracking-wider text-white uppercase">
+            <span className="absolute top-2 left-2 bg-danger px-2 py-1 text-xs font-bold tracking-wider text-white uppercase">
               {t.common.sale}
             </span>
           </IfPricesShown>

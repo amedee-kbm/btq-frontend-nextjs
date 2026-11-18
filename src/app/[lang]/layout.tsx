@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Bodoni_Moda, Inter, Playfair_Display } from "next/font/google";
 import "../globals.css";
+import { BottomNav } from "@/components/layout/bottom-nav";
 import type { NavCategory, NavLink } from "@/components/layout/nav-types";
 import { Toaster } from "@/components/ui/sonner";
 import { SITE_URL } from "@/config/defaults";
@@ -9,6 +10,7 @@ import { I18nProvider } from "@/i18n/provider";
 import { listCollections } from "@/lib/catalog/collections";
 import { getSiteSettingsOrFallback } from "@/lib/catalog/settings";
 import { listCategories } from "@/lib/catalog/taxonomy";
+import type { Category } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
 import NavBar from "./nav-bar";
 import Providers from "./providers";
@@ -104,13 +106,15 @@ async function getNavData() {
     listCollections().catch(() => []),
     getSiteSettingsOrFallback(),
   ]);
-  const navCategories: NavCategory[] = categories.map((c) => ({
+  const link = (c: Category) => ({
     label: c.name,
     href: `/categories/${c.slug}`,
-    children: c.children.map((child) => ({
-      label: child.name,
-      href: `/categories/${child.slug}`,
-    })),
+    image: c.cover_image,
+    count: c.product_count,
+  });
+  const navCategories: NavCategory[] = categories.map((c) => ({
+    ...link(c),
+    children: c.children.map(link),
   }));
   const navCollections: NavLink[] = collections.map((c) => ({
     label: c.name,
@@ -141,6 +145,10 @@ export default async function RootLayout({ children, params }: Props) {
             <main className="flex w-full flex-1 flex-col items-center">
               {children}
             </main>
+            <BottomNav
+              categories={navCategories}
+              collections={navCollections}
+            />
             <Toaster />
           </Providers>
         </I18nProvider>

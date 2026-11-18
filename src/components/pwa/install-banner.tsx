@@ -79,7 +79,7 @@ export function InstallBanner() {
   return (
     <section
       aria-label={t.pwa.bannerLabel}
-      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 mx-auto flex max-w-md items-center gap-3 border border-divider bg-card p-3 shadow-lg duration-300 animate-in fade-in-0 slide-in-from-bottom-6 md:right-4 md:left-auto md:mx-0"
+      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 max-lg:bottom-[calc(var(--bottom-nav-h)+0.75rem)] mx-auto flex max-w-md items-center gap-3 border border-divider bg-card p-3 shadow-lg duration-300 animate-in fade-in-0 slide-in-from-bottom-6 md:right-4 md:left-auto md:mx-0"
     >
       <Image
         src="/icons/icon-192.png"
