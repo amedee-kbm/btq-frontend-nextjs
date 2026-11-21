@@ -33,6 +33,16 @@ async function getWholeCollection(slug: string) {
   return [first, ...rest].flatMap((page) => page.items);
 }
 
+/** Shown as a tile among the categories rather than as a product row. */
+const NEW_ARRIVALS = "new-arrivals";
+
+/** The new-arrivals collection, enough of it for a tile; none when it's empty. */
+async function getNewArrivalsTile() {
+  const collection = await getCollection(NEW_ARRIVALS, 1, 1).catch(() => null);
+  if (!collection || collection.count === 0) return null;
+  return { name: collection.name, image: "/new-arrivals.jpg" };
+}
+
 const STEP_ICONS = [HandbagIcon, RulerIcon, WhatsappLogoIcon, WalletIcon];
 
 type Props = { params: Promise<{ lang: string }> };
@@ -79,12 +89,16 @@ async function CollectionRow({
 /** Photo tiles of the categories, first thing on the page, so browsing starts with a tap. */
 async function CategoryTiles({ lang }: { lang: Locale }) {
   const t = getDictionary(lang);
-  const all = await listCategories().catch(() => []);
+  const [all, newArrivals] = await Promise.all([
+    listCategories().catch(() => []),
+    getNewArrivalsTile(),
+  ]);
   const featured = all.filter((c) => c.show_on_home);
   const categories = (featured.length > 0 ? featured : all).toSorted(
     (a, b) => a.position - b.position,
   );
-  if (categories.length === 0) return null;
+  if (categories.length === 0 && !newArrivals) return null;
+  const sizes = "(min-width: 1024px) 16vw, (min-width: 640px) 25vw, 33vw";
 
   return (
     <section
@@ -106,13 +120,24 @@ async function CategoryTiles({ lang }: { lang: Locale }) {
         </Link>
       </div>
       <ul className="grid grid-cols-3 gap-x-3 gap-y-5 sm:grid-cols-4 lg:grid-cols-6">
+        {newArrivals && (
+          <li>
+            <Link href={`/collections/${NEW_ARRIVALS}`} className="group block">
+              <CategoryTileContent
+                label={newArrivals.name || t.footer.newArrivals}
+                image={newArrivals.image}
+                sizes={sizes}
+              />
+            </Link>
+          </li>
+        )}
         {categories.map((c) => (
           <li key={c.slug}>
             <Link href={`/categories/${c.slug}`} className="group block">
               <CategoryTileContent
                 label={c.name}
                 image={c.cover_image}
-                sizes="(min-width: 1024px) 16vw, (min-width: 640px) 25vw, 33vw"
+                sizes={sizes}
               />
             </Link>
           </li>
@@ -126,13 +151,15 @@ async function CollectionRows({ lang }: { lang: Locale }) {
   const collections = await listCollections().catch(() => []);
   return (
     <>
-      {collections.map((collection) => (
-        <CollectionRow
-          key={collection.slug}
-          collection={collection}
-          lang={lang}
-        />
-      ))}
+      {collections
+        .filter((c) => c.slug !== NEW_ARRIVALS)
+        .map((collection) => (
+          <CollectionRow
+            key={collection.slug}
+            collection={collection}
+            lang={lang}
+          />
+        ))}
     </>
   );
 }
