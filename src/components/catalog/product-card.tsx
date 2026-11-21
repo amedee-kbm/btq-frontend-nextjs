@@ -61,7 +61,7 @@ export function ProductCard({
           <span className="absolute top-2 left-2 bg-ink px-2 py-1 text-xs font-bold tracking-wider text-white uppercase">
             {t.common.soldOut}
           </span>
-        ) : product.is_on_sale ? (
+        ) : product.is_on_sale && product.effective_price !== null ? (
           <IfPricesShown>
             <span className="absolute top-2 left-2 bg-danger px-2 py-1 text-xs font-bold tracking-wider text-white uppercase">
               {t.common.sale}

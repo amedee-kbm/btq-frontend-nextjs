@@ -37,9 +37,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     getProduct(slug),
     getSiteSettings(),
   ]);
-  const price = settings.show_prices
-    ? formatRWF(product.effective_price)
-    : undefined;
+  const price =
+    settings.show_prices && product.effective_price !== null
+      ? formatRWF(product.effective_price)
+      : undefined;
   const summary = [
     price,
     product.material,

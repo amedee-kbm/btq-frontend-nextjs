@@ -15,10 +15,12 @@ export type ProductColor = {
 export type ProductListItem = {
   slug: string;
   code: string;
+  /** May be `""`: left blank in the admin, or hidden by `show_product_names`. */
   name: string;
-  price: number;
+  /** `null` when the product is unpriced; then so is `effective_price`. */
+  price: number | null;
   sale_price: number | null;
-  effective_price: number;
+  effective_price: number | null;
   is_on_sale: boolean;
   is_sold_out: boolean;
   images: ProductImage[];

@@ -38,7 +38,9 @@ export function buildWhatsAppUrl(
     kind === "order"
       ? settings.whatsapp_template
       : settings.whatsapp_restock_template;
-  if (!settings.show_prices) template = dropPlaceholder(template, "price");
+  const price = settings.show_prices ? product.effective_price : null;
+  // Hidden or unpriced: drop the placeholder rather than quote "RWF 0".
+  if (price === null) template = dropPlaceholder(template, "price");
   // Hidden names come blank; the code alone tells the shop what's wanted.
   if (!product.name) template = dropPlaceholder(template, "name");
   const values: Record<string, string> = {
@@ -46,7 +48,7 @@ export function buildWhatsAppUrl(
     name: product.name,
     size: size ?? "any",
     color: color ?? "any",
-    price: formatRWF(product.effective_price),
+    price: price === null ? "" : formatRWF(price),
     url: productUrl(product.slug, { size, color }),
   };
   const message = template.replace(/\{(\w+)\}/g, (match, key: string) =>

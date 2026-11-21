@@ -6,7 +6,7 @@ import { formatRWF } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { useShowPrices } from "./visibility";
 
-/** Nothing at all when the admin hides prices. */
+/** Nothing at all when the admin hides prices or the product is unpriced. */
 export function Price({
   product,
   className,
@@ -15,22 +15,28 @@ export function Price({
   className?: string;
 }) {
   const { t } = useI18n();
-  if (!useShowPrices()) return null;
+  const showPrices = useShowPrices();
+  if (!showPrices || product.effective_price === null) return null;
+  // The struck-through original, when there is one that differs.
+  const original =
+    product.is_on_sale && product.price !== product.effective_price
+      ? product.price
+      : null;
   return (
     <p className={cn("flex flex-wrap items-baseline gap-x-2", className)}>
       <span
         className={cn(
           "font-bold",
-          product.is_on_sale ? "text-danger" : "text-price",
+          original !== null ? "text-danger" : "text-price",
         )}
       >
-        {product.is_on_sale && <span className="sr-only">{t.price.sale}</span>}
+        {original !== null && <span className="sr-only">{t.price.sale}</span>}
         {formatRWF(product.effective_price)}
       </span>
-      {product.is_on_sale && (
+      {original !== null && (
         <s className="text-[0.85em] text-ink-muted">
           <span className="sr-only">{t.price.original}</span>
-          {formatRWF(product.price)}
+          {formatRWF(original)}
         </s>
       )}
     </p>
